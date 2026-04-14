@@ -1,0 +1,443 @@
+/* ============================================
+   EduHemis - CSS Variables (O'zgaruvchilar)
+   Barcha ranglar, shriftlar, o'lchamlar shu yerda
+   ============================================ */
+
+/* ========== ROOT O'ZGARUVCHILAR ========== */
+:root {
+    
+    /* ===== 1. RANGLAR ===== */
+    
+    /* Asosiy ranglar (Primary) */
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-200: #bfdbfe;
+    --primary-300: #93c5fd;
+    --primary-400: #60a5fa;
+    --primary-500: #3b82f6;
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --primary-800: #1e40af;
+    --primary-900: #1e3a8a;
+    --primary-950: #172554;
+    
+    /* Ikkinchi darajali ranglar (Secondary) */
+    --secondary-50: #f8fafc;
+    --secondary-100: #f1f5f9;
+    --secondary-200: #e2e8f0;
+    --secondary-300: #cbd5e1;
+    --secondary-400: #94a3b8;
+    --secondary-500: #64748b;
+    --secondary-600: #475569;
+    --secondary-700: #334155;
+    --secondary-800: #1e293b;
+    --secondary-900: #0f172a;
+    --secondary-950: #020617;
+    
+    /* Muvaffaqiyat rangi (Success) */
+    --success-50: #ecfdf5;
+    --success-100: #d1fae5;
+    --success-200: #a7f3d0;
+    --success-300: #6ee7b7;
+    --success-400: #34d399;
+    --success-500: #10b981;
+    --success-600: #059669;
+    --success-700: #047857;
+    --success-800: #065f46;
+    --success-900: #064e3b;
+    --success-950: #022c22;
+    
+    /* Xatolik rangi (Danger) */
+    --danger-50: #fef2f2;
+    --danger-100: #fee2e2;
+    --danger-200: #fecaca;
+    --danger-300: #fca5a5;
+    --danger-400: #f87171;
+    --danger-500: #ef4444;
+    --danger-600: #dc2626;
+    --danger-700: #b91c1c;
+    --danger-800: #991b1b;
+    --danger-900: #7f1d1d;
+    --danger-950: #450a0a;
+    
+    /* Ogohlantirish rangi (Warning) */
+    --warning-50: #fffbeb;
+    --warning-100: #fef3c7;
+    --warning-200: #fde68a;
+    --warning-300: #fcd34d;
+    --warning-400: #fbbf24;
+    --warning-500: #f59e0b;
+    --warning-600: #d97706;
+    --warning-700: #b45309;
+    --warning-800: #92400e;
+    --warning-900: #78350f;
+    --warning-950: #451a03;
+    
+    /* Ma'lumot rangi (Info) */
+    --info-50: #eff6ff;
+    --info-100: #dbeafe;
+    --info-200: #bfdbfe;
+    --info-300: #93c5fd;
+    --info-400: #60a5fa;
+    --info-500: #3b82f6;
+    --info-600: #2563eb;
+    --info-700: #1d4ed8;
+    --info-800: #1e40af;
+    --info-900: #1e3a8a;
+    --info-950: #172554;
+    
+    /* Binafsha rang (Purple) */
+    --purple-50: #faf5ff;
+    --purple-100: #f3e8ff;
+    --purple-200: #e9d5ff;
+    --purple-300: #d8b4fe;
+    --purple-400: #c084fc;
+    --purple-500: #a855f7;
+    --purple-600: #9333ea;
+    --purple-700: #7e22ce;
+    --purple-800: #6b21a8;
+    --purple-900: #581c87;
+    --purple-950: #3b0764;
+    
+    /* Pushti rang (Pink) */
+    --pink-50: #fdf2f8;
+    --pink-100: #fce7f3;
+    --pink-200: #fbcfe8;
+    --pink-300: #f9a8d4;
+    --pink-400: #f472b6;
+    --pink-500: #ec4899;
+    --pink-600: #db2777;
+    --pink-700: #be185d;
+    --pink-800: #9d174d;
+    --pink-900: #831843;
+    --pink-950: #500724;
+    
+    /* Indigo rangi */
+    --indigo-50: #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --indigo-300: #a5b4fc;
+    --indigo-400: #818cf8;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+    --indigo-800: #3730a3;
+    --indigo-900: #312e81;
+    --indigo-950: #1e1b4b;
+    
+    /* Yashil rang (Green) */
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-300: #86efac;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --green-800: #166534;
+    --green-900: #14532d;
+    --green-950: #052e16;
+    
+    /* Ko'k rang (Cyan) */
+    --cyan-50: #ecfeff;
+    --cyan-100: #cffafe;
+    --cyan-200: #a5f3fc;
+    --cyan-300: #67e8f9;
+    --cyan-400: #22d3ee;
+    --cyan-500: #06b6d4;
+    --cyan-600: #0891b2;
+    --cyan-700: #0e7490;
+    --cyan-800: #155e75;
+    --cyan-900: #164e63;
+    --cyan-950: #083344;
+    
+    /* To'q sariq rang (Orange) */
+    --orange-50: #fff7ed;
+    --orange-100: #ffedd5;
+    --orange-200: #fed7aa;
+    --orange-300: #fdba74;
+    --orange-400: #fb923c;
+    --orange-500: #f97316;
+    --orange-600: #ea580c;
+    --orange-700: #c2410c;
+    --orange-800: #9a3412;
+    --orange-900: #7c2d12;
+    --orange-950: #431407;
+    
+    /* Kulrang (Gray) */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --gray-950: #030712;
+    
+    /* Qora va oq */
+    --black: #000000;
+    --white: #ffffff;
+    --transparent: transparent;
+    
+    /* ===== 2. SHRIFTLAR ===== */
+    
+    /* Asosiy shriftlar */
+    --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+    --font-family-serif: Georgia, 'Times New Roman', serif;
+    
+    /* Shrift o'lchamlari */
+    --font-size-xs: 0.75rem;     /* 12px */
+    --font-size-sm: 0.875rem;    /* 14px */
+    --font-size-base: 1rem;      /* 16px */
+    --font-size-lg: 1.125rem;    /* 18px */
+    --font-size-xl: 1.25rem;     /* 20px */
+    --font-size-2xl: 1.5rem;     /* 24px */
+    --font-size-3xl: 1.875rem;   /* 30px */
+    --font-size-4xl: 2.25rem;    /* 36px */
+    --font-size-5xl: 3rem;       /* 48px */
+    --font-size-6xl: 3.75rem;    /* 60px */
+    --font-size-7xl: 4.5rem;     /* 72px */
+    --font-size-8xl: 6rem;       /* 96px */
+    --font-size-9xl: 8rem;       /* 128px */
+    
+    /* Shrift og'irliklari */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+    
+    /* Satr balandligi */
+    --line-height-none: 1;
+    --line-height-tight: 1.25;
+    --line-height-snug: 1.375;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+    --line-height-loose: 2;
+    
+    /* Harflar oralig'i */
+    --letter-spacing-tighter: -0.05em;
+    --letter-spacing-tight: -0.025em;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.025em;
+    --letter-spacing-wider: 0.05em;
+    --letter-spacing-widest: 0.1em;
+    
+    /* ===== 3. BO'SHLIQLAR (SPACING) ===== */
+    
+    --spacing-0: 0px;
+    --spacing-px: 1px;
+    --spacing-0-5: 0.125rem;  /* 2px */
+    --spacing-1: 0.25rem;     /* 4px */
+    --spacing-1-5: 0.375rem;  /* 6px */
+    --spacing-2: 0.5rem;      /* 8px */
+    --spacing-2-5: 0.625rem;  /* 10px */
+    --spacing-3: 0.75rem;     /* 12px */
+    --spacing-3-5: 0.875rem;  /* 14px */
+    --spacing-4: 1rem;        /* 16px */
+    --spacing-5: 1.25rem;     /* 20px */
+    --spacing-6: 1.5rem;      /* 24px */
+    --spacing-7: 1.75rem;     /* 28px */
+    --spacing-8: 2rem;        /* 32px */
+    --spacing-9: 2.25rem;     /* 36px */
+    --spacing-10: 2.5rem;     /* 40px */
+    --spacing-11: 2.75rem;     /* 44px */
+    --spacing-12: 3rem;        /* 48px */
+    --spacing-14: 3.5rem;      /* 56px */
+    --spacing-16: 4rem;        /* 64px */
+    --spacing-20: 5rem;        /* 80px */
+    --spacing-24: 6rem;        /* 96px */
+    --spacing-28: 7rem;        /* 112px */
+    --spacing-32: 8rem;        /* 128px */
+    --spacing-36: 9rem;        /* 144px */
+    --spacing-40: 10rem;       /* 160px */
+    --spacing-44: 11rem;       /* 176px */
+    --spacing-48: 12rem;       /* 192px */
+    --spacing-52: 13rem;       /* 208px */
+    --spacing-56: 14rem;       /* 224px */
+    --spacing-60: 15rem;       /* 240px */
+    --spacing-64: 16rem;       /* 256px */
+    --spacing-72: 18rem;       /* 288px */
+    --spacing-80: 20rem;       /* 320px */
+    --spacing-96: 24rem;       /* 384px */
+    
+    /* ===== 4. BURCHAK RADIUSLARI ===== */
+    
+    --radius-none: 0px;
+    --radius-sm: 0.125rem;     /* 2px */
+    --radius-base: 0.25rem;    /* 4px */
+    --radius-md: 0.375rem;     /* 6px */
+    --radius-lg: 0.5rem;       /* 8px */
+    --radius-xl: 0.75rem;      /* 12px */
+    --radius-2xl: 1rem;        /* 16px */
+    --radius-3xl: 1.5rem;      /* 24px */
+    --radius-4xl: 2rem;        /* 32px */
+    --radius-full: 9999px;
+    
+    /* ===== 5. SOYALAR ===== */
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    --shadow-none: 0 0 #0000;
+    
+    /* ===== 6. CHEGARALAR ===== */
+    
+    --border-width-0: 0px;
+    --border-width-1: 1px;
+    --border-width-2: 2px;
+    --border-width-4: 4px;
+    --border-width-8: 8px;
+    
+    /* ===== 7. Z-INDEKS ===== */
+    
+    --z-0: 0;
+    --z-10: 10;
+    --z-20: 20;
+    --z-30: 30;
+    --z-40: 40;
+    --z-50: 50;
+    --z-auto: auto;
+    
+    /* ===== 8. O'TISH (TRANSITION) ===== */
+    
+    --transition-none: none;
+    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-colors: background-color, border-color, color, fill, stroke 0.3s ease;
+    --transition-opacity: opacity 0.3s ease;
+    --transition-shadow: box-shadow 0.3s ease;
+    --transition-transform: transform 0.3s ease;
+    
+    /* ===== 9. SCREEN BREAKPOINTLAR ===== */
+    
+    --screen-sm: 640px;
+    --screen-md: 768px;
+    --screen-lg: 1024px;
+    --screen-xl: 1280px;
+    --screen-2xl: 1536px;
+}
+
+/* ========== DARK MODE O'ZGARUVCHILAR ========== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-500: #60a5fa;
+        --primary-600: #3b82f6;
+        --secondary-500: #94a3b8;
+        --gray-100: #1f2937;
+        --gray-200: #374151;
+        --gray-300: #4b5563;
+        --gray-400: #6b7280;
+        --gray-500: #9ca3af;
+        --gray-600: #d1d5db;
+        --gray-700: #e5e7eb;
+        --gray-800: #f3f4f6;
+        --gray-900: #f9fafb;
+    }
+}
+
+/* ========== CUSTOM O'ZGARUVCHILAR (LOYIHA UCHUN) ========== */
+:root {
+    /* Asosiy loyiha ranglari */
+    --color-primary: var(--primary-600);
+    --color-primary-hover: var(--primary-700);
+    --color-primary-active: var(--primary-800);
+    --color-primary-light: var(--primary-100);
+    
+    --color-secondary: var(--secondary-600);
+    --color-success: var(--success-500);
+    --color-danger: var(--danger-500);
+    --color-warning: var(--warning-500);
+    --color-info: var(--info-500);
+    
+    /* Matn ranglari */
+    --text-primary: var(--gray-900);
+    --text-secondary: var(--gray-600);
+    --text-tertiary: var(--gray-400);
+    --text-inverse: var(--white);
+    
+    /* Fon ranglari */
+    --bg-primary: var(--white);
+    --bg-secondary: var(--gray-50);
+    --bg-tertiary: var(--gray-100);
+    --bg-inverse: var(--gray-900);
+    
+    /* Chegara ranglari */
+    --border-primary: var(--gray-200);
+    --border-secondary: var(--gray-300);
+    
+    /* Eslatma ranglari */
+    --deadline-overdue: var(--danger-500);
+    --deadline-warning: var(--warning-500);
+    --deadline-upcoming: var(--info-500);
+    --deadline-completed: var(--success-500);
+    
+    /* Status ranglari */
+    --status-online: var(--success-500);
+    --status-offline: var(--gray-400);
+    --status-busy: var(--danger-500);
+    --status-away: var(--warning-500);
+    
+    /* Rol ranglari */
+    --role-admin: var(--danger-500);
+    --role-teacher: var(--primary-500);
+    --role-student: var(--success-500);
+    --role-moderator: var(--purple-500);
+    
+    /* Header balandligi */
+    --header-height: 80px;
+    
+    /* Sidebar kengligi */
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+    
+    /* Container kengligi */
+    --container-max-width: 1280px;
+    --container-padding: 2rem;
+    
+    /* Modal maksimal kengligi */
+    --modal-sm: 400px;
+    --modal-md: 600px;
+    --modal-lg: 800px;
+    --modal-xl: 1140px;
+    
+    /* Toast pozitsiyasi */
+    --toast-top: 20px;
+    --toast-bottom: 20px;
+    --toast-left: 20px;
+    --toast-right: 20px;
+    
+    /* Animatsiya davomiyligi */
+    --duration-fast: 150ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+}
+
+/* ========== RESPONSIVE O'ZGARUVCHILAR ========== */
+@media (max-width: 768px) {
+    :root {
+        --header-height: 60px;
+        --container-padding: 1rem;
+        --font-size-base: 0.875rem;
+        --font-size-lg: 1rem;
+        --font-size-xl: 1.125rem;
+        --font-size-2xl: 1.25rem;
+        --font-size-3xl: 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    :root {
+        --sidebar-width: 100%;
+        --container-padding: 0.75rem;
+    }
+}

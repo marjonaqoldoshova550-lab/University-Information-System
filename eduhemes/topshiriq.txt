@@ -1,0 +1,5 @@
+1. Nomini o'zgartirasiz
+2. Hemisda yo'q, lekin ta'lim jarayoni uchun muhim funksiya qo'shish
+3. 1,2 bo'lgandan keyin github.com saytiga joylash u orqali render va vercel ga deploy qilish
+Bannerni tayyorlash
+Broshuralar tayyorlash

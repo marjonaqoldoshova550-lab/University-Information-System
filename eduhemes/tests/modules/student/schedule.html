@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dars jadvali - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .schedule-cell {
+            min-height: 100px;
+            padding: 12px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            border: 1px solid #e5e7eb;
+        }
+
+        .schedule-cell:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            transform: scale(1.02);
+        }
+
+        .current-day {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+        }
+
+        .current-time {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+        }
+
+        .lesson-card {
+            background: white;
+            border-left: 4px solid;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .lesson-lecture { border-left-color: #3b82f6; }
+        .lesson-practice { border-left-color: #10b981; }
+        .lesson-lab { border-left-color: #8b5cf6; }
+
+        .week-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .week-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .week-nav-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .day-tab {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .day-tab.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .day-tab.today {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .time-slot {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .room-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f3f4f6;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        .teacher-name {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500">Dars jadvali</p>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex items-center gap-6">
+                <!-- Week Navigation -->
+                <div class="week-nav hidden md:flex">
+                    <button onclick="changeWeek(-1)" class="week-nav-btn">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <span id="weekDisplay" class="font-medium">13 - 19 mart</span>
+                    <button onclick="changeWeek(1)" class="week-nav-btn">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+
+                <!-- Back to Dashboard -->
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+
+                <!-- User Info -->
+                <div class="text-right hidden md:block">
+                    <p id="userName" class="font-bold text-gray-800">Azimjon Karimov</p>
+                    <p class="text-xs text-gray-500">Talaba • AT-101-20</p>
+                </div>
+
+                <img src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-blue-600 cursor-pointer" onclick="goToProfile()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📅 Dars jadvali</h1>
+        <div class="flex gap-2">
+            <select id="groupSelect" class="px-4 py-2 border rounded-xl bg-white" onchange="changeGroup()">
+                <option value="AT-101-20">AT-101-20</option>
+                <option value="AT-102-20">AT-102-20</option>
+                <option value="KI-201-21">KI-201-21</option>
+            </select>
+            <button onclick="printSchedule()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">
+                <i class="fas fa-print"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Week Navigation (Mobile) -->
+    <div class="flex justify-between items-center md:hidden mb-6">
+        <button onclick="changeWeek(-1)" class="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span id="mobileWeekDisplay" class="font-medium">13 - 19 mart</span>
+        <button onclick="changeWeek(1)" class="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Day Tabs (Mobile) -->
+    <div class="overflow-x-auto pb-2 mb-6 md:hidden">
+        <div class="flex gap-2 min-w-max">
+            <button onclick="changeDay(1)" class="day-tab" id="day1">Dushanba</button>
+            <button onclick="changeDay(2)" class="day-tab" id="day2">Seshanba</button>
+            <button onclick="changeDay(3)" class="day-tab" id="day3">Chorshanba</button>
+            <button onclick="changeDay(4)" class="day-tab" id="day4">Payshanba</button>
+            <button onclick="changeDay(5)" class="day-tab" id="day5">Juma</button>
+            <button onclick="changeDay(6)" class="day-tab" id="day6">Shanba</button>
+        </div>
+    </div>
+
+    <!-- Desktop Schedule Table -->
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden hidden md:block">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-50">
+                    <th class="p-4 text-left text-gray-600 font-semibold">Vaqt</th>
+                    <th class="p-4 text-center text-gray-600 font-semibold">Dushanba</th>
+                    <th class="p-4 text-center text-gray-600 font-semibold">Seshanba</th>
+                    <th class="p-4 text-center text-gray-600 font-semibold">Chorshanba</th>
+                    <th class="p-4 text-center text-gray-600 font-semibold">Payshanba</th>
+                    <th class="p-4 text-center text-gray-600 font-semibold">Juma</th>
+                    <th class="p-4 text-center text-gray-600 font-semibold">Shanba</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleTableBody">
+                <!-- Schedule will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Schedule View -->
+    <div id="mobileScheduleView" class="md:hidden space-y-4">
+        <!-- Mobile schedule will be loaded here -->
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+        <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <p class="text-gray-500 text-sm">Haftalik darslar</p>
+            <p class="text-2xl font-bold" id="weeklyCount">18</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <p class="text-gray-500 text-sm">Bugungi darslar</p>
+            <p class="text-2xl font-bold text-blue-600" id="todayCount">3</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <p class="text-gray-500 text-sm">Ma'ruzalar</p>
+            <p class="text-2xl font-bold text-purple-600" id="lectureCount">12</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow-sm">
+            <p class="text-gray-500 text-sm">Amaliyotlar</p>
+            <p class="text-2xl font-bold text-green-600" id="practiceCount">6</p>
+        </div>
+    </div>
+
+    <!-- Upcoming Lessons -->
+    <div class="bg-white rounded-3xl shadow-sm p-6 mt-8">
+        <h3 class="text-xl font-bold mb-4">⏰ Keyingi darslar</h3>
+        <div id="upcomingLessons" class="space-y-3">
+            <!-- Upcoming lessons will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Lesson Details Modal -->
+<div id="lessonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="modalTitle">Dars tafsilotlari</h3>
+            <button onclick="closeModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentWeek = 0;
+    let currentDay = new Date().getDay();
+    let currentGroup = 'AT-101-20';
+
+    const scheduleData = {
+        'AT-101-20': {
+            monday: [
+                { time: '09:00-10:20', subject: 'Veb dasturlash', teacher: 'Said Alisherov', room: '402', type: 'lecture', topic: 'HTML asoslari' },
+                { time: '10:30-11:50', subject: 'Ingliz tili', teacher: 'Samariddinova G.', room: '205', type: 'practice', topic: 'Present Simple' },
+                { time: '13:00-14:20', subject: 'Matematika', teacher: 'Raximov A.', room: '310', type: 'lecture', topic: 'Limitlar' }
+            ],
+            tuesday: [
+                { time: '09:00-10:20', subject: 'Ma\'lumotlar bazasi', teacher: 'Nodira Karimova', room: '312', type: 'lecture', topic: 'SQL asoslari' },
+                { time: '10:30-11:50', subject: 'Fizika', teacher: 'Tursunov B.', room: '215', type: 'lab', topic: 'Mexanika' }
+            ],
+            wednesday: [
+                { time: '09:00-10:20', subject: 'Kiberxavfsizlik', teacher: 'Jasur Usmonov', room: '210', type: 'lecture', topic: 'Xavfsizlik asoslari' },
+                { time: '10:30-11:50', subject: 'Veb dasturlash (amaliy)', teacher: 'Said Alisherov', room: '408', type: 'practice', topic: 'CSS stillar' },
+                { time: '14:00-15:20', subject: 'Falsafa', teacher: 'Karimov U.', room: '101', type: 'lecture', topic: 'Bilish nazariyasi' }
+            ],
+            thursday: [
+                { time: '09:00-10:20', subject: 'Sun\'iy intellekt', teacher: 'Dildora Ahmetova', room: '105', type: 'lecture', topic: 'Neyron tarmoqlar' },
+                { time: '10:30-11:50', subject: 'Ingliz tili', teacher: 'Samariddinova G.', room: '205', type: 'practice', topic: 'Past Simple' }
+            ],
+            friday: [
+                { time: '09:00-10:20', subject: 'Tizimli boshqaruv', teacher: 'Aziz Qosimov', room: '308', type: 'lecture', topic: 'Linux asoslari' },
+                { time: '10:30-11:50', subject: 'Jismoniy tarbiya', teacher: 'Abdurahmonov S.', room: 'Sport zal', type: 'practice', topic: 'Futbol' }
+            ],
+            saturday: [
+                { time: '09:00-10:20', subject: 'Algoritmlar', teacher: 'Gulnora Akramova', room: '502', type: 'lecture', topic: 'Sorting algoritmlari' }
+            ]
+        },
+        'AT-102-20': {
+            monday: [
+                { time: '09:00-10:20', subject: 'Matematika', teacher: 'Raximov A.', room: '310', type: 'lecture', topic: 'Hosila' },
+                { time: '10:30-11:50', subject: 'Fizika', teacher: 'Tursunov B.', room: '215', type: 'lab', topic: 'Elektr' }
+            ]
+        },
+        'KI-201-21': {
+            monday: [
+                { time: '09:00-10:20', subject: 'Python', teacher: 'Karimova N.', room: '401', type: 'lecture', topic: 'OOP' }
+            ]
+        }
+    };
+
+    const days = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
+    const times = ['09:00-10:20', '10:30-11:50', '13:00-14:20', '14:30-15:50', '16:00-17:20'];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        updateWeekDisplay();
+        loadSchedule();
+        updateStats();
+        loadUpcomingLessons();
+        highlightCurrentDay();
+    };
+
+    function loadSchedule() {
+        const groupSchedule = scheduleData[currentGroup] || {};
+        
+        // Desktop view
+        let tableHtml = '';
+        times.forEach(time => {
+            tableHtml += '<tr class="border-t">';
+            tableHtml += `<td class="p-4 font-medium text-gray-600">${time}</td>`;
+            
+            days.forEach((day, index) => {
+                const dayKey = getDayKey(index);
+                const lessons = groupSchedule[dayKey] || [];
+                const lesson = lessons.find(l => l.time === time);
+                
+                tableHtml += '<td class="p-2 align-top">';
+                if (lesson) {
+                    const typeColor = lesson.type === 'lecture' ? 'blue' : 
+                                    lesson.type === 'practice' ? 'green' : 'purple';
+                    const isCurrent = isCurrentLesson(day, time);
+                    
+                    tableHtml += `
+                        <div class="lesson-card ${isCurrent ? 'current-time' : ''} lesson-${lesson.type} cursor-pointer"
+                             onclick='showLessonDetails(${JSON.stringify(lesson).replace(/'/g, "&apos;")})'>
+                            <div class="font-bold text-sm">${lesson.subject}</div>
+                            <div class="time-slot">${lesson.time}</div>
+                            <div><span class="room-badge">${lesson.room}</span></div>
+                            <div class="teacher-name">${lesson.teacher}</div>
+                        </div>
+                    `;
+                } else {
+                    tableHtml += '<div class="h-20"></div>';
+                }
+                tableHtml += '</td>';
+            });
+            
+            tableHtml += '</tr>';
+        });
+        
+        document.getElementById('scheduleTableBody').innerHTML = tableHtml;
+        
+        // Mobile view
+        loadMobileSchedule(groupSchedule);
+    }
+
+    function loadMobileSchedule(groupSchedule) {
+        const mobileView = document.getElementById('mobileScheduleView');
+        const today = days[currentDay - 1] || 'Dushanba';
+        const dayKey = getDayKey(days.indexOf(today));
+        const lessons = groupSchedule[dayKey] || [];
+        
+        let mobileHtml = `
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">${today}</h3>
+        `;
+        
+        if (lessons.length > 0) {
+            lessons.forEach(lesson => {
+                const isCurrent = isCurrentLesson(days.indexOf(today), lesson.time);
+                mobileHtml += `
+                    <div class="lesson-card lesson-${lesson.type} ${isCurrent ? 'current-time' : ''} mb-3 cursor-pointer"
+                         onclick='showLessonDetails(${JSON.stringify(lesson).replace(/'/g, "&apos;")})'>
+                        <div class="flex justify-between items-start">
+                            <div class="font-bold">${lesson.subject}</div>
+                            <span class="time-slot">${lesson.time}</span>
+                        </div>
+                        <div class="text-sm text-gray-600">${lesson.topic}</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="room-badge">${lesson.room}</span>
+                            <span class="text-xs text-gray-500">${lesson.teacher}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            mobileHtml += '<p class="text-center text-gray-500 py-8">Darslar yo\'q</p>';
+        }
+        
+        mobileHtml += '</div>';
+        mobileView.innerHTML = mobileHtml;
+    }
+
+    function loadUpcomingLessons() {
+        const container = document.getElementById('upcomingLessons');
+        const groupSchedule = scheduleData[currentGroup] || {};
+        const allLessons = [];
+        
+        // Collect all lessons
+        days.forEach((day, index) => {
+            const dayKey = getDayKey(index);
+            const lessons = groupSchedule[dayKey] || [];
+            lessons.forEach(lesson => {
+                allLessons.push({
+                    ...lesson,
+                    day: day,
+                    dayIndex: index
+                });
+            });
+        });
+        
+        // Sort by day and time
+        allLessons.sort((a, b) => {
+            if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
+            return a.time.localeCompare(b.time);
+        });
+        
+        // Show next 5 lessons
+        container.innerHTML = '';
+        allLessons.slice(0, 5).forEach(lesson => {
+            container.innerHTML += `
+                <div class="flex items-center gap-4 p-3 border-b last:border-0 cursor-pointer hover:bg-gray-50"
+                     onclick='showLessonDetails(${JSON.stringify(lesson).replace(/'/g, "&apos;")})'>
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex flex-col items-center justify-center">
+                        <span class="text-xs">${lesson.day.substring(0, 2)}</span>
+                        <span class="text-lg font-bold">${lesson.time.split('-')[0]}</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold">${lesson.subject}</h4>
+                        <p class="text-sm text-gray-600">${lesson.topic}</p>
+                        <p class="text-xs text-gray-400">${lesson.teacher} • ${lesson.room}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function showLessonDetails(lesson) {
+        const typeText = lesson.type === 'lecture' ? 'Ma\'ruza' : 
+                        lesson.type === 'practice' ? 'Amaliy' : 'Laboratoriya';
+        
+        const modalContent = `
+            <div class="space-y-4">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h4 class="text-xl font-bold">${lesson.subject}</h4>
+                    <p class="text-gray-500">${lesson.topic}</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">O'qituvchi</p>
+                        <p class="font-medium">${lesson.teacher}</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Xona</p>
+                        <p class="font-medium">${lesson.room}</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Vaqt</p>
+                        <p class="font-medium">${lesson.time}</p>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Tur</p>
+                        <p class="font-medium">${typeText}</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-2">📚 Dars mavzusi:</h5>
+                    <p class="text-gray-600">${lesson.topic}</p>
+                </div>
+                
+                <button onclick="closeModal()" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700 mt-4">
+                    Yopish
+                </button>
+            </div>
+        `;
+        
+        document.getElementById('modalContent').innerHTML = modalContent;
+        document.getElementById('lessonModal').style.display = 'flex';
+    }
+
+    // ========== WEEK NAVIGATION ==========
+    function changeWeek(direction) {
+        currentWeek += direction;
+        updateWeekDisplay();
+        loadSchedule();
+    }
+
+    function updateWeekDisplay() {
+        const today = new Date();
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay() + 1 + currentWeek * 7);
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 4);
+        
+        const formatDate = (date) => date.getDate();
+        const formatMonth = (date) => {
+            const months = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+            return months[date.getMonth()];
+        };
+        
+        const displayText = `${formatDate(startOfWeek)} - ${formatDate(endOfWeek)} ${formatMonth(startOfWeek)}`;
+        document.getElementById('weekDisplay').textContent = displayText;
+        document.getElementById('mobileWeekDisplay').textContent = displayText;
+    }
+
+    // ========== DAY NAVIGATION (Mobile) ==========
+    function changeDay(day) {
+        currentDay = day;
+        
+        // Update tabs
+        document.querySelectorAll('.day-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.getElementById(`day${day}`).classList.add('active');
+        
+        // Load schedule for selected day
+        const groupSchedule = scheduleData[currentGroup] || {};
+        const dayKey = getDayKey(day - 1);
+        const lessons = groupSchedule[dayKey] || [];
+        
+        const mobileView = document.getElementById('mobileScheduleView');
+        let mobileHtml = `
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">${days[day - 1]}</h3>
+        `;
+        
+        if (lessons.length > 0) {
+            lessons.forEach(lesson => {
+                mobileHtml += `
+                    <div class="lesson-card lesson-${lesson.type} mb-3 cursor-pointer"
+                         onclick='showLessonDetails(${JSON.stringify(lesson).replace(/'/g, "&apos;")})'>
+                        <div class="flex justify-between items-start">
+                            <div class="font-bold">${lesson.subject}</div>
+                            <span class="time-slot">${lesson.time}</span>
+                        </div>
+                        <div class="text-sm text-gray-600">${lesson.topic}</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="room-badge">${lesson.room}</span>
+                            <span class="text-xs text-gray-500">${lesson.teacher}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            mobileHtml += '<p class="text-center text-gray-500 py-8">Darslar yo\'q</p>';
+        }
+        
+        mobileHtml += '</div>';
+        mobileView.innerHTML = mobileHtml;
+    }
+
+    // ========== GROUP CHANGE ==========
+    function changeGroup() {
+        currentGroup = document.getElementById('groupSelect').value;
+        loadSchedule();
+        updateStats();
+        loadUpcomingLessons();
+        showToast(`Guruh o'zgartirildi: ${currentGroup}`, 'success');
+    }
+
+    // ========== STATISTIKA ==========
+    function updateStats() {
+        const groupSchedule = scheduleData[currentGroup] || {};
+        let weeklyCount = 0;
+        let lectureCount = 0;
+        let practiceCount = 0;
+        
+        days.forEach((_, index) => {
+            const dayKey = getDayKey(index);
+            const lessons = groupSchedule[dayKey] || [];
+            weeklyCount += lessons.length;
+            
+            lessons.forEach(lesson => {
+                if (lesson.type === 'lecture') lectureCount++;
+                else if (lesson.type === 'practice') practiceCount++;
+            });
+        });
+        
+        document.getElementById('weeklyCount').textContent = weeklyCount;
+        document.getElementById('lectureCount').textContent = lectureCount;
+        document.getElementById('practiceCount').textContent = practiceCount;
+        
+        // Bugungi darslar
+        const today = days[currentDay - 1] || 'Dushanba';
+        const todayKey = getDayKey(days.indexOf(today));
+        const todayLessons = groupSchedule[todayKey] || [];
+        document.getElementById('todayCount').textContent = todayLessons.length;
+    }
+
+    // ========== YORDAMCHI FUNKSIYALAR ==========
+    function getDayKey(index) {
+        const dayMap = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        return dayMap[index];
+    }
+
+    function isCurrentLesson(dayIndex, lessonTime) {
+        const today = new Date().getDay();
+        const currentHour = new Date().getHours();
+        const currentMinute = new Date().getMinutes();
+        
+        // Adjust for Sunday (0) to Saturday (6)
+        if (today === 0) return false; // No lessons on Sunday
+        
+        if (dayIndex !== today - 1) return false;
+        
+        const [start, end] = lessonTime.split('-');
+        const [startHour, startMin] = start.split(':').map(Number);
+        const [endHour, endMin] = end.split(':').map(Number);
+        
+        const currentMinutes = currentHour * 60 + currentMinute;
+        const startMinutes = startHour * 60 + startMin;
+        const endMinutes = endHour * 60 + endMin;
+        
+        return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
+    }
+
+    function highlightCurrentDay() {
+        const today = new Date().getDay();
+        if (today === 0) return; // Sunday
+        
+        document.querySelectorAll('.day-tab').forEach(tab => {
+            tab.classList.remove('active', 'today');
+        });
+        
+        const todayTab = document.getElementById(`day${today}`);
+        if (todayTab) {
+            todayTab.classList.add('today');
+            todayTab.classList.add('active');
+        }
+    }
+
+    function printSchedule() {
+        window.print();
+    }
+
+    function closeModal() {
+        document.getElementById('lessonModal').style.display = 'none';
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = 'profile.html';
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        
+        if (type === 'success') toast.classList.add('bg-green-500');
+        else if (type === 'error') toast.classList.add('bg-red-500');
+        else if (type === 'warning') toast.classList.add('bg-orange-500');
+        else toast.classList.add('bg-blue-500');
+        
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+
+    // Modalni yopish (tashqariga bosilganda)
+    window.onclick = function(event) {
+        const modal = document.getElementById('lessonModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>

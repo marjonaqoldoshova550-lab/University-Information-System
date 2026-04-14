@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dars soatlarini belgilash - EduHemis Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card-hover { transition: all 0.3s; cursor: pointer; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 30px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 12px 24px; border-radius: 50px; z-index: 1001; display: none; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Header -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Dars soatlarini belgilash</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100">
+                    <i class="fas fa-arrow-left"></i> Bosh sahifa
+                </button>
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">⏰ Dars soatlarini belgilash</h1>
+
+    <!-- O'qituvchilar ro'yxati -->
+    <div class="bg-white rounded-3xl shadow-sm p-6 mb-8">
+        <h2 class="text-xl font-bold mb-4">👨‍🏫 O'qituvchilar</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="teachersList">
+            <!-- O'qituvchilar JS orqali yuklanadi -->
+        </div>
+    </div>
+
+    <!-- Fanlar va soatlar jadvali -->
+    <div class="bg-white rounded-3xl shadow-sm p-6">
+        <h2 class="text-xl font-bold mb-4">📚 Fanlar va soatlar</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 text-left">Fan</th>
+                        <th class="p-4 text-left">O'qituvchi</th>
+                        <th class="p-4 text-center">Haftalik soat</th>
+                        <th class="p-4 text-center">Semestr soati</th>
+                        <th class="p-4 text-center">Kredit</th>
+                        <th class="p-4 text-center">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="subjectsTable">
+                    <!-- Fanlar JS orqali yuklanadi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Assign Hours Modal -->
+<div id="assignModal" class="modal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">⏰ Dars soatlarini belgilash</h3>
+            <button onclick="closeModal()" class="text-2xl text-gray-500">&times;</button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // Ma'lumotlar
+    let teachers = [
+        { id: 2, name: 'Said Alisherov', subject: 'Veb dasturlash', weeklyHours: 0, semesterHours: 0, credits: 0 },
+        { id: 3, name: 'Nodira Karimova', subject: "Ma'lumotlar bazasi", weeklyHours: 0, semesterHours: 0, credits: 0 },
+        { id: 4, name: 'Jasur Usmonov', subject: 'Kiberxavfsizlik', weeklyHours: 0, semesterHours: 0, credits: 0 },
+        { id: 5, name: 'Dildora Ahmetova', subject: "Sun'iy intellekt", weeklyHours: 0, semesterHours: 0, credits: 0 },
+        { id: 6, name: 'Aziz Qosimov', subject: 'Tizimli boshqaruv', weeklyHours: 0, semesterHours: 0, credits: 0 }
+    ];
+
+    let subjects = [
+        { id: 1, name: 'Veb dasturlash', teacherId: 2, teacherName: 'Said Alisherov', weeklyHours: 4, semesterHours: 64, credits: 5 },
+        { id: 2, name: "Ma'lumotlar bazasi", teacherId: 3, teacherName: 'Nodira Karimova', weeklyHours: 3, semesterHours: 48, credits: 4 },
+        { id: 3, name: 'Kiberxavfsizlik', teacherId: 4, teacherName: 'Jasur Usmonov', weeklyHours: 3, semesterHours: 48, credits: 4 },
+        { id: 4, name: "Sun'iy intellekt", teacherId: 5, teacherName: 'Dildora Ahmetova', weeklyHours: 4, semesterHours: 64, credits: 5 },
+        { id: 5, name: 'Tizimli boshqaruv', teacherId: 6, teacherName: 'Aziz Qosimov', weeklyHours: 2, semesterHours: 32, credits: 3 }
+    ];
+
+    // Sahifa yuklanganda
+    window.onload = function() {
+        loadTeachers();
+        loadSubjects();
+        loadSavedData();
+    };
+
+    function loadTeachers() {
+        const container = document.getElementById('teachersList');
+        container.innerHTML = '';
+        
+        teachers.forEach(teacher => {
+            container.innerHTML += `
+                <div class="border rounded-2xl p-4 card-hover" onclick="editTeacherHours(${teacher.id})">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=${teacher.name.split(' ').join('+')}&background=4f46e5&color=fff" class="w-12 h-12 rounded-full">
+                        <div class="flex-1">
+                            <h3 class="font-bold">${teacher.name}</h3>
+                            <p class="text-sm text-gray-500">${teacher.subject}</p>
+                            <div class="flex gap-3 mt-2 text-sm">
+                                <span>📖 Haftalik: ${teacher.weeklyHours} soat</span>
+                                <span>📚 Semestr: ${teacher.semesterHours} soat</span>
+                                <span>⭐ Kredit: ${teacher.credits}</span>
+                            </div>
+                        </div>
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm">Tahrirlash</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function loadSubjects() {
+        const tbody = document.getElementById('subjectsTable');
+        tbody.innerHTML = '';
+        
+        subjects.forEach(subject => {
+            tbody.innerHTML += `
+                <tr class="border-t">
+                    <td class="p-4 font-medium">${subject.name}</td>
+                    <td class="p-4">${subject.teacherName}</td>
+                    <td class="p-4 text-center">
+                        <input type="number" id="weekly-${subject.id}" value="${subject.weeklyHours}" class="w-20 p-2 border rounded-lg text-center">
+                    </td>
+                    <td class="p-4 text-center">
+                        <input type="number" id="semester-${subject.id}" value="${subject.semesterHours}" class="w-24 p-2 border rounded-lg text-center">
+                    </td>
+                    <td class="p-4 text-center">
+                        <input type="number" id="credit-${subject.id}" value="${subject.credits}" class="w-20 p-2 border rounded-lg text-center">
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="saveSubjectHours(${subject.id})" class="px-3 py-1 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">
+                            <i class="fas fa-save"></i> Saqlash
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function editTeacherHours(teacherId) {
+        const teacher = teachers.find(t => t.id === teacherId);
+        if (!teacher) return;
+        
+        document.getElementById('modalContent').innerHTML = `
+            <h3 class="text-xl font-bold mb-4">${teacher.name} - Dars soatlari</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Haftalik soatlar</label>
+                    <input type="number" id="editWeeklyHours" value="${teacher.weeklyHours}" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Semestr soatlari</label>
+                    <input type="number" id="editSemesterHours" value="${teacher.semesterHours}" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Kreditlar</label>
+                    <input type="number" id="editCredits" value="${teacher.credits}" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Fan</label>
+                    <input type="text" id="editSubject" value="${teacher.subject}" class="w-full p-3 border rounded-xl">
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="saveTeacherHours(${teacher.id})" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                        Saqlash
+                    </button>
+                    <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Bekor qilish
+                    </button>
+                </div>
+            </div>
+        `;
+        document.getElementById('assignModal').style.display = 'flex';
+    }
+
+    function saveTeacherHours(teacherId) {
+        const weekly = document.getElementById('editWeeklyHours').value;
+        const semester = document.getElementById('editSemesterHours').value;
+        const credits = document.getElementById('editCredits').value;
+        const subject = document.getElementById('editSubject').value;
+        
+        const teacher = teachers.find(t => t.id === teacherId);
+        if (teacher) {
+            teacher.weeklyHours = parseInt(weekly);
+            teacher.semesterHours = parseInt(semester);
+            teacher.credits = parseInt(credits);
+            teacher.subject = subject;
+            
+            // Saqlash
+            saveToLocalStorage();
+            loadTeachers();
+            showToast(`${teacher.name} ma'lumotlari saqlandi!`);
+            closeModal();
+        }
+    }
+
+    function saveSubjectHours(subjectId) {
+        const weekly = document.getElementById(`weekly-${subjectId}`).value;
+        const semester = document.getElementById(`semester-${subjectId}`).value;
+        const credits = document.getElementById(`credit-${subjectId}`).value;
+        
+        const subject = subjects.find(s => s.id === subjectId);
+        if (subject) {
+            subject.weeklyHours = parseInt(weekly);
+            subject.semesterHours = parseInt(semester);
+            subject.credits = parseInt(credits);
+            
+            // O'qituvchini ham yangilash
+            const teacher = teachers.find(t => t.id === subject.teacherId);
+            if (teacher) {
+                teacher.weeklyHours = parseInt(weekly);
+                teacher.semesterHours = parseInt(semester);
+                teacher.credits = parseInt(credits);
+            }
+            
+            saveToLocalStorage();
+            loadTeachers();
+            showToast(`${subject.name} fanining soatlari saqlandi!`);
+        }
+    }
+
+    function saveToLocalStorage() {
+        localStorage.setItem('teachers_hours', JSON.stringify(teachers));
+        localStorage.setItem('subjects_hours', JSON.stringify(subjects));
+    }
+
+    function loadSavedData() {
+        const savedTeachers = localStorage.getItem('teachers_hours');
+        const savedSubjects = localStorage.getItem('subjects_hours');
+        
+        if (savedTeachers) {
+            const parsed = JSON.parse(savedTeachers);
+            teachers.forEach(t => {
+                const saved = parsed.find(p => p.id === t.id);
+                if (saved) {
+                    t.weeklyHours = saved.weeklyHours;
+                    t.semesterHours = saved.semesterHours;
+                    t.credits = saved.credits;
+                    t.subject = saved.subject;
+                }
+            });
+        }
+        
+        if (savedSubjects) {
+            const parsed = JSON.parse(savedSubjects);
+            subjects.forEach(s => {
+                const saved = parsed.find(p => p.id === s.id);
+                if (saved) {
+                    s.weeklyHours = saved.weeklyHours;
+                    s.semesterHours = saved.semesterHours;
+                    s.credits = saved.credits;
+                }
+            });
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('assignModal').style.display = 'none';
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+</script>
+
+</body>
+</html>

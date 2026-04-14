@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bosh sahifa - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .deadline-red {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+        }
+
+        .deadline-yellow {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .deadline-green {
+            background-color: #dcfce7;
+            border-left: 4px solid #22c55e;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-online {
+            position: relative;
+        }
+
+        .status-online::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            bottom: 2px;
+            right: 2px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500" id="roleDisplay">Universitet portali</p>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex items-center gap-6">
+                <!-- Notifications -->
+                <div class="relative">
+                    <i class="fas fa-bell text-2xl text-gray-600 cursor-pointer hover:text-blue-600 transition-colors" onclick="showNotifications()"></i>
+                    <span id="notificationCount" class="notification-badge hidden">0</span>
+                </div>
+
+                <!-- Messages -->
+                <div class="relative">
+                    <i class="fas fa-envelope text-2xl text-gray-600 cursor-pointer hover:text-blue-600 transition-colors" onclick="showMessages()"></i>
+                    <span id="messageCount" class="notification-badge hidden">0</span>
+                </div>
+
+                <!-- User Info -->
+                <div class="text-right hidden md:block">
+                    <p id="userName" class="font-bold text-gray-800">Ism familya</p>
+                    <p id="userRole" class="text-xs text-gray-500">Rol</p>
+                </div>
+
+                <!-- User Avatar -->
+                <div class="relative status-online">
+                    <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" 
+                         class="w-12 h-12 rounded-xl border-2 border-blue-600 shadow-md cursor-pointer" onclick="showProfile()">
+                </div>
+
+                <!-- Logout -->
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden md:inline">Chiqish</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-6">
+    
+    <!-- Dynamic Content -->
+    <div id="dashboardContent" class="space-y-6 animate-fadeIn">
+        <!-- Content will be loaded dynamically based on role -->
+    </div>
+
+</div>
+
+<!-- ========== MODAL ========== -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-700">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentUser = null;
+    
+    // Test ma'lumotlar
+    const USERS = {
+        admin: {
+            id: 1,
+            name: 'Admin User',
+            role: 'admin',
+            email: 'admin@edu.uz',
+            avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff'
+        },
+        teacher: {
+            id: 2,
+            name: 'Said Alisherov',
+            role: 'teacher',
+            email: 's.alisherov@edu.uz',
+            subject: 'Veb dasturlash',
+            avatar: 'https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff'
+        },
+        student: {
+            id: 3,
+            name: 'Azimjon Karimov',
+            role: 'student',
+            email: 'a.karimov@student.uz',
+            group: 'AT-101-20',
+            avatar: 'https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff'
+        }
+    };
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        // URL dan foydalanuvchi rolini olish (test uchun)
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role') || 'student';
+        
+        // Foydalanuvchini yuklash
+        loadUser(role);
+    };
+
+    function loadUser(role) {
+        currentUser = USERS[role];
+        
+        // Header ma'lumotlarini yangilash
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('userRole').textContent = 
+            currentUser.role === 'admin' ? 'Administrator' :
+            currentUser.role === 'teacher' ? 'O\'qituvchi' : 'Talaba';
+        document.getElementById('roleDisplay').textContent = 
+            currentUser.role === 'admin' ? 'Admin paneli' :
+            currentUser.role === 'teacher' ? 'O\'qituvchi paneli' : 'Talaba paneli';
+        document.getElementById('userAvatar').src = currentUser.avatar;
+        
+        // Dashboardni yuklash
+        loadDashboard();
+        
+        // Bildirishnomalarni yangilash
+        updateNotifications();
+    }
+
+    function loadDashboard() {
+        if (currentUser.role === 'admin') {
+            showAdminDashboard();
+        } else if (currentUser.role === 'teacher') {
+            showTeacherDashboard();
+        } else {
+            showStudentDashboard();
+        }
+    }
+
+    // ========== ADMIN DASHBOARD ==========
+    function showAdminDashboard() {
+        const content = `
+            <!-- Welcome Card -->
+            <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-[40px] p-8 text-white relative overflow-hidden mb-6">
+                <div class="relative z-10">
+                    <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-bold">ADMIN PANELI</span>
+                    <h2 class="text-4xl font-bold mt-4">Salom, ${currentUser.name}!</h2>
+                    <p class="text-red-100 mt-2">Tizim boshqaruvi paneli</p>
+                </div>
+                <i class="fas fa-crown absolute right-10 bottom-10 text-8xl text-white/10"></i>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div onclick="showAllUsers()" class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Foydalanuvchilar</p>
+                            <h3 class="text-2xl font-bold mt-1">156</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-500">
+                        <i class="fas fa-user-graduate mr-1"></i> 124 talaba
+                    </div>
+                </div>
+
+                <div onclick="showAllTeachers()" class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">O'qituvchilar</p>
+                            <h3 class="text-2xl font-bold mt-1">32</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-500">
+                        <i class="fas fa-book-open mr-1"></i> 45 ta fan
+                    </div>
+                </div>
+
+                <div onclick="showAllGroups()" class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Guruhlar</p>
+                            <h3 class="text-2xl font-bold mt-1">28</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-500">
+                        <i class="fas fa-calendar-alt mr-1"></i> 156 ta dars
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Bugun</p>
+                            <h3 class="text-2xl font-bold mt-1">24</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-500">
+                        <i class="fas fa-check-circle mr-1"></i> 18 ta davomat
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <h3 class="text-xl font-bold mb-4">⚡ Tezkor amallar</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <button onclick="showAddUserForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+                    <i class="fas fa-user-plus text-2xl text-green-600 mb-2"></i>
+                    <p class="font-bold text-sm">Foydalanuvchi qo'shish</p>
+                </button>
+                <button onclick="showAddGroupForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+                    <i class="fas fa-layer-group text-2xl text-purple-600 mb-2"></i>
+                    <p class="font-bold text-sm">Guruh qo'shish</p>
+                </button>
+                <button onclick="showAddSubjectForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+                    <i class="fas fa-book text-2xl text-orange-600 mb-2"></i>
+                    <p class="font-bold text-sm">Fan qo'shish</p>
+                </button>
+                <button onclick="showStatistics()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+                    <i class="fas fa-chart-bar text-2xl text-blue-600 mb-2"></i>
+                    <p class="font-bold text-sm">Statistika</p>
+                </button>
+            </div>
+
+            <!-- Recent Users -->
+            <h3 class="text-xl font-bold mb-4">🕒 So'nggi foydalanuvchilar</h3>
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-4 text-left">Foydalanuvchi</th>
+                            <th class="p-4 text-left">Rol</th>
+                            <th class="p-4 text-left">Email</th>
+                            <th class="p-4 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-4">
+                                <div class="flex items-center gap-2">
+                                    <img src="https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff" class="w-8 h-8 rounded-full">
+                                    <span class="font-medium">Said Alisherov</span>
+                                </div>
+                            </td>
+                            <td class="p-4">O'qituvchi</td>
+                            <td class="p-4">s.alisherov@edu.uz</td>
+                            <td class="p-4"><span class="text-green-600"><i class="fas fa-circle text-xs mr-1"></i> Online</span></td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-4">
+                                <div class="flex items-center gap-2">
+                                    <img src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff" class="w-8 h-8 rounded-full">
+                                    <span class="font-medium">Azimjon Karimov</span>
+                                </div>
+                            </td>
+                            <td class="p-4">Talaba</td>
+                            <td class="p-4">a.karimov@student.uz</td>
+                            <td class="p-4"><span class="text-gray-500"><i class="fas fa-circle text-xs mr-1"></i> Offline</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        document.getElementById('dashboardContent').innerHTML = content;
+    }
+
+    // ========== O'QITUVCHI DASHBOARD ==========
+    function showTeacherDashboard() {
+        const content = `
+            <!-- Welcome Card -->
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-[40px] p-8 text-white relative overflow-hidden mb-6">
+                <div class="relative z-10">
+                    <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-bold">O'QITUVCHI PANELI</span>
+                    <h2 class="text-4xl font-bold mt-4">Salom, ${currentUser.name}!</h2>
+                    <p class="text-purple-100 mt-2">Fan: ${currentUser.subject}</p>
+                </div>
+                <i class="fas fa-chalkboard-teacher absolute right-10 bottom-10 text-8xl text-white/10"></i>
+            </div>
+
+            <!-- Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Guruhlar</p>
+                            <h3 class="text-2xl font-bold">3</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover deadline-yellow">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Talabalar</p>
+                            <h3 class="text-2xl font-bold">74</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Vazifalar</p>
+                            <h3 class="text-2xl font-bold">8</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover deadline-red">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Muddati o'tgan</p>
+                            <h3 class="text-2xl font-bold">2</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bugungi darslar -->
+            <h3 class="text-xl font-bold mb-4">📅 Bugungi darslar</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-purple-500">
+                    <div class="flex justify-between">
+                        <div>
+                            <h4 class="font-bold">AT-101-20 guruh</h4>
+                            <p class="text-sm text-gray-600">Veb dasturlash • HTML asoslari</p>
+                        </div>
+                        <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs">09:00-10:20</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2">24 talaba • 402-xona</p>
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="takeAttendance(1)" class="px-3 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            <i class="fas fa-check-circle mr-1"></i> Davomat
+                        </button>
+                        <button onclick="openJournal(1)" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-xs">
+                            <i class="fas fa-book-open mr-1"></i> Jurnal
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-purple-500">
+                    <div class="flex justify-between">
+                        <div>
+                            <h4 class="font-bold">AT-201-21 guruh</h4>
+                            <p class="text-sm text-gray-600">Veb dasturlash • JavaScript</p>
+                        </div>
+                        <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs">11:00-12:30</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2">28 talaba • 408-xona</p>
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="takeAttendance(2)" class="px-3 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            <i class="fas fa-check-circle mr-1"></i> Davomat
+                        </button>
+                        <button onclick="openJournal(2)" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-xs">
+                            <i class="fas fa-book-open mr-1"></i> Jurnal
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vazifalar -->
+            <h3 class="text-xl font-bold mb-4">📋 Vazifalar</h3>
+            <div class="space-y-3 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm deadline-red">
+                    <div class="flex justify-between">
+                        <div>
+                            <h4 class="font-bold">CSS animatsiyalar</h4>
+                            <p class="text-sm text-gray-600">AT-101-20 • 3 xil animatsiya</p>
+                        </div>
+                        <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">Muddati o'tgan</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-sm">
+                            <span>Topshirganlar: 18/24</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm deadline-yellow">
+                    <div class="flex justify-between">
+                        <div>
+                            <h4 class="font-bold">HTML portfolio</h4>
+                            <p class="text-sm text-gray-600">AT-101-20 • Shaxsiy sayt</p>
+                        </div>
+                        <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs">2 kun qoldi</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-sm">
+                            <span>Topshirganlar: 10/24</span>
+                            <span>42%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dars rejalari -->
+            <h3 class="text-xl font-bold mb-4">📚 Dars rejalari</h3>
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-4 text-left">Sana</th>
+                            <th class="p-4 text-left">Guruh</th>
+                            <th class="p-4 text-left">Mavzu</th>
+                            <th class="p-4 text-left">Xona</th>
+                            <th class="p-4 text-left">Vaqt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-4">2025-03-20</td>
+                            <td class="p-4 font-medium">AT-101-20</td>
+                            <td class="p-4">HTML asoslari</td>
+                            <td class="p-4">402</td>
+                            <td class="p-4">09:00-10:20</td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-4">2025-03-22</td>
+                            <td class="p-4 font-medium">AT-101-20</td>
+                            <td class="p-4">CSS stillar</td>
+                            <td class="p-4">402</td>
+                            <td class="p-4">09:00-10:20</td>
+                        </tr>
+                        <tr class="border-t hover:bg-gray-50">
+                            <td class="p-4">2025-03-24</td>
+                            <td class="p-4 font-medium">AT-101-20</td>
+                            <td class="p-4">JavaScript asoslari</td>
+                            <td class="p-4">402</td>
+                            <td class="p-4">09:00-10:20</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        document.getElementById('dashboardContent').innerHTML = content;
+    }
+
+    // ========== TALABA DASHBOARD ==========
+    function showStudentDashboard() {
+        const content = `
+            <!-- Welcome Card -->
+            <div class="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-[40px] p-8 text-white relative overflow-hidden mb-6">
+                <div class="relative z-10">
+                    <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-bold">TALABA PANELI</span>
+                    <h2 class="text-4xl font-bold mt-4">Salom, ${currentUser.name}!</h2>
+                    <p class="text-blue-100 mt-2">Guruh: ${currentUser.group} • 2-kurs</p>
+                </div>
+                <i class="fas fa-user-graduate absolute right-10 bottom-10 text-8xl text-white/10"></i>
+            </div>
+
+            <!-- Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Fanlar</p>
+                            <h3 class="text-2xl font-bold">6</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Vazifalar</p>
+                            <h3 class="text-2xl font-bold">4</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">O'rtacha</p>
+                            <h3 class="text-2xl font-bold">4.7</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm card-hover">
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="text-gray-500">Davomat</p>
+                            <h3 class="text-2xl font-bold">95%</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bugungi darslar -->
+            <h3 class="text-xl font-bold mb-4">📅 Bugungi darslar</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-blue-500">
+                    <div class="flex justify-between">
+                        <h4 class="font-bold">Veb dasturlash</h4>
+                        <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs">09:00-10:20</span>
+                    </div>
+                    <p class="text-sm text-gray-600">HTML asoslari • Said Alisherov</p>
+                    <p class="text-xs text-gray-400 mt-2">402-xona</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-green-500">
+                    <div class="flex justify-between">
+                        <h4 class="font-bold">Ma'lumotlar bazasi</h4>
+                        <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">11:00-12:30</span>
+                    </div>
+                    <p class="text-sm text-gray-600">SQL asoslari • Nodira Karimova</p>
+                    <p class="text-xs text-gray-400 mt-2">312-xona</p>
+                </div>
+            </div>
+
+            <!-- O'qituvchilar -->
+            <h3 class="text-xl font-bold mb-4">👨‍🏫 Mening o'qituvchilarim</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div onclick="showTeacherInfo(2)" class="bg-white p-4 rounded-2xl shadow-sm card-hover">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff" class="w-12 h-12 rounded-full">
+                        <div>
+                            <h4 class="font-bold">Said Alisherov</h4>
+                            <p class="text-sm text-gray-500">Veb dasturlash</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div onclick="showTeacherInfo(3)" class="bg-white p-4 rounded-2xl shadow-sm card-hover">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=Nodira+Karimova&background=4f46e5&color=fff" class="w-12 h-12 rounded-full">
+                        <div>
+                            <h4 class="font-bold">Nodira Karimova</h4>
+                            <p class="text-sm text-gray-500">Ma'lumotlar bazasi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div onclick="showTeacherInfo(4)" class="bg-white p-4 rounded-2xl shadow-sm card-hover">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=Jasur+Usmonov&background=4f46e5&color=fff" class="w-12 h-12 rounded-full">
+                        <div>
+                            <h4 class="font-bold">Jasur Usmonov</h4>
+                            <p class="text-sm text-gray-500">Kiberxavfsizlik</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vazifalar -->
+            <h3 class="text-xl font-bold mb-4">📋 Vazifalar</h3>
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-2xl shadow-sm deadline-red">
+                    <div class="flex justify-between">
+                        <h4 class="font-bold">CSS animatsiyalar</h4>
+                        <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">Muddati o'tgan</span>
+                    </div>
+                    <p class="text-sm text-gray-600">3 xil animatsiya yaratish</p>
+                    <p class="text-xs text-gray-400 mt-2">Muddat: 2025-03-15</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm deadline-yellow">
+                    <div class="flex justify-between">
+                        <h4 class="font-bold">HTML portfolio</h4>
+                        <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs">2 kun qoldi</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Shaxsiy portfolio sayt</p>
+                    <p class="text-xs text-gray-400 mt-2">Muddat: 2025-03-25</p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('dashboardContent').innerHTML = content;
+    }
+
+    // ========== FUNKSIYALAR ==========
+    function showNotifications() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">🔔 Bildirishnomalar</h2>
+            <div class="space-y-3">
+                <div class="bg-blue-50 p-4 rounded-xl">
+                    <p class="font-bold">Yangi vazifa</p>
+                    <p class="text-sm text-gray-600">HTML portfolio vazifasi qo'shildi</p>
+                    <p class="text-xs text-gray-400 mt-1">2 soat oldin</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-xl">
+                    <p class="font-bold">Muddati yaqin</p>
+                    <p class="text-sm text-gray-600">CSS animatsiyalar vazifasiga 2 kun qoldi</p>
+                    <p class="text-xs text-gray-400 mt-1">1 kun oldin</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-xl">
+                    <p class="font-bold">Muddati o'tgan</p>
+                    <p class="text-sm text-gray-600">JavaScript masalalari vazifasi o'tgan</p>
+                    <p class="text-xs text-gray-400 mt-1">3 kun oldin</p>
+                </div>
+            </div>
+        `);
+    }
+
+    function showMessages() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">💬 Xabarlar</h2>
+            <div class="space-y-3">
+                <div class="border-b pb-3">
+                    <p class="font-bold">Said Alisherov</p>
+                    <p class="text-sm text-gray-600">Ertaga dars 402-xonada bo'ladi</p>
+                    <p class="text-xs text-gray-400 mt-1">10:30</p>
+                </div>
+                <div class="border-b pb-3">
+                    <p class="font-bold">Nodira Karimova</p>
+                    <p class="text-sm text-gray-600">Laboratoriya ishi topshiriladi</p>
+                    <p class="text-xs text-gray-400 mt-1">09:15</p>
+                </div>
+                <div class="border-b pb-3">
+                    <p class="font-bold">Admin</p>
+                    <p class="text-sm text-gray-600">Imtihon jadvali e'lon qilindi</p>
+                    <p class="text-xs text-gray-400 mt-1">Kecha</p>
+                </div>
+            </div>
+        `);
+    }
+
+    function showProfile() {
+        showModal(`
+            <div class="text-center">
+                <img src="${currentUser.avatar}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-100">
+                <h2 class="text-2xl font-bold">${currentUser.name}</h2>
+                <p class="text-gray-500 mb-4">${currentUser.role === 'admin' ? 'Administrator' : currentUser.role === 'teacher' ? 'O\'qituvchi' : 'Talaba'}</p>
+                
+                <div class="text-left space-y-2 border-t pt-4">
+                    <p><i class="fas fa-envelope w-6 text-gray-400"></i> ${currentUser.email}</p>
+                    ${currentUser.role === 'teacher' ? `<p><i class="fas fa-book w-6 text-gray-400"></i> Fan: ${currentUser.subject}</p>` : ''}
+                    ${currentUser.role === 'student' ? `<p><i class="fas fa-users w-6 text-gray-400"></i> Guruh: ${currentUser.group}</p>` : ''}
+                </div>
+            </div>
+        `);
+    }
+
+    function showTeacherInfo(id) {
+        showModal(`
+            <div class="text-center">
+                <img src="https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff" class="w-20 h-20 rounded-full mx-auto mb-3">
+                <h3 class="text-xl font-bold">Said Alisherov</h3>
+                <p class="text-gray-500">Veb dasturlash</p>
+                <div class="text-left mt-4">
+                    <p><i class="fas fa-envelope mr-2"></i> s.alisherov@edu.uz</p>
+                    <p><i class="fas fa-phone mr-2"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> 402-xona</p>
+                </div>
+                <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
+                    <i class="fab fa-telegram mr-2"></i> Xabar yozish
+                </button>
+            </div>
+        `);
+    }
+
+    function takeAttendance(groupId) {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">📋 Davomat</h2>
+            <p class="text-gray-600 mb-4">AT-101-20 guruhi • 24 talaba</p>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between p-2 border-b">
+                    <span>Azimjon Karimov</span>
+                    <select class="border rounded-lg px-3 py-1">
+                        <option value="present">✅ Keldi</option>
+                        <option value="late">🟡 Kechikdi</option>
+                        <option value="absent">❌ Kelmadi</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between p-2 border-b">
+                    <span>Ali Valiyev</span>
+                    <select class="border rounded-lg px-3 py-1">
+                        <option value="present">✅ Keldi</option>
+                        <option value="late">🟡 Kechikdi</option>
+                        <option value="absent">❌ Kelmadi</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between p-2 border-b">
+                    <span>Dilya Akramova</span>
+                    <select class="border rounded-lg px-3 py-1">
+                        <option value="present">✅ Keldi</option>
+                        <option value="late">🟡 Kechikdi</option>
+                        <option value="absent">❌ Kelmadi</option>
+                    </select>
+                </div>
+            </div>
+            <button class="mt-4 w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700">
+                <i class="fas fa-save mr-2"></i> Saqlash
+            </button>
+        `);
+    }
+
+    function openJournal(groupId) {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">📖 Jurnal</h2>
+            <p class="text-gray-600 mb-4">AT-101-20 guruhi • Veb dasturlash</p>
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="p-2 text-left">Talaba</th>
+                        <th class="p-2 text-center">1</th>
+                        <th class="p-2 text-center">2</th>
+                        <th class="p-2 text-center">3</th>
+                        <th class="p-2 text-center">O'rt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t">
+                        <td class="p-2">Azimjon Karimov</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center">4</td>
+                        <td class="p-2 text-center font-bold">4.7</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="p-2">Ali Valiyev</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center font-bold">5.0</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="p-2">Dilya Akramova</td>
+                        <td class="p-2 text-center">4</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center">5</td>
+                        <td class="p-2 text-center font-bold">4.7</td>
+                    </tr>
+                </tbody>
+            </table>
+        `);
+    }
+
+    function showAllUsers() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">👥 Foydalanuvchilar</h2>
+            <div class="space-y-2">
+                <div class="flex justify-between p-2 border-b">
+                    <span>Said Alisherov</span>
+                    <span class="text-blue-600">O'qituvchi</span>
+                </div>
+                <div class="flex justify-between p-2 border-b">
+                    <span>Azimjon Karimov</span>
+                    <span class="text-green-600">Talaba</span>
+                </div>
+                <div class="flex justify-between p-2 border-b">
+                    <span>Admin User</span>
+                    <span class="text-red-600">Admin</span>
+                </div>
+            </div>
+        `);
+    }
+
+    function showAllTeachers() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">👨‍🏫 O'qituvchilar</h2>
+            <div class="space-y-2">
+                <div class="flex justify-between p-2 border-b">
+                    <span>Said Alisherov</span>
+                    <span class="text-gray-500">Veb dasturlash</span>
+                </div>
+                <div class="flex justify-between p-2 border-b">
+                    <span>Nodira Karimova</span>
+                    <span class="text-gray-500">Ma'lumotlar bazasi</span>
+                </div>
+                <div class="flex justify-between p-2 border-b">
+                    <span>Jasur Usmonov</span>
+                    <span class="text-gray-500">Kiberxavfsizlik</span>
+                </div>
+            </div>
+        `);
+    }
+
+    function showAllGroups() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">👥 Guruhlar</h2>
+            <div class="space-y-2">
+                <div class="flex justify-between p-2 border-b">
+                    <span>AT-101-20</span>
+                    <span class="text-gray-500">24 talaba</span>
+                </div>
+                <div class="flex justify-between p-2 border-b">
+                    <span>AT-102-20</span>
+                    <span class="text-gray-500">26 talaba</span>
+                </div>
+                <div class="flex justify-between p-2 border-b">
+                    <span>KI-201-21</span>
+                    <span class="text-gray-500">22 talaba</span>
+                </div>
+            </div>
+        `);
+    }
+
+    function showAddUserForm() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">➕ Yangi foydalanuvchi</h2>
+            <div class="space-y-3">
+                <input type="text" placeholder="To'liq ism" class="w-full p-3 border rounded-xl">
+                <input type="email" placeholder="Email" class="w-full p-3 border rounded-xl">
+                <select class="w-full p-3 border rounded-xl">
+                    <option value="student">Talaba</option>
+                    <option value="teacher">O'qituvchi</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <input type="text" placeholder="Login" class="w-full p-3 border rounded-xl">
+                <input type="password" placeholder="Parol" class="w-full p-3 border rounded-xl">
+                <button class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function showAddGroupForm() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">➕ Yangi guruh</h2>
+            <div class="space-y-3">
+                <input type="text" placeholder="Guruh nomi" class="w-full p-3 border rounded-xl">
+                <input type="text" placeholder="Fakultet" class="w-full p-3 border rounded-xl">
+                <select class="w-full p-3 border rounded-xl">
+                    <option value="1">1-kurs</option>
+                    <option value="2">2-kurs</option>
+                    <option value="3">3-kurs</option>
+                    <option value="4">4-kurs</option>
+                </select>
+                <input type="number" placeholder="Talabalar soni" class="w-full p-3 border rounded-xl">
+                <button class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function showAddSubjectForm() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">➕ Yangi fan</h2>
+            <div class="space-y-3">
+                <input type="text" placeholder="Fan nomi" class="w-full p-3 border rounded-xl">
+                <input type="text" placeholder="Fan kodi" class="w-full p-3 border rounded-xl">
+                <input type="number" placeholder="Kreditlar" class="w-full p-3 border rounded-xl">
+                <input type="number" placeholder="Soatlar" class="w-full p-3 border rounded-xl">
+                <button class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function showStatistics() {
+        showModal(`
+            <h2 class="text-2xl font-bold mb-4">📊 Statistika</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-xl text-center">
+                    <p class="text-2xl font-bold text-blue-600">156</p>
+                    <p class="text-sm">Foydalanuvchilar</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl text-center">
+                    <p class="text-2xl font-bold text-green-600">124</p>
+                    <p class="text-sm">Talabalar</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-xl text-center">
+                    <p class="text-2xl font-bold text-purple-600">32</p>
+                    <p class="text-sm">O'qituvchilar</p>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-xl text-center">
+                    <p class="text-2xl font-bold text-orange-600">28</p>
+                    <p class="text-sm">Guruhlar</p>
+                </div>
+            </div>
+        `);
+    }
+
+    function updateNotifications() {
+        // Bildirishnomalar sonini yangilash
+        document.getElementById('notificationCount').textContent = '3';
+        document.getElementById('notificationCount').classList.remove('hidden');
+        
+        document.getElementById('messageCount').textContent = '2';
+        document.getElementById('messageCount').classList.remove('hidden');
+    }
+
+    function showModal(content) {
+        document.getElementById('modalContent').innerHTML = content;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        
+        if (type === 'success') toast.classList.add('bg-green-500');
+        else if (type === 'error') toast.classList.add('bg-red-500');
+        else if (type === 'warning') toast.classList.add('bg-orange-500');
+        else toast.classList.add('bg-blue-500');
+        
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = 'login.html';
+        }
+    }
+</script>
+
+</body>
+</html>

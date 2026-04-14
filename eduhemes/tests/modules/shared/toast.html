@@ -1,0 +1,192 @@
+<!-- ========== TOAST COMPONENT ========== -->
+<div id="toastContainer" class="fixed bottom-4 right-4 z-[1100] space-y-3"></div>
+
+<script>
+    // ========== TOAST FUNKSIYALARI ==========
+    
+    let toastQueue = [];
+    let isShowingToast = false;
+    
+    // Toast ko'rsatish
+    function showToast(message, type = 'success', duration = 3000) {
+        const toast = {
+            message: message,
+            type: type,
+            duration: duration,
+            id: Date.now() + Math.random()
+        };
+        
+        toastQueue.push(toast);
+        processToastQueue();
+    }
+    
+    // Navbatdagi toastni ko'rsatish
+    function processToastQueue() {
+        if (isShowingToast || toastQueue.length === 0) return;
+        
+        isShowingToast = true;
+        const toast = toastQueue.shift();
+        displayToast(toast);
+    }
+    
+    // Toastni ekranga chiqarish
+    function displayToast(toast) {
+        const container = document.getElementById('toastContainer');
+        
+        // Toast elementini yaratish
+        const toastEl = document.createElement('div');
+        toastEl.className = `transform transition-all duration-300 translate-x-full opacity-0`;
+        toastEl.id = `toast-${toast.id}`;
+        
+        // Ikonka va rangni aniqlash
+        let iconClass = '';
+        let bgColor = '';
+        let borderColor = '';
+        
+        switch (toast.type) {
+            case 'success':
+                iconClass = 'fa-check-circle';
+                bgColor = 'bg-green-500';
+                borderColor = 'border-green-600';
+                break;
+            case 'error':
+                iconClass = 'fa-exclamation-circle';
+                bgColor = 'bg-red-500';
+                borderColor = 'border-red-600';
+                break;
+            case 'warning':
+                iconClass = 'fa-exclamation-triangle';
+                bgColor = 'bg-orange-500';
+                borderColor = 'border-orange-600';
+                break;
+            case 'info':
+                iconClass = 'fa-info-circle';
+                bgColor = 'bg-blue-500';
+                borderColor = 'border-blue-600';
+                break;
+            default:
+                iconClass = 'fa-check-circle';
+                bgColor = 'bg-green-500';
+                borderColor = 'border-green-600';
+        }
+        
+        // Toast HTML
+        toastEl.innerHTML = `
+            <div class="${bgColor} text-white rounded-xl shadow-lg overflow-hidden min-w-[300px] max-w-md border-l-4 ${borderColor}">
+                <div class="flex items-center p-4 gap-3">
+                    <div class="flex-shrink-0">
+                        <i class="fas ${iconClass} text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">${toast.message}</p>
+                    </div>
+                    <button onclick="closeToast('${toast.id}')" class="flex-shrink-0 text-white/80 hover:text-white transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="h-1 bg-white/30">
+                    <div class="h-full bg-white/50 rounded-full" style="width: 100%; animation: shrink ${toast.duration}ms linear forwards;"></div>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(toastEl);
+        
+        // Animatsiya
+        setTimeout(() => {
+            toastEl.classList.remove('translate-x-full', 'opacity-0');
+            toastEl.classList.add('translate-x-0', 'opacity-100');
+        }, 10);
+        
+        // Avtomatik yopish
+        setTimeout(() => {
+            closeToast(toast.id);
+        }, toast.duration);
+    }
+    
+    // Toastni yopish
+    function closeToast(toastId) {
+        const toastEl = document.getElementById(`toast-${toastId}`);
+        if (toastEl) {
+            toastEl.classList.remove('translate-x-0', 'opacity-100');
+            toastEl.classList.add('translate-x-full', 'opacity-0');
+            
+            setTimeout(() => {
+                if (toastEl.parentNode) {
+                    toastEl.remove();
+                }
+                isShowingToast = false;
+                processToastQueue();
+            }, 300);
+        } else {
+            isShowingToast = false;
+            processToastQueue();
+        }
+    }
+    
+    // Barcha toatlarni tozalash
+    function clearAllToasts() {
+        const container = document.getElementById('toastContainer');
+        container.innerHTML = '';
+        toastQueue = [];
+        isShowingToast = false;
+    }
+    
+    // ========== QISQA TOAST FUNKSIYALARI ==========
+    
+    function showSuccess(message, duration = 3000) {
+        showToast(message, 'success', duration);
+    }
+    
+    function showError(message, duration = 3000) {
+        showToast(message, 'error', duration);
+    }
+    
+    function showWarning(message, duration = 3000) {
+        showToast(message, 'warning', duration);
+    }
+    
+    function showInfo(message, duration = 3000) {
+        showToast(message, 'info', duration);
+    }
+    
+    // ========== TOAST STILLARI ==========
+    const toastStyles = document.createElement('style');
+    toastStyles.textContent = `
+        @keyframes shrink {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .toast-enter {
+            animation: slideInRight 0.3s ease forwards;
+        }
+        
+        .toast-exit {
+            animation: slideOutRight 0.3s ease forwards;
+        }
+    `;
+    document.head.appendChild(toastStyles);
+</script>

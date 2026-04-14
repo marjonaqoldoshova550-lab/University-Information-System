@@ -1,0 +1,638 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "title": "HTML portfolio",
+      "description": "Shaxsiy portfolio sayt yaratish. HTML va CSS dan foydalaning. Saytda siz haqingizda ma'lumot, qobiliyatlar va aloqa bo'limi bo'lishi kerak.",
+      "instructions": "1. HTML5 dan foydalaning\n2. Semantic teglardan foydalaning\n3. CSS flexbox yoki grid dan foydalaning\n4. Responsive dizayn bo'lsin\n5. Kamida 3 ta sahifa bo'lsin",
+      "requirements": [
+        "HTML5 semantic teglar",
+        "CSS flexbox/grid",
+        "Responsive dizayn",
+        "Kamida 3 ta sahifa",
+        "Kontakt forma"
+      ],
+      "resources": [
+        {
+          "name": "Portfolio namuna",
+          "type": "url",
+          "url": "https://example.com/portfolio-sample"
+        },
+        {
+          "name": "HTML darslik",
+          "type": "pdf",
+          "url": "/resources/html-guide.pdf"
+        }
+      ],
+      "deadline": "2026-03-25",
+      "timeRemaining": "6 kun",
+      "maxScore": 100,
+      "minScore": 60,
+      "weight": 30,
+      "type": "project",
+      "status": "active",
+      "priority": "high",
+      "createdAt": "2026-03-10T09:00:00.000Z",
+      "updatedAt": "2026-03-10T09:00:00.000Z",
+      "students": [
+        {
+          "studentId": 7,
+          "studentName": "Azimjon Karimov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 8,
+          "studentName": "Ali Valiyev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 9,
+          "studentName": "Dilya Akramova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 3,
+      "completionRate": 0
+    },
+    {
+      "id": 2,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "title": "CSS animatsiyalar",
+      "description": "3 xil CSS animatsiya yaratish. Animatsiyalar: yuklash spinneri, kartochka hover effekti va menyu animatsiyasi.",
+      "instructions": "1. @keyframes dan foydalaning\n2. transform va transition xossalaridan foydalaning\n3. Animatsiyalar silliq bo'lsin\n4. Brauzerlar bilan mos kelishi kerak",
+      "requirements": [
+        "Yuklash spinneri",
+        "Kartochka hover effekti",
+        "Menyu animatsiyasi",
+        "@keyframes ishlatilsin",
+        "Cross-browser"
+      ],
+      "resources": [
+        {
+          "name": "CSS animatsiyalar",
+          "type": "video",
+          "url": "https://example.com/css-animations"
+        }
+      ],
+      "deadline": "2026-03-15",
+      "timeRemaining": "muddati o'tgan",
+      "maxScore": 50,
+      "minScore": 30,
+      "weight": 15,
+      "type": "homework",
+      "status": "overdue",
+      "priority": "high",
+      "createdAt": "2026-03-05T10:30:00.000Z",
+      "updatedAt": "2026-03-05T10:30:00.000Z",
+      "students": [
+        {
+          "studentId": 7,
+          "studentName": "Azimjon Karimov",
+          "status": "submitted",
+          "submittedAt": "2026-03-14T15:20:00.000Z",
+          "score": 45,
+          "feedback": "Yaxshi, lekin 3-animatsiya biroz sekin. 45 ball.",
+          "files": [
+            {
+              "name": "animations.css",
+              "url": "/uploads/task2/student7/animations.css",
+              "size": "2.4 KB"
+            }
+          ]
+        },
+        {
+          "studentId": 8,
+          "studentName": "Ali Valiyev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 9,
+          "studentName": "Dilya Akramova",
+          "status": "late",
+          "submittedAt": "2026-03-16T09:10:00.000Z",
+          "score": 40,
+          "feedback": "Kech topshirilgan, 10 ball kam. 40 ball.",
+          "files": [
+            {
+              "name": "style.css",
+              "url": "/uploads/task2/student9/style.css",
+              "size": "3.1 KB"
+            }
+          ]
+        }
+      ],
+      "submittedCount": 2,
+      "totalStudents": 3,
+      "completionRate": 67
+    },
+    {
+      "id": 3,
+      "teacherId": 3,
+      "teacherName": "Nodira Karimova",
+      "groupId": 2,
+      "groupName": "AT-102-20",
+      "subjectId": 2,
+      "subjectName": "Ma'lumotlar bazasi",
+      "title": "ER diagramma",
+      "description": "Universitet ma'lumotlar bazasi uchun ER diagramma chizish. Kamida 5 ta jadval bo'lsin.",
+      "instructions": "1. Talabalar jadvali\n2. O'qituvchilar jadvali\n3. Guruhlar jadvali\n4. Fanlar jadvali\n5. Baholar jadvali\n6. Bog'lanishlarni ko'rsating\n7. Primary key va foreign key larni belgilang",
+      "requirements": [
+        "5+ jadval",
+        "Primary key lar",
+        "Foreign key lar",
+        "Munosabat turlari",
+        "ER diagramma formati"
+      ],
+      "resources": [
+        {
+          "name": "ER diagramma namunasi",
+          "type": "image",
+          "url": "/resources/er-example.png"
+        }
+      ],
+      "deadline": "2026-03-28",
+      "timeRemaining": "9 kun",
+      "maxScore": 80,
+      "minScore": 50,
+      "weight": 25,
+      "type": "project",
+      "status": "active",
+      "priority": "medium",
+      "createdAt": "2026-03-12T11:15:00.000Z",
+      "updatedAt": "2026-03-12T11:15:00.000Z",
+      "students": [
+        {
+          "studentId": 10,
+          "studentName": "Jasur Karimov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 15,
+          "studentName": "Shoxrux Aliyev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 16,
+          "studentName": "Nilufar Rahimova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 3,
+      "completionRate": 0
+    },
+    {
+      "id": 4,
+      "teacherId": 4,
+      "teacherName": "Jasur Usmonov",
+      "groupId": 3,
+      "groupName": "KI-201-21",
+      "subjectId": 3,
+      "subjectName": "Kiberxavfsizlik",
+      "title": "Xavfsizlik hisoboti",
+      "description": "Zamonaviy kiber tahdidlar haqida hisobot tayyorlash. Kamida 3 xil tahdid va ularga qarshi himoya choralari.",
+      "instructions": "1. Malware tahdidlari\n2. Fishing hujumlari\n3. DDoS hujumlari\n4. Har bir tahdidga qarshi himoya usullari\n5. Real misollar keltiring",
+      "requirements": [
+        "3+ tahdid turi",
+        "Himoya usullari",
+        "Real misollar",
+        "5+ sahifa",
+        "Manbalar"
+      ],
+      "resources": [
+        {
+          "name": "Kiberxavfsizlik hisoboti namunasi",
+          "type": "pdf",
+          "url": "/resources/security-report-example.pdf"
+        }
+      ],
+      "deadline": "2026-03-30",
+      "timeRemaining": "11 kun",
+      "maxScore": 100,
+      "minScore": 60,
+      "weight": 35,
+      "type": "report",
+      "status": "active",
+      "priority": "medium",
+      "createdAt": "2026-03-15T13:45:00.000Z",
+      "updatedAt": "2026-03-15T13:45:00.000Z",
+      "students": [
+        {
+          "studentId": 11,
+          "studentName": "Malika Ismoilova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 12,
+          "studentName": "Sardor Abdurahmonov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    },
+    {
+      "id": 5,
+      "teacherId": 5,
+      "teacherName": "Dildora Ahmetova",
+      "groupId": 4,
+      "groupName": "KI-202-21",
+      "subjectId": 4,
+      "subjectName": "Sun'iy intellekt",
+      "title": "Neyron tarmoq modeli",
+      "description": "Oddiy neyron tarmoq modelini yarating va uni biror masalani yechishda qo'llang.",
+      "instructions": "1. Python va TensorFlow dan foydalaning\n2. Ma'lumotlar to'plamini tanlang\n3. Modelni yarating va o'qiting\n4. Natijalarni baholang\n5. Grafiklarni keltiring",
+      "requirements": [
+        "Python kodi",
+        "TensorFlow/PyTorch",
+        "Ma'lumotlar to'plami",
+        "O'qitish jarayoni",
+        "Natijalar tahlili"
+      ],
+      "resources": [
+        {
+          "name": "Neyron tarmoq tutorial",
+          "type": "link",
+          "url": "https://tensorflow.org/tutorials"
+        }
+      ],
+      "deadline": "2026-04-05",
+      "timeRemaining": "17 kun",
+      "maxScore": 120,
+      "minScore": 70,
+      "weight": 40,
+      "type": "project",
+      "status": "active",
+      "priority": "high",
+      "createdAt": "2026-03-18T09:30:00.000Z",
+      "updatedAt": "2026-03-18T09:30:00.000Z",
+      "students": [
+        {
+          "studentId": 19,
+          "studentName": "Gulnora Karimova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 20,
+          "studentName": "Bobur Mirzo",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    },
+    {
+      "id": 6,
+      "teacherId": 6,
+      "teacherName": "Aziz Qosimov",
+      "groupId": 5,
+      "groupName": "DI-301-22",
+      "subjectId": 5,
+      "subjectName": "Tizimli boshqaruv",
+      "title": "Docker container",
+      "description": "Docker container yaratish va uni ishga tushirish. Web server container i yarating.",
+      "instructions": "1. Dockerfile yarating\n2. Nginx yoki Apache ni o'rnating\n3. Oddiy HTML sahifa qo'shing\n4. Container ni build qiling\n5. Container ni ishga tushiring",
+      "requirements": [
+        "Dockerfile",
+        "Nginx/Apache",
+        "HTML sahifa",
+        "Build qilish",
+        "Ishga tushirish"
+      ],
+      "resources": [
+        {
+          "name": "Docker darslik",
+          "type": "pdf",
+          "url": "/resources/docker-tutorial.pdf"
+        }
+      ],
+      "deadline": "2026-04-02",
+      "timeRemaining": "14 kun",
+      "maxScore": 70,
+      "minScore": 40,
+      "weight": 20,
+      "type": "lab",
+      "status": "active",
+      "priority": "medium",
+      "createdAt": "2026-03-16T14:20:00.000Z",
+      "updatedAt": "2026-03-16T14:20:00.000Z",
+      "students": [
+        {
+          "studentId": 13,
+          "studentName": "Zarina Azizova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 14,
+          "studentName": "Rustam Xolmatov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    },
+    {
+      "id": 7,
+      "teacherId": 31,
+      "teacherName": "Akmal Hakimov",
+      "groupId": 7,
+      "groupName": "IQ-101-20",
+      "subjectId": 7,
+      "subjectName": "Mikroiqtisodiyot",
+      "title": "Talab va taklif tahlili",
+      "description": "Bozordagi talab va taklifni tahlil qilish. Grafiklar chizish va muvozanat narxini topish.",
+      "instructions": "1. Talab funksiyasini aniqlang\n2. Taklif funksiyasini aniqlang\n3. Muvozanat nuqtasini toping\n4. Grafiklarni chizing\n5. Elastiklikni hisoblang",
+      "requirements": [
+        "Talab funksiyasi",
+        "Taklif funksiyasi",
+        "Muvozanat",
+        "Grafiklar",
+        "Elastiklik"
+      ],
+      "resources": [
+        {
+          "name": "Mikroiqtisodiyot darslik",
+          "type": "pdf",
+          "url": "/resources/micro-textbook.pdf"
+        }
+      ],
+      "deadline": "2026-04-07",
+      "timeRemaining": "19 kun",
+      "maxScore": 60,
+      "minScore": 35,
+      "weight": 20,
+      "type": "homework",
+      "status": "active",
+      "priority": "low",
+      "createdAt": "2026-03-17T10:15:00.000Z",
+      "updatedAt": "2026-03-17T10:15:00.000Z",
+      "students": [
+        {
+          "studentId": 21,
+          "studentName": "Shahzod Ergashev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 22,
+          "studentName": "Sevara Abduvohidova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    },
+    {
+      "id": 8,
+      "teacherId": 32,
+      "teacherName": "Dilbar Xolmatova",
+      "groupId": 7,
+      "groupName": "IQ-101-20",
+      "subjectId": 8,
+      "subjectName": "Makroiqtisodiyot",
+      "title": "YaIM hisoblash",
+      "description": "O'zbekiston YaIM ini hisoblash va tahlil qilish. So'nggi 5 yil ma'lumotlarini to'plang.",
+      "instructions": "1. So'nggi 5 yil YaIM ma'lumotlarini to'plang\n2. Nominal va real YaIM ni hisoblang\n3. O'sish sur'atlarini aniqlang\n4. Grafiklar chizing\n5. Xulosa yozing",
+      "requirements": [
+        "5 yil ma'lumot",
+        "Nominal YaIM",
+        "Real YaIM",
+        "O'sish sur'ati",
+        "Grafiklar"
+      ],
+      "resources": [
+        {
+          "name": "Statistika ma'lumotlari",
+          "type": "link",
+          "url": "https://stat.uz"
+        }
+      ],
+      "deadline": "2026-04-08",
+      "timeRemaining": "20 kun",
+      "maxScore": 70,
+      "minScore": 40,
+      "weight": 25,
+      "type": "report",
+      "status": "active",
+      "priority": "medium",
+      "createdAt": "2026-03-18T11:30:00.000Z",
+      "updatedAt": "2026-03-18T11:30:00.000Z",
+      "students": [
+        {
+          "studentId": 23,
+          "studentName": "Jahongir Toshmatov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 24,
+          "studentName": "Mahliyo Qodirova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    },
+    {
+      "id": 9,
+      "teacherId": 33,
+      "teacherName": "Rustam Aliyev",
+      "groupId": 8,
+      "groupName": "IQ-102-20",
+      "subjectId": 9,
+      "subjectName": "Ekonometrika",
+      "title": "Regressiya modeli",
+      "description": "Oddiy chiziqli regressiya modelini qurish va tahlil qilish.",
+      "instructions": "1. Ma'lumotlar to'plamini tanlang\n2. Regression model quring\n3. Model parametrlarini baholang\n4. Model sifatini tekshiring\n5. Xulosa yozing",
+      "requirements": [
+        "Ma'lumotlar to'plami",
+        "Regressiya modeli",
+        "Parametrlar",
+        "R² qiymati",
+        "Xulosa"
+      ],
+      "resources": [
+        {
+          "name": "Ekonometrika darslik",
+          "type": "pdf",
+          "url": "/resources/econometrics-book.pdf"
+        }
+      ],
+      "deadline": "2026-04-09",
+      "timeRemaining": "21 kun",
+      "maxScore": 85,
+      "minScore": 50,
+      "weight": 30,
+      "type": "project",
+      "status": "active",
+      "priority": "high",
+      "createdAt": "2026-03-19T09:45:00.000Z",
+      "updatedAt": "2026-03-19T09:45:00.000Z",
+      "students": [
+        {
+          "studentId": 25,
+          "studentName": "Islombek Abdullayev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 26,
+          "studentName": "Dilnoza Raxmatova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    },
+    {
+      "id": 10,
+      "teacherId": 34,
+      "teacherName": "Malika Rahimova",
+      "groupId": 8,
+      "groupName": "IQ-102-20",
+      "subjectId": 10,
+      "subjectName": "Biznes statistika",
+      "title": "Statistik tahlil",
+      "description": "Korxona ma'lumotlarini statistik tahlil qilish. O'rtacha, dispersiya, korrelyatsiya hisoblash.",
+      "instructions": "1. Ma'lumotlar to'plamini tanlang\n2. O'rtacha qiymatlarni hisoblang\n3. Dispersiya va standart og'ishni hisoblang\n4. Korrelyatsiyani hisoblang\n5. Xulosa yozing",
+      "requirements": [
+        "Ma'lumotlar to'plami",
+        "O'rtacha qiymat",
+        "Dispersiya",
+        "Korrelyatsiya",
+        "Grafiklar"
+      ],
+      "resources": [
+        {
+          "name": "Statistika darslik",
+          "type": "pdf",
+          "url": "/resources/statistics-book.pdf"
+        }
+      ],
+      "deadline": "2026-04-10",
+      "timeRemaining": "22 kun",
+      "maxScore": 65,
+      "minScore": 40,
+      "weight": 20,
+      "type": "homework",
+      "status": "active",
+      "priority": "low",
+      "createdAt": "2026-03-20T10:00:00.000Z",
+      "updatedAt": "2026-03-20T10:00:00.000Z",
+      "students": [
+        {
+          "studentId": 27,
+          "studentName": "Nodirbek Hamidov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        },
+        {
+          "studentId": 28,
+          "studentName": "Zilola Sobirova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null,
+          "files": []
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 2,
+      "completionRate": 0
+    }
+  ]
+}

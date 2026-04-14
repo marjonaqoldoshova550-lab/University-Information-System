@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talabalar - EduHemis Admin</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍🎓</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-graduated {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .table-row-hover:hover {
+            background: #f9fafb;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pagination-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Talabalar boshqaruvi</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Admin User</p>
+                    <p class="text-xs text-gray-500">Administrator</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-red-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">👨‍🎓 Talabalar</h1>
+        <button onclick="showAddStudentModal()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            <span>Yangi talaba</span>
+        </button>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jami talabalar</p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalStudents">156</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Faol</p>
+                    <h3 class="text-2xl font-bold mt-1 text-green-600" id="activeCount">142</h3>
+                </div>
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Bitirgan</p>
+                    <h3 class="text-2xl font-bold mt-1 text-blue-600" id="graduatedCount">28</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">O'rtacha ball</p>
+                    <h3 class="text-2xl font-bold mt-1 text-purple-600" id="avgGrade">4.6</h3>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="mt-2 progress-bar">
+                <div class="progress-fill" style="width: 92%"></div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Davomat</p>
+                    <h3 class="text-2xl font-bold mt-1 text-orange-600" id="avgAttendance">94%</h3>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+            </div>
+            <div class="mt-2 progress-bar">
+                <div class="progress-fill" style="width: 94%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="search-box md:col-span-2">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Ism, email yoki guruh bo'yicha..." onkeyup="searchStudents()">
+            </div>
+            <select id="groupFilter" class="p-3 border rounded-xl bg-white" onchange="filterStudents()">
+                <option value="all">Barcha guruhlar</option>
+                <option value="AT-101-20">AT-101-20</option>
+                <option value="AT-102-20">AT-102-20</option>
+                <option value="KI-201-21">KI-201-21</option>
+                <option value="DI-301-22">DI-301-22</option>
+            </select>
+            <select id="courseFilter" class="p-3 border rounded-xl bg-white" onchange="filterStudents()">
+                <option value="all">Barcha kurslar</option>
+                <option value="1">1-kurs</option>
+                <option value="2">2-kurs</option>
+                <option value="3">3-kurs</option>
+                <option value="4">4-kurs</option>
+            </select>
+            <select id="statusFilter" class="p-3 border rounded-xl bg-white" onchange="filterStudents()">
+                <option value="all">Barcha holatlar</option>
+                <option value="active">Faol</option>
+                <option value="graduated">Bitirgan</option>
+                <option value="inactive">O'qishdan chiqqan</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bg-white rounded-2xl shadow-sm p-4 mb-6 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+            <label for="selectAll" class="text-sm">Barchasini belgilash</label>
+            <span class="text-gray-300">|</span>
+            <div class="flex gap-2">
+                <button onclick="bulkActivate()" class="px-3 py-1 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200">
+                    <i class="fas fa-check-circle mr-1"></i> Faollashtirish
+                </button>
+                <button onclick="bulkExport()" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200">
+                    <i class="fas fa-download mr-1"></i> Eksport
+                </button>
+                <button onclick="bulkDelete()" class="px-3 py-1 bg-red-100 text-red-600 rounded-lg text-sm hover:bg-red-200">
+                    <i class="fas fa-trash mr-1"></i> O'chirish
+                </button>
+            </div>
+        </div>
+        <div class="text-sm text-gray-500">
+            <span id="selectedCount">0</span> ta tanlangan
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 text-left w-12"><input type="checkbox" id="selectAllHeader" onchange="toggleSelectAll()"></th>
+                        <th class="p-4 text-left">Talaba</th>
+                        <th class="p-4 text-left">ID</th>
+                        <th class="p-4 text-left">Guruh</th>
+                        <th class="p-4 text-left">Kurs</th>
+                        <th class="p-4 text-left">Email</th>
+                        <th class="p-4 text-left">Telefon</th>
+                        <th class="p-4 text-center">O'rtacha</th>
+                        <th class="p-4 text-center">Davomat</th>
+                        <th class="p-4 text-left">Holat</th>
+                        <th class="p-4 text-left">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTable">
+                    <!-- Students will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center gap-2 mt-8">
+        <button onclick="changePage(-1)" class="pagination-btn bg-white shadow-sm">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span id="pageInfo" class="px-4 py-2 bg-white rounded-xl shadow-sm">1 / 4</span>
+        <button onclick="changePage(1)" class="pagination-btn bg-white shadow-sm">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</div>
+
+<!-- Add Student Modal -->
+<div id="addStudentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi talaba qo'shish</h3>
+            <button onclick="closeAddStudentModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">To'liq ism</label>
+                <input type="text" id="newStudentName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="newStudentEmail" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Guruh</label>
+                <select id="newStudentGroup" class="w-full p-3 border rounded-xl">
+                    <option value="AT-101-20">AT-101-20</option>
+                    <option value="AT-102-20">AT-102-20</option>
+                    <option value="KI-201-21">KI-201-21</option>
+                    <option value="DI-301-22">DI-301-22</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kurs</label>
+                <select id="newStudentCourse" class="w-full p-3 border rounded-xl">
+                    <option value="1">1-kurs</option>
+                    <option value="2">2-kurs</option>
+                    <option value="3">3-kurs</option>
+                    <option value="4">4-kurs</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Login</label>
+                <input type="text" id="newStudentUsername" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Parol</label>
+                <input type="password" id="newStudentPassword" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telefon</label>
+                <input type="tel" id="newStudentPhone" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Manzil</label>
+                <input type="text" id="newStudentAddress" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Tug'ilgan sana</label>
+                <input type="date" id="newStudentBirthDate" class="w-full p-3 border rounded-xl">
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addStudent()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddStudentModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div id="editStudentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">✏️ Talabani tahrirlash</h3>
+            <button onclick="closeEditStudentModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">To'liq ism</label>
+                <input type="text" id="editStudentName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="editStudentEmail" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Guruh</label>
+                <select id="editStudentGroup" class="w-full p-3 border rounded-xl">
+                    <option value="AT-101-20">AT-101-20</option>
+                    <option value="AT-102-20">AT-102-20</option>
+                    <option value="KI-201-21">KI-201-21</option>
+                    <option value="DI-301-22">DI-301-22</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kurs</label>
+                <select id="editStudentCourse" class="w-full p-3 border rounded-xl">
+                    <option value="1">1-kurs</option>
+                    <option value="2">2-kurs</option>
+                    <option value="3">3-kurs</option>
+                    <option value="4">4-kurs</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telefon</label>
+                <input type="tel" id="editStudentPhone" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Manzil</label>
+                <input type="text" id="editStudentAddress" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Holat</label>
+                <select id="editStudentStatus" class="w-full p-3 border rounded-xl">
+                    <option value="active">Faol</option>
+                    <option value="graduated">Bitirgan</option>
+                    <option value="inactive">O'qishdan chiqqan</option>
+                </select>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="updateStudent()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                    <i class="fas fa-save mr-2"></i> Yangilash
+                </button>
+                <button onclick="closeEditStudentModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Student Details Modal -->
+<div id="studentDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="detailsModalTitle">Talaba ma'lumotlari</h3>
+            <button onclick="closeStudentDetailsModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="detailsModalContent"></div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    let currentFilter = { search: '', group: 'all', course: 'all', status: 'all' };
+    let currentSort = 'name';
+    let selectedStudents = new Set();
+    
+    let studentsData = [
+        { id: 7, name: 'Azimjon Karimov', username: 'student', email: 'a.karimov@student.uz', phone: '+998901234501', group: 'AT-101-20', course: 2, status: 'active', avgGrade: 4.8, attendance: 95, address: 'Toshkent sh., Chilonzor tumani', birthDate: '2003-05-15', createdAt: '2020-09-01', parentPhone: '+998901234567', parentName: 'Karimov Rustam' },
+        { id: 8, name: 'Ali Valiyev', username: 'ali', email: 'a.valiyev@student.uz', phone: '+998901234502', group: 'AT-101-20', course: 2, status: 'active', avgGrade: 4.9, attendance: 98, address: 'Toshkent vil., Chirchiq shahri', birthDate: '2003-08-20', createdAt: '2020-09-01', parentPhone: '+998901234569', parentName: 'Valiyev Akram' },
+        { id: 9, name: 'Dilya Akramova', username: 'dilya', email: 'd.akramova@student.uz', phone: '+998901234503', group: 'AT-101-20', course: 2, status: 'active', avgGrade: 4.6, attendance: 92, address: 'Toshkent sh., Yunusobod tumani', birthDate: '2004-02-10', createdAt: '2020-09-02', parentPhone: '+998901234571', parentName: 'Akramov Shavkat' },
+        { id: 10, name: 'Jasur Karimov', username: 'jasur_student', email: 'j.karimov@student.uz', phone: '+998901234504', group: 'AT-102-20', course: 2, status: 'active', avgGrade: 4.4, attendance: 90, address: 'Samarqand sh., Registon ko\'chasi', birthDate: '2003-11-05', createdAt: '2020-09-03', parentPhone: '+998901234573', parentName: 'Karimov Bahodir' },
+        { id: 11, name: 'Malika Ismoilova', username: 'malika', email: 'm.ismoilova@student.uz', phone: '+998901234505', group: 'KI-201-21', course: 3, status: 'active', avgGrade: 4.9, attendance: 96, address: 'Buxoro sh., Bahouddin Naqshband ko\'chasi', birthDate: '2002-07-18', createdAt: '2021-09-01', parentPhone: '+998901234575', parentName: 'Ismoilov Akbar' },
+        { id: 12, name: 'Sardor Abdurahmonov', username: 'sardor', email: 's.abdurahmonov@student.uz', phone: '+998901234506', group: 'KI-201-21', course: 3, status: 'active', avgGrade: 4.5, attendance: 92, address: 'Andijon sh., Navoiy ko\'chasi', birthDate: '2002-03-25', createdAt: '2021-09-02', parentPhone: '+998901234577', parentName: 'Abdurahmonov Toxir' },
+        { id: 13, name: 'Zarina Azizova', username: 'zarina', email: 'z.azizova@student.uz', phone: '+998901234507', group: 'DI-301-22', course: 2, status: 'active', avgGrade: 4.7, attendance: 94, address: 'Farg\'ona sh., Al-Farg\'oniy ko\'chasi', birthDate: '2004-01-12', createdAt: '2022-09-01', parentPhone: '+998901234579', parentName: 'Azizov Qodir' },
+        { id: 14, name: 'Rustam Xolmatov', username: 'rustam', email: 'r.xolmatov@student.uz', phone: '+998901234508', group: 'DI-301-22', course: 2, status: 'active', avgGrade: 4.3, attendance: 88, address: 'Namangan sh., Do\'stlik ko\'chasi', birthDate: '2003-09-08', createdAt: '2022-09-02', parentPhone: '+998901234581', parentName: 'Xolmatov Anvar' },
+        { id: 15, name: 'Shoxrux Aliyev', username: 'shoxrux', email: 'sh.aliyev@student.uz', phone: '+998901234509', group: 'AT-102-20', course: 2, status: 'graduated', avgGrade: 4.2, attendance: 85, address: 'Qashqadaryo vil., Qarshi shahri', birthDate: '2003-12-03', createdAt: '2020-09-04', parentPhone: '+998901234583', parentName: 'Aliyev Ulug\'bek' },
+        { id: 16, name: 'Nilufar Rahimova', username: 'nilufar', email: 'n.rahimova@student.uz', phone: '+998901234510', group: 'AT-102-20', course: 2, status: 'active', avgGrade: 4.8, attendance: 96, address: 'Surxondaryo vil., Termiz shahri', birthDate: '2004-04-17', createdAt: '2020-09-05', parentPhone: '+998901234585', parentName: 'Rahimov Komil' }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        loadStudents();
+        updateStatistics();
+    };
+
+    function loadStudents() {
+        let filteredStudents = [...studentsData];
+        
+        // Apply search
+        if (currentFilter.search) {
+            const searchLower = currentFilter.search.toLowerCase();
+            filteredStudents = filteredStudents.filter(s => 
+                s.name.toLowerCase().includes(searchLower) ||
+                s.email.toLowerCase().includes(searchLower) ||
+                s.group.toLowerCase().includes(searchLower)
+            );
+        }
+        
+        // Apply group filter
+        if (currentFilter.group !== 'all') {
+            filteredStudents = filteredStudents.filter(s => s.group === currentFilter.group);
+        }
+        
+        // Apply course filter
+        if (currentFilter.course !== 'all') {
+            filteredStudents = filteredStudents.filter(s => s.course === parseInt(currentFilter.course));
+        }
+        
+        // Apply status filter
+        if (currentFilter.status !== 'all') {
+            filteredStudents = filteredStudents.filter(s => s.status === currentFilter.status);
+        }
+        
+        // Pagination
+        const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+        const start = (currentPage - 1) * itemsPerPage;
+        const paginatedStudents = filteredStudents.slice(start, start + itemsPerPage);
+        
+        document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages || 1}`;
+        
+        const tbody = document.getElementById('studentsTable');
+        tbody.innerHTML = '';
+        
+        paginatedStudents.forEach(student => {
+            const statusClass = student.status === 'active' ? 'status-active' :
+                               student.status === 'graduated' ? 'status-graduated' : 'status-inactive';
+            const statusText = student.status === 'active' ? 'Faol' :
+                              student.status === 'graduated' ? 'Bitirgan' : 'O\'qishdan chiqqan';
+            
+            const gradeColor = student.avgGrade >= 4.5 ? 'text-green-600' :
+                              student.avgGrade >= 3.5 ? 'text-yellow-600' : 'text-red-600';
+            
+            const attendanceColor = student.attendance >= 90 ? 'text-green-600' :
+                                   student.attendance >= 75 ? 'text-yellow-600' : 'text-red-600';
+            
+            tbody.innerHTML += `
+                <tr class="border-t table-row-hover">
+                    <td class="p-4 text-center">
+                        <input type="checkbox" class="student-checkbox" data-id="${student.id}" onchange="updateSelectedCount()">
+                    </td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-3 cursor-pointer" onclick="showStudentDetails(${student.id})">
+                            <img src="https://ui-avatars.com/api/?name=${student.name.split(' ').join('+')}&background=0284c7&color=fff" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="font-medium">${student.name}</p>
+                                <p class="text-xs text-gray-500">${student.username}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 text-gray-500">S-${student.id}00${student.id}</td>
+                    <td class="p-4">${student.group}</td>
+                    <td class="p-4">${student.course}-kurs</td>
+                    <td class="p-4 text-gray-500">${student.email}</td>
+                    <td class="p-4">${student.phone}</td>
+                    <td class="p-4 text-center">
+                        <span class="font-bold ${gradeColor}">${student.avgGrade}</span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <span class="font-bold ${attendanceColor}">${student.attendance}%</span>
+                    </td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="p-4">
+                        <div class="flex gap-2">
+                            <button onclick="editStudent(${student.id})" class="text-blue-600 hover:text-blue-800" title="Tahrirlash">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteStudent(${student.id})" class="text-red-600 hover:text-red-800" title="O'chirish">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button onclick="showStudentDetails(${student.id})" class="text-green-600 hover:text-green-800" title="Batafsil">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                 </tr>
+            `;
+        });
+        
+        if (paginatedStudents.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="11" class="p-12 text-center text-gray-500">
+                        <i class="fas fa-user-graduate text-4xl text-gray-300 mb-2"></i>
+                        <p>Talabalar topilmadi</p>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    function updateStatistics() {
+        const total = studentsData.length;
+        const active = studentsData.filter(s => s.status === 'active').length;
+        const graduated = studentsData.filter(s => s.status === 'graduated').length;
+        const avgGrade = (studentsData.reduce((sum, s) => sum + s.avgGrade, 0) / total).toFixed(1);
+        const avgAttendance = (studentsData.reduce((sum, s) => sum + s.attendance, 0) / total).toFixed(1);
+        
+        document.getElementById('totalStudents').textContent = total;
+        document.getElementById('activeCount').textContent = active;
+        document.getElementById('graduatedCount').textContent = graduated;
+        document.getElementById('avgGrade').textContent = avgGrade;
+        document.getElementById('avgAttendance').textContent = `${avgAttendance}%`;
+    }
+
+    function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll('.student-checkbox:checked');
+        selectedStudents.clear();
+        checkboxes.forEach(cb => selectedStudents.add(parseInt(cb.dataset.id)));
+        document.getElementById('selectedCount').textContent = selectedStudents.size;
+    }
+
+    function toggleSelectAll() {
+        const isChecked = document.getElementById('selectAll').checked;
+        const checkboxes = document.querySelectorAll('.student-checkbox');
+        checkboxes.forEach(cb => cb.checked = isChecked);
+        updateSelectedCount();
+    }
+
+    function searchStudents() {
+        currentFilter.search = document.getElementById('searchInput').value;
+        currentPage = 1;
+        loadStudents();
+    }
+
+    function filterStudents() {
+        currentFilter.group = document.getElementById('groupFilter').value;
+        currentFilter.course = document.getElementById('courseFilter').value;
+        currentFilter.status = document.getElementById('statusFilter').value;
+        currentPage = 1;
+        loadStudents();
+    }
+
+    function changePage(delta) {
+        currentPage += delta;
+        if (currentPage < 1) currentPage = 1;
+        loadStudents();
+    }
+
+    function showAddStudentModal() {
+        document.getElementById('addStudentModal').style.display = 'flex';
+        document.getElementById('newStudentBirthDate').value = '2005-01-01';
+    }
+
+    function closeAddStudentModal() {
+        document.getElementById('addStudentModal').style.display = 'none';
+        document.getElementById('newStudentName').value = '';
+        document.getElementById('newStudentEmail').value = '';
+        document.getElementById('newStudentUsername').value = '';
+        document.getElementById('newStudentPassword').value = '';
+        document.getElementById('newStudentPhone').value = '';
+        document.getElementById('newStudentAddress').value = '';
+    }
+
+    function addStudent() {
+        const name = document.getElementById('newStudentName').value;
+        const email = document.getElementById('newStudentEmail').value;
+        const group = document.getElementById('newStudentGroup').value;
+        const course = document.getElementById('newStudentCourse').value;
+        const username = document.getElementById('newStudentUsername').value;
+        const password = document.getElementById('newStudentPassword').value;
+        const phone = document.getElementById('newStudentPhone').value;
+        const address = document.getElementById('newStudentAddress').value;
+        const birthDate = document.getElementById('newStudentBirthDate').value;
+        
+        if (!name || !email || !username || !password) {
+            showToast('Barcha majburiy maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        const newStudent = {
+            id: studentsData.length + 1,
+            name: name,
+            username: username,
+            email: email,
+            phone: phone,
+            group: group,
+            course: parseInt(course),
+            status: 'active',
+            avgGrade: 0,
+            attendance: 0,
+            address: address,
+            birthDate: birthDate,
+            createdAt: new Date().toISOString().split('T')[0],
+            parentPhone: '',
+            parentName: ''
+        };
+        
+        studentsData.push(newStudent);
+        closeAddStudentModal();
+        loadStudents();
+        updateStatistics();
+        showToast('Talaba muvaffaqiyatli qo\'shildi!', 'success');
+    }
+
+    function editStudent(studentId) {
+        const student = studentsData.find(s => s.id === studentId);
+        if (!student) return;
+        
+        document.getElementById('editStudentName').value = student.name;
+        document.getElementById('editStudentEmail').value = student.email;
+        document.getElementById('editStudentGroup').value = student.group;
+        document.getElementById('editStudentCourse').value = student.course;
+        document.getElementById('editStudentPhone').value = student.phone || '';
+        document.getElementById('editStudentAddress').value = student.address || '';
+        document.getElementById('editStudentStatus').value = student.status;
+        
+        document.getElementById('editStudentModal').style.display = 'flex';
+        window.currentEditId = studentId;
+    }
+
+    function closeEditStudentModal() {
+        document.getElementById('editStudentModal').style.display = 'none';
+    }
+
+    function updateStudent() {
+        const student = studentsData.find(s => s.id === window.currentEditId);
+        if (!student) return;
+        
+        student.name = document.getElementById('editStudentName').value;
+        student.email = document.getElementById('editStudentEmail').value;
+        student.group = document.getElementById('editStudentGroup').value;
+        student.course = parseInt(document.getElementById('editStudentCourse').value);
+        student.phone = document.getElementById('editStudentPhone').value;
+        student.address = document.getElementById('editStudentAddress').value;
+        student.status = document.getElementById('editStudentStatus').value;
+        
+        closeEditStudentModal();
+        loadStudents();
+        updateStatistics();
+        showToast('Talaba yangilandi!', 'success');
+    }
+
+    function deleteStudent(studentId) {
+        if (confirm('Haqiqatan ham bu talabani o\'chirmoqchimisiz?')) {
+            studentsData = studentsData.filter(s => s.id !== studentId);
+            loadStudents();
+            updateStatistics();
+            showToast('Talaba o\'chirildi!', 'success');
+        }
+    }
+
+    function showStudentDetails(studentId) {
+        const student = studentsData.find(s => s.id === studentId);
+        if (!student) return;
+        
+        const statusClass = student.status === 'active' ? 'status-active' :
+                           student.status === 'graduated' ? 'status-graduated' : 'status-inactive';
+        const statusText = student.status === 'active' ? 'Faol' :
+                          student.status === 'graduated' ? 'Bitirgan' : 'O\'qishdan chiqqan';
+        
+        const modalContent = `
+            <div class="space-y-6">
+                <div class="flex items-center gap-6">
+                    <img src="https://ui-avatars.com/api/?name=${student.name.split(' ').join('+')}&background=0284c7&color=fff" class="w-24 h-24 rounded-2xl border-4 border-blue-100">
+                    <div>
+                        <h4 class="text-2xl font-bold">${student.name}</h4>
+                        <p class="text-gray-500">ID: S-${student.id}00${student.id}</p>
+                        <p class="text-gray-500">Login: ${student.username}</p>
+                        <span class="status-badge ${statusClass} mt-2">${statusText}</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Guruh</p>
+                        <p class="font-medium">${student.group}</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Kurs</p>
+                        <p class="font-medium">${student.course}-kurs</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">O'rtacha ball</p>
+                        <p class="text-2xl font-bold text-purple-600">${student.avgGrade}</p>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Davomat</p>
+                        <p class="text-2xl font-bold text-orange-600">${student.attendance}%</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">📞 Aloqa ma'lumotlari</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-envelope w-6 text-gray-400"></i> ${student.email}</p>
+                        <p><i class="fas fa-phone w-6 text-gray-400"></i> ${student.phone}</p>
+                        <p><i class="fas fa-map-marker-alt w-6 text-gray-400"></i> ${student.address || 'Kiritilmagan'}</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">👪 Ota-ona ma'lumotlari</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-user w-6 text-gray-400"></i> Ota: ${student.parentName || 'Kiritilmagan'}</p>
+                        <p><i class="fas fa-phone w-6 text-gray-400"></i> Telefon: ${student.parentPhone || 'Kiritilmagan'}</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">📅 Tizim ma'lumotlari</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-calendar w-6 text-gray-400"></i> Qo'shilgan: ${student.createdAt}</p>
+                        <p><i class="fas fa-birthday-cake w-6 text-gray-400"></i> Tug'ilgan: ${student.birthDate || 'Kiritilmagan'}</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button onclick="editStudent(${student.id}); closeStudentDetailsModal()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                        <i class="fas fa-edit mr-2"></i> Tahrirlash
+                    </button>
+                    <button onclick="closeStudentDetailsModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('detailsModalContent').innerHTML = modalContent;
+        document.getElementById('studentDetailsModal').style.display = 'flex';
+    }
+
+    function bulkActivate() {
+        if (selectedStudents.size === 0) {
+            showToast('Hech qanday talaba tanlanmagan!', 'warning');
+            return;
+        }
+        
+        studentsData.forEach(student => {
+            if (selectedStudents.has(student.id)) {
+                student.status = 'active';
+            }
+        });
+        
+        loadStudents();
+        updateStatistics();
+        showToast(`${selectedStudents.size} ta talaba faollashtirildi!`, 'success');
+    }
+
+    function bulkExport() {
+        if (selectedStudents.size === 0) {
+            showToast('Hech qanday talaba tanlanmagan!', 'warning');
+            return;
+        }
+        
+        let csv = "ID,Ism,Guruh,Kurs,Email,Telefon,O'rtacha ball,Davomat,Holat\n";
+        studentsData.forEach(student => {
+            if (selectedStudents.has(student.id)) {
+                csv += `${student.id},${student.name},${student.group},${student.course},${student.email},${student.phone},${student.avgGrade},${student.attendance}%,${student.status}\n`;
+            }
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `talabalar_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        showToast(`${selectedStudents.size} ta talaba eksport qilindi!`, 'success');
+    }
+
+    function bulkDelete() {
+        if (selectedStudents.size === 0) {
+            showToast('Hech qanday talaba tanlanmagan!', 'warning');
+            return;
+        }
+        
+        if (confirm(`${selectedStudents.size} ta talabani o\'chirmoqchimisiz?`)) {
+            studentsData = studentsData.filter(s => !selectedStudents.has(s.id));
+            loadStudents();
+            updateStatistics();
+            showToast(`${selectedStudents.size} ta talaba o\'chirildi!`, 'success');
+            selectedStudents.clear();
+            document.getElementById('selectAll').checked = false;
+        }
+    }
+
+    function closeStudentDetailsModal() {
+        document.getElementById('studentDetailsModal').style.display = 'none';
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=admin';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    window.onclick = function(event) {
+        const addModal = document.getElementById('addStudentModal');
+        const editModal = document.getElementById('editStudentModal');
+        const detailsModal = document.getElementById('studentDetailsModal');
+        if (event.target === addModal) closeAddStudentModal();
+        if (event.target === editModal) closeEditStudentModal();
+        if (event.target === detailsModal) closeStudentDetailsModal();
+    }
+</script>
+
+</body>
+</html>

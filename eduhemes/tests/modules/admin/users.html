@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin paneli - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-online {
+            position: relative;
+        }
+        
+        .status-online::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            bottom: 2px;
+            right: 2px;
+            border: 2px solid white;
+        }
+        
+        .table-row-hover:hover {
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Administrator paneli</p>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex items-center gap-6">
+                <!-- Notifications -->
+                <div class="relative">
+                    <i class="fas fa-bell text-2xl text-gray-600 cursor-pointer hover:text-red-600 transition-colors" onclick="showNotifications()"></i>
+                    <span id="notificationCount" class="notification-badge hidden">3</span>
+                </div>
+
+                <!-- User Info -->
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Admin User</p>
+                    <p class="text-xs text-gray-500">Administrator</p>
+                </div>
+
+                <!-- Avatar -->
+                <div class="relative status-online">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff" 
+                         class="w-12 h-12 rounded-xl border-2 border-red-600 shadow-md cursor-pointer" onclick="goToProfile()">
+                </div>
+
+                <!-- Logout -->
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden md:inline">Chiqish</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Welcome Card -->
+    <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-[40px] p-8 text-white relative overflow-hidden mb-6 animate-fadeIn">
+        <div class="relative z-10">
+            <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-bold">ADMIN PANELI</span>
+            <h2 class="text-4xl font-bold mt-4">Salom, Admin User!</h2>
+            <p class="text-red-100 mt-2">Tizim boshqaruvi paneli • 156 foydalanuvchi, 28 guruh</p>
+        </div>
+        <i class="fas fa-crown absolute right-10 bottom-10 text-8xl text-white/10"></i>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div onclick="showAllUsers()" class="bg-white p-6 rounded-2xl shadow-sm card-hover animate-fadeIn" style="animation-delay: 0.1s">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Foydalanuvchilar</p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalUsers">156</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+            <div class="mt-2 text-sm text-gray-500">
+                <i class="fas fa-user-graduate mr-1"></i> 124 talaba
+            </div>
+        </div>
+
+        <div onclick="showAllTeachers()" class="bg-white p-6 rounded-2xl shadow-sm card-hover animate-fadeIn" style="animation-delay: 0.2s">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">O'qituvchilar</p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalTeachers">28</h3>
+                </div>
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 70%"></div>
+            </div>
+            <div class="mt-2 text-sm text-gray-500">
+                <i class="fas fa-book-open mr-1"></i> 45 ta fan
+            </div>
+        </div>
+
+        <div onclick="showAllGroups()" class="bg-white p-6 rounded-2xl shadow-sm card-hover animate-fadeIn" style="animation-delay: 0.3s">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Guruhlar</p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalGroups">28</h3>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 85%"></div>
+            </div>
+            <div class="mt-2 text-sm text-gray-500">
+                <i class="fas fa-calendar-alt mr-1"></i> 156 ta dars
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm animate-fadeIn" style="animation-delay: 0.4s">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Bugungi faollik</p>
+                    <h3 class="text-2xl font-bold mt-1" id="todayActive">87</h3>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <div class="mt-2 text-sm text-gray-500">
+                <i class="fas fa-check-circle mr-1"></i> 18 ta davomat
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">📊 Fakultetlar bo'yicha</h3>
+            <canvas id="facultyChart" height="200"></canvas>
+        </div>
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">📈 Oylik faollik</h3>
+            <canvas id="activityChart" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <i class="fas fa-bolt text-yellow-600"></i> Tezkor amallar
+    </h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+        <button onclick="showAddUserForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+            <i class="fas fa-user-plus text-2xl text-green-600 mb-2"></i>
+            <p class="font-bold text-sm">Foydalanuvchi qo'shish</p>
+        </button>
+        <button onclick="showAddTeacherForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+            <i class="fas fa-chalkboard-teacher text-2xl text-blue-600 mb-2"></i>
+            <p class="font-bold text-sm">O'qituvchi qo'shish</p>
+        </button>
+        <button onclick="showAddStudentForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+            <i class="fas fa-user-graduate text-2xl text-purple-600 mb-2"></i>
+            <p class="font-bold text-sm">Talaba qo'shish</p>
+        </button>
+        <button onclick="showAddGroupForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+            <i class="fas fa-layer-group text-2xl text-orange-600 mb-2"></i>
+            <p class="font-bold text-sm">Guruh qo'shish</p>
+        </button>
+        <button onclick="showAddSubjectForm()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+            <i class="fas fa-book text-2xl text-indigo-600 mb-2"></i>
+            <p class="font-bold text-sm">Fan qo'shish</p>
+        </button>
+        <button onclick="showStatistics()" class="bg-white p-4 rounded-2xl shadow-sm card-hover text-center">
+            <i class="fas fa-chart-bar text-2xl text-pink-600 mb-2"></i>
+            <p class="font-bold text-sm">Statistika</p>
+        </button>
+    </div>
+
+    <!-- Recent Users -->
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold">🕒 So'nggi foydalanuvchilar</h3>
+        <button onclick="showAllUsers()" class="text-blue-600 text-sm hover:underline">Hammasini ko'rish →</button>
+    </div>
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden mb-8">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="p-4 text-left">Foydalanuvchi</th>
+                    <th class="p-4 text-left">Rol</th>
+                    <th class="p-4 text-left">Email</th>
+                    <th class="p-4 text-left">Qo'shilgan sana</th>
+                    <th class="p-4 text-left">Holat</th>
+                </tr>
+            </thead>
+            <tbody id="recentUsersTable">
+                <!-- Recent users will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- System Info -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3 class="font-bold">Tizim ma'lumotlari</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Versiya:</span>
+                    <span class="font-medium">EduHemis v1.0.0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">So'nggi yangilanish:</span>
+                    <span class="font-medium">2025-03-19</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Ma'lumotlar bazasi:</span>
+                    <span class="font-medium">LocalStorage</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Server holati:</span>
+                    <span class="text-green-600"><i class="fas fa-circle text-[8px] mr-1"></i> Faol</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3 class="font-bold">Ma'lumotlar hajmi</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Foydalanuvchilar:</span>
+                    <span class="font-medium">156 ta</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Darslar:</span>
+                    <span class="font-medium">156 ta</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Vazifalar:</span>
+                    <span class="font-medium">45 ta</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Jami yozuvlar:</span>
+                    <span class="font-medium">1,245 ta</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="font-bold">So'nggi faoliyat</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Bugungi kirishlar:</span>
+                    <span class="font-medium">87 ta</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Yangi foydalanuvchilar:</span>
+                    <span class="font-medium">12 ta</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Bajarilgan vazifalar:</span>
+                    <span class="font-medium">34 ta</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Tizim uptime:</span>
+                    <span class="font-medium">99.9%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== MODALS ========== -->
+<!-- Add User Modal -->
+<div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi foydalanuvchi</h3>
+            <button onclick="closeAddUserModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">To'liq ism</label>
+                <input type="text" id="newUserName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="newUserEmail" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Rol</label>
+                <select id="newUserRole" class="w-full p-3 border rounded-xl" onchange="toggleUserFields()">
+                    <option value="student">Talaba</option>
+                    <option value="teacher">O'qituvchi</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div id="studentFields">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Guruh</label>
+                    <select id="newUserGroup" class="w-full p-3 border rounded-xl">
+                        <option value="AT-101-20">AT-101-20</option>
+                        <option value="AT-102-20">AT-102-20</option>
+                        <option value="KI-201-21">KI-201-21</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Kurs</label>
+                    <select id="newUserCourse" class="w-full p-3 border rounded-xl">
+                        <option value="1">1-kurs</option>
+                        <option value="2">2-kurs</option>
+                        <option value="3">3-kurs</option>
+                        <option value="4">4-kurs</option>
+                    </select>
+                </div>
+            </div>
+            <div id="teacherFields" class="hidden">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Fan</label>
+                    <input type="text" id="newUserSubject" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Kafedra</label>
+                    <input type="text" id="newUserDepartment" class="w-full p-3 border rounded-xl">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Login</label>
+                <input type="text" id="newUserUsername" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Parol</label>
+                <input type="password" id="newUserPassword" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telefon</label>
+                <input type="tel" id="newUserPhone" class="w-full p-3 border rounded-xl">
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addUser()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddUserModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Group Modal -->
+<div id="addGroupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi guruh</h3>
+            <button onclick="closeAddGroupModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Guruh nomi</label>
+                <input type="text" id="newGroupName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fakultet</label>
+                <input type="text" id="newGroupFaculty" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kurs</label>
+                <select id="newGroupCourse" class="w-full p-3 border rounded-xl">
+                    <option value="1">1-kurs</option>
+                    <option value="2">2-kurs</option>
+                    <option value="3">3-kurs</option>
+                    <option value="4">4-kurs</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Sinf rahbar</label>
+                <select id="newGroupTeacher" class="w-full p-3 border rounded-xl">
+                    <option value="">Tanlang</option>
+                    <option value="2">Said Alisherov</option>
+                    <option value="3">Nodira Karimova</option>
+                    <option value="4">Jasur Usmonov</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Talabalar soni</label>
+                <input type="number" id="newGroupStudents" value="0" class="w-full p-3 border rounded-xl">
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addGroup()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddGroupModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Subject Modal -->
+<div id="addSubjectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi fan</h3>
+            <button onclick="closeAddSubjectModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan nomi</label>
+                <input type="text" id="newSubjectName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan kodi</label>
+                <input type="text" id="newSubjectCode" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kreditlar</label>
+                <input type="number" id="newSubjectCredits" min="1" max="10" value="3" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Soatlar</label>
+                <input type="number" id="newSubjectHours" min="1" value="72" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">O'qituvchi</label>
+                <select id="newSubjectTeacher" class="w-full p-3 border rounded-xl">
+                    <option value="">Tanlang</option>
+                    <option value="2">Said Alisherov</option>
+                    <option value="3">Nodira Karimova</option>
+                    <option value="4">Jasur Usmonov</option>
+                </select>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addSubject()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddSubjectModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let facultyChart = null;
+    let activityChart = null;
+    
+    const recentUsers = [
+        { id: 1, name: 'Azimjon Karimov', role: 'student', email: 'a.karimov@student.uz', date: '2025-03-19', status: 'active' },
+        { id: 2, name: 'Ali Valiyev', role: 'student', email: 'a.valiyev@student.uz', date: '2025-03-18', status: 'active' },
+        { id: 3, name: 'Said Alisherov', role: 'teacher', email: 's.alisherov@edu.uz', date: '2025-03-17', status: 'active' },
+        { id: 4, name: 'Dilya Akramova', role: 'student', email: 'd.akramova@student.uz', date: '2025-03-16', status: 'active' },
+        { id: 5, name: 'Nodira Karimova', role: 'teacher', email: 'n.karimova@edu.uz', date: '2025-03-15', status: 'active' }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        loadRecentUsers();
+        initCharts();
+        updateStatistics();
+    };
+
+    function loadRecentUsers() {
+        const tbody = document.getElementById('recentUsersTable');
+        tbody.innerHTML = '';
+        
+        recentUsers.forEach(user => {
+            const roleColor = user.role === 'student' ? 'bg-green-100 text-green-600' :
+                             user.role === 'teacher' ? 'bg-blue-100 text-blue-600' : 'bg-red-100 text-red-600';
+            const roleText = user.role === 'student' ? 'Talaba' :
+                            user.role === 'teacher' ? 'O\'qituvchi' : 'Admin';
+            
+            tbody.innerHTML += `
+                <tr class="border-t table-row-hover cursor-pointer" onclick="showUserDetails(${user.id})">
+                    <td class="p-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://ui-avatars.com/api/?name=${user.name.split(' ').join('+')}&background=${user.role === 'student' ? '0284c7' : user.role === 'teacher' ? '4f46e5' : 'dc2626'}&color=fff" class="w-8 h-8 rounded-full">
+                            <span class="font-medium">${user.name}</span>
+                        </div>
+                    </td>
+                    <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-bold ${roleColor}">${roleText}</span></td>
+                    <td class="p-4 text-gray-500">${user.email}</td>
+                    <td class="p-4">${user.date}</td>
+                    <td class="p-4"><span class="text-green-600"><i class="fas fa-circle text-[8px] mr-1"></i> Faol</span></td>
+                </tr>
+            `;
+        });
+    }
+
+    function initCharts() {
+        const ctx1 = document.getElementById('facultyChart').getContext('2d');
+        facultyChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['AT', 'KI', 'DI', 'IQ', 'HU', 'FL'],
+                datasets: [{
+                    label: 'Talabalar soni',
+                    data: [124, 98, 87, 112, 76, 89],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+        
+        const ctx2 = document.getElementById('activityChart').getContext('2d');
+        activityChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['1-hafta', '2-hafta', '3-hafta', '4-hafta'],
+                datasets: [{
+                    label: 'Faol foydalanuvchilar',
+                    data: [245, 278, 312, 298],
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    function updateStatistics() {
+        document.getElementById('totalUsers').textContent = '156';
+        document.getElementById('totalTeachers').textContent = '28';
+        document.getElementById('totalGroups').textContent = '28';
+        document.getElementById('todayActive').textContent = '87';
+    }
+
+    function showUserDetails(userId) {
+        showToast('Foydalanuvchi ma\'lumotlari', 'info');
+    }
+
+    function showAllUsers() {
+        window.location.href = 'users.html';
+    }
+
+    function showAllTeachers() {
+        window.location.href = 'teachers.html';
+    }
+
+    function showAllGroups() {
+        window.location.href = 'groups.html';
+    }
+
+    function showStatistics() {
+        window.location.href = 'statistics.html';
+    }
+
+    function showAddUserForm() {
+        document.getElementById('addUserModal').style.display = 'flex';
+    }
+
+    function closeAddUserModal() {
+        document.getElementById('addUserModal').style.display = 'none';
+    }
+
+    function toggleUserFields() {
+        const role = document.getElementById('newUserRole').value;
+        const studentFields = document.getElementById('studentFields');
+        const teacherFields = document.getElementById('teacherFields');
+        
+        if (role === 'student') {
+            studentFields.classList.remove('hidden');
+            teacherFields.classList.add('hidden');
+        } else if (role === 'teacher') {
+            studentFields.classList.add('hidden');
+            teacherFields.classList.remove('hidden');
+        } else {
+            studentFields.classList.add('hidden');
+            teacherFields.classList.add('hidden');
+        }
+    }
+
+    function addUser() {
+        const name = document.getElementById('newUserName').value;
+        const email = document.getElementById('newUserEmail').value;
+        const role = document.getElementById('newUserRole').value;
+        const username = document.getElementById('newUserUsername').value;
+        const password = document.getElementById('newUserPassword').value;
+        const phone = document.getElementById('newUserPhone').value;
+        
+        if (!name || !email || !username || !password) {
+            showToast('Barcha maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        closeAddUserModal();
+        showToast('Foydalanuvchi muvaffaqiyatli qo\'shildi!', 'success');
+    }
+
+    function showAddTeacherForm() {
+        document.getElementById('newUserRole').value = 'teacher';
+        toggleUserFields();
+        showAddUserForm();
+    }
+
+    function showAddStudentForm() {
+        document.getElementById('newUserRole').value = 'student';
+        toggleUserFields();
+        showAddUserForm();
+    }
+
+    function showAddGroupForm() {
+        document.getElementById('addGroupModal').style.display = 'flex';
+    }
+
+    function closeAddGroupModal() {
+        document.getElementById('addGroupModal').style.display = 'none';
+    }
+
+    function addGroup() {
+        const name = document.getElementById('newGroupName').value;
+        const faculty = document.getElementById('newGroupFaculty').value;
+        
+        if (!name || !faculty) {
+            showToast('Guruh nomi va fakultet majburiy!', 'error');
+            return;
+        }
+        
+        closeAddGroupModal();
+        showToast('Guruh muvaffaqiyatli qo\'shildi!', 'success');
+    }
+
+    function showAddSubjectForm() {
+        document.getElementById('addSubjectModal').style.display = 'flex';
+    }
+
+    function closeAddSubjectModal() {
+        document.getElementById('addSubjectModal').style.display = 'none';
+    }
+
+    function addSubject() {
+        const name = document.getElementById('newSubjectName').value;
+        const code = document.getElementById('newSubjectCode').value;
+        
+        if (!name || !code) {
+            showToast('Fan nomi va kodi majburiy!', 'error');
+            return;
+        }
+        
+        closeAddSubjectModal();
+        showToast('Fan muvaffaqiyatli qo\'shildi!', 'success');
+    }
+
+    function showNotifications() {
+        showToast('3 ta yangi bildirishnoma', 'info');
+    }
+
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=admin';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    window.onclick = function(event) {
+        const addUserModal = document.getElementById('addUserModal');
+        const addGroupModal = document.getElementById('addGroupModal');
+        const addSubjectModal = document.getElementById('addSubjectModal');
+        
+        if (event.target === addUserModal) closeAddUserModal();
+        if (event.target === addGroupModal) closeAddGroupModal();
+        if (event.target === addSubjectModal) closeAddSubjectModal();
+    }
+</script>
+
+</body>
+</html>

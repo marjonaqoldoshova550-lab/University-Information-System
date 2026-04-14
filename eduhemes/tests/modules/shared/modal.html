@@ -1,0 +1,358 @@
+<!-- ========== MODAL COMPONENT ========== -->
+<div id="globalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-[1000]">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="modalContainer">
+        
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center p-6 border-b" id="modalHeader">
+            <h3 class="text-2xl font-bold text-gray-800" id="modalTitle">Modal sarlavhasi</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors text-2xl">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6" id="modalBody">
+            <!-- Modal content will be inserted here -->
+            <p class="text-gray-600">Modal mazmuni</p>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="flex justify-end gap-3 p-6 border-t bg-gray-50 rounded-b-3xl" id="modalFooter">
+            <button onclick="closeModal()" class="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-all font-medium">
+                Bekor qilish
+            </button>
+            <button onclick="confirmModal()" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-medium" id="modalConfirmBtn">
+                Tasdiqlash
+            </button>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    // ========== MODAL FUNKSIYALARI ==========
+    
+    let modalCallback = null;
+    let modalConfirmCallback = null;
+    
+    // Modalni ko'rsatish
+    function showModal(options = {}) {
+        const modal = document.getElementById('globalModal');
+        const container = document.getElementById('modalContainer');
+        const title = document.getElementById('modalTitle');
+        const body = document.getElementById('modalBody');
+        const footer = document.getElementById('modalFooter');
+        const confirmBtn = document.getElementById('modalConfirmBtn');
+        
+        // Sarlavhani sozlash
+        if (options.title) {
+            title.textContent = options.title;
+        } else {
+            title.textContent = 'Ma\'lumot';
+        }
+        
+        // Kontentni sozlash
+        if (options.content) {
+            if (typeof options.content === 'string') {
+                body.innerHTML = options.content;
+            } else {
+                body.innerHTML = '';
+                body.appendChild(options.content);
+            }
+        }
+        
+        // Footer tugmalarini sozlash
+        if (options.hideFooter) {
+            footer.classList.add('hidden');
+        } else {
+            footer.classList.remove('hidden');
+        }
+        
+        // Tasdiqlash tugmasi matnini sozlash
+        if (options.confirmText) {
+            confirmBtn.textContent = options.confirmText;
+        } else {
+            confirmBtn.textContent = 'Tasdiqlash';
+        }
+        
+        // Bekor qilish tugmasi matnini sozlash
+        if (options.cancelText) {
+            const cancelBtn = footer.querySelector('button:first-child');
+            if (cancelBtn) cancelBtn.textContent = options.cancelText;
+        }
+        
+        // Callback funksiyalarini saqlash
+        modalCallback = options.onClose || null;
+        modalConfirmCallback = options.onConfirm || null;
+        
+        // Modalni ko'rsatish
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        // Animatsiya
+        setTimeout(() => {
+            container.classList.remove('scale-95', 'opacity-0');
+            container.classList.add('scale-100', 'opacity-100');
+        }, 10);
+        
+        // ESC tugmasi bilan yopish
+        document.addEventListener('keydown', handleEscKey);
+    }
+    
+    // Modalni yopish
+    function closeModal() {
+        const modal = document.getElementById('globalModal');
+        const container = document.getElementById('modalContainer');
+        
+        // Animatsiya
+        container.classList.remove('scale-100', 'opacity-100');
+        container.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            
+            // Callback
+            if (modalCallback) {
+                modalCallback();
+                modalCallback = null;
+            }
+        }, 300);
+        
+        // ESC tugmasi eventini olib tashlash
+        document.removeEventListener('keydown', handleEscKey);
+    }
+    
+    // Tasdiqlash
+    function confirmModal() {
+        if (modalConfirmCallback) {
+            modalConfirmCallback();
+        }
+        closeModal();
+    }
+    
+    // ESC tugmasi bilan yopish
+    function handleEscKey(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    }
+    
+    // ========== MODAL TURLARI ==========
+    
+    // Ma'lumot modal
+    function showInfoModal(message, title = 'Ma\'lumot') {
+        showModal({
+            title: title,
+            content: `<div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">${message}</p>
+                        </div>
+                      </div>`,
+            confirmText: 'Tushundim',
+            hideFooter: false,
+            onConfirm: () => {}
+        });
+    }
+    
+    // Muvaffaqiyat modal
+    function showSuccessModal(message, title = 'Muvaffaqiyatli') {
+        showModal({
+            title: title,
+            content: `<div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">${message}</p>
+                        </div>
+                      </div>`,
+            confirmText: 'Yopish',
+            hideFooter: false,
+            onConfirm: () => {}
+        });
+    }
+    
+    // Xatolik modal
+    function showErrorModal(message, title = 'Xatolik') {
+        showModal({
+            title: title,
+            content: `<div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">${message}</p>
+                        </div>
+                      </div>`,
+            confirmText: 'Yopish',
+            hideFooter: false,
+            onConfirm: () => {}
+        });
+    }
+    
+    // Ogohlantirish modal
+    function showWarningModal(message, title = 'Ogohlantirish') {
+        showModal({
+            title: title,
+            content: `<div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">${message}</p>
+                        </div>
+                      </div>`,
+            confirmText: 'Tushundim',
+            hideFooter: false,
+            onConfirm: () => {}
+        });
+    }
+    
+    // Tasdiqlash modal
+    function showConfirmModal(message, onConfirm, onCancel = null, title = 'Tasdiqlash') {
+        showModal({
+            title: title,
+            content: `<div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-question-circle text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">${message}</p>
+                        </div>
+                      </div>`,
+            confirmText: 'Ha, tasdiqlayman',
+            cancelText: 'Bekor qilish',
+            hideFooter: false,
+            onConfirm: onConfirm,
+            onClose: onCancel
+        });
+    }
+    
+    // Yuklanish modal
+    function showLoadingModal(message = 'Yuklanmoqda...') {
+        showModal({
+            title: 'Iltimos kuting',
+            content: `<div class="text-center py-4">
+                        <div class="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p class="text-gray-600">${message}</p>
+                      </div>`,
+            hideFooter: true
+        });
+    }
+    
+    // Form modal
+    function showFormModal(formHtml, onSubmit, title = 'Forma') {
+        showModal({
+            title: title,
+            content: formHtml,
+            confirmText: 'Saqlash',
+            cancelText: 'Bekor qilish',
+            hideFooter: false,
+            onConfirm: onSubmit
+        });
+    }
+    
+    // Katta modal (keng)
+    function showLargeModal(content, title = 'Ma\'lumot') {
+        const modal = document.getElementById('globalModal');
+        const container = document.getElementById('modalContainer');
+        
+        // Kenglikni oshirish
+        container.classList.add('max-w-4xl');
+        
+        showModal({
+            title: title,
+            content: content,
+            confirmText: 'Yopish',
+            hideFooter: false,
+            onConfirm: () => {
+                container.classList.remove('max-w-4xl');
+            },
+            onClose: () => {
+                container.classList.remove('max-w-4xl');
+            }
+        });
+    }
+    
+    // Kichik modal
+    function showSmallModal(content, title = 'Ma\'lumot') {
+        const modal = document.getElementById('globalModal');
+        const container = document.getElementById('modalContainer');
+        
+        // Kenglikni kichraytirish
+        container.classList.add('max-w-sm');
+        
+        showModal({
+            title: title,
+            content: content,
+            confirmText: 'Yopish',
+            hideFooter: false,
+            onConfirm: () => {
+                container.classList.remove('max-w-sm');
+            },
+            onClose: () => {
+                container.classList.remove('max-w-sm');
+            }
+        });
+    }
+    
+    // Iframe modal (tashqi sahifalar uchun)
+    function showIframeModal(url, title = 'Tashqi sahifa') {
+        showLargeModal(`<iframe src="${url}" class="w-full h-96 rounded-xl" frameborder="0"></iframe>`, title);
+    }
+    
+    // Rasm modal
+    function showImageModal(imageUrl, title = 'Rasm') {
+        showModal({
+            title: title,
+            content: `<div class="text-center">
+                        <img src="${imageUrl}" class="max-w-full max-h-96 mx-auto rounded-xl" alt="Modal rasm">
+                      </div>`,
+            confirmText: 'Yopish',
+            hideFooter: false,
+            onConfirm: () => {}
+        });
+    }
+    
+    // ========== MODAL STILLAR ==========
+    const modalStyles = document.createElement('style');
+    modalStyles.textContent = `
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        #modalContainer {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.3s;
+        }
+        
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.3s;
+        }
+    `;
+    document.head.appendChild(modalStyles);
+</script>

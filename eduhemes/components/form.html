@@ -1,0 +1,634 @@
+<!-- ========== FORM COMPONENTS ========== -->
+
+<!-- ===== 1. BASIC FORM ===== -->
+<form class="space-y-4">
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ism</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ismingizni kiriting">
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Email manzilingiz">
+    </div>
+    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-xl font-medium hover:bg-blue-700 transition-all">Yuborish</button>
+</form>
+
+<!-- ===== 2. INPUT TYPES ===== -->
+<div class="space-y-4">
+    <!-- Text input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Matn</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Matn kiriting">
+    </div>
+    
+    <!-- Email input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="example@mail.com">
+    </div>
+    
+    <!-- Password input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Parol</label>
+        <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+    </div>
+    
+    <!-- Number input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Raqam</label>
+        <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0">
+    </div>
+    
+    <!-- Tel input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
+        <input type="tel" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="+998 90 123 45 67">
+    </div>
+    
+    <!-- Date input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Sana</label>
+        <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    
+    <!-- Time input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Vaqt</label>
+        <input type="time" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    
+    <!-- DateTime-local input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Sana va vaqt</label>
+        <input type="datetime-local" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    
+    <!-- File input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fayl</label>
+        <input type="file" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+    </div>
+    
+    <!-- Color input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Rang</label>
+        <input type="color" class="w-full h-10 border border-gray-300 rounded-xl cursor-pointer">
+    </div>
+    
+    <!-- Range input -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Oraliq</label>
+        <input type="range" min="0" max="100" value="50" class="w-full">
+        <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 3. TEXTAREA ===== -->
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Izoh</label>
+    <textarea rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Izohingizni kiriting..."></textarea>
+</div>
+
+<!-- ===== 4. SELECT DROPDOWN ===== -->
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Tanlang</label>
+    <select class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option>Variant 1</option>
+        <option>Variant 2</option>
+        <option>Variant 3</option>
+    </select>
+</div>
+
+<!-- ===== 5. MULTIPLE SELECT ===== -->
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Bir nechta tanlash</label>
+    <select multiple class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" size="3">
+        <option>Variant 1</option>
+        <option>Variant 2</option>
+        <option>Variant 3</option>
+    </select>
+</div>
+
+<!-- ===== 6. CHECKBOXES ===== -->
+<div class="space-y-2">
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+        <span class="text-gray-700">Variant 1</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+        <span class="text-gray-700">Variant 2</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+        <span class="text-gray-700">Variant 3</span>
+    </label>
+</div>
+
+<!-- ===== 7. RADIO BUTTONS ===== -->
+<div class="space-y-2">
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="radio-group" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+        <span class="text-gray-700">Variant A</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="radio-group" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+        <span class="text-gray-700">Variant B</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="radio-group" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+        <span class="text-gray-700">Variant C</span>
+    </label>
+</div>
+
+<!-- ===== 8. SWITCH TOGGLE ===== -->
+<label class="flex items-center justify-between cursor-pointer">
+    <span class="text-gray-700">Bildirishnomalar</span>
+    <div class="relative">
+        <input type="checkbox" class="sr-only peer">
+        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 transition-all"></div>
+        <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5"></div>
+    </div>
+</label>
+
+<!-- ===== 9. FORM WITH ICONS ===== -->
+<div class="space-y-4">
+    <div class="relative">
+        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="text" class="w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ism">
+    </div>
+    <div class="relative">
+        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="email" class="w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Email">
+    </div>
+    <div class="relative">
+        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="password" class="w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Parol">
+    </div>
+</div>
+
+<!-- ===== 10. FORM WITH LABEL STYLES ===== -->
+<div class="space-y-4">
+    <div>
+        <label class="block text-sm font-bold text-gray-700 mb-1">Qalin label</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl">
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-500 mb-1">Yengil label</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl">
+    </div>
+    <div>
+        <label class="inline-flex items-center gap-1 text-sm font-medium text-gray-700 mb-1">
+            <span>Majburiy maydon</span>
+            <span class="text-red-500">*</span>
+        </label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl" required>
+    </div>
+</div>
+
+<!-- ===== 11. INPUT STATES ===== -->
+<div class="space-y-4">
+    <!-- Normal -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Oddiy holat</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="Oddiy input">
+    </div>
+    
+    <!-- Focus -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fokus holati</label>
+        <input type="text" class="w-full px-4 py-2 border border-blue-500 rounded-xl shadow-outline-blue" placeholder="Fokuslangan input" value="Fokuslangan">
+    </div>
+    
+    <!-- Error -->
+    <div>
+        <label class="block text-sm font-medium text-red-700 mb-1">Xatolik holati</label>
+        <input type="text" class="w-full px-4 py-2 border border-red-500 rounded-xl bg-red-50" placeholder="Xatolik" value="Noto'g'ri ma'lumot">
+        <p class="text-sm text-red-600 mt-1">Iltimos, to'g'ri ma'lumot kiriting</p>
+    </div>
+    
+    <!-- Success -->
+    <div>
+        <label class="block text-sm font-medium text-green-700 mb-1">Muvaffaqiyat holati</label>
+        <input type="text" class="w-full px-4 py-2 border border-green-500 rounded-xl bg-green-50" placeholder="Muvaffaqiyat" value="To'g'ri ma'lumot">
+        <p class="text-sm text-green-600 mt-1">Ma'lumot muvaffaqiyatli saqlandi</p>
+    </div>
+    
+    <!-- Disabled -->
+    <div>
+        <label class="block text-sm font-medium text-gray-400 mb-1">O'chirilgan holat</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed" placeholder="O'chirilgan" disabled value="O'chirilgan input">
+    </div>
+    
+    <!-- Readonly -->
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Faqat o'qish</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl bg-gray-50" readonly value="Bu matnni o'zgartirib bo'lmaydi">
+    </div>
+</div>
+
+<!-- ===== 12. INPUT SIZES ===== -->
+<div class="space-y-4">
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Kichik (sm)</label>
+        <input type="text" class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg" placeholder="Kichik input">
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">O'rtacha (md)</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="O'rtacha input">
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Katta (lg)</label>
+        <input type="text" class="w-full px-5 py-3 text-lg border border-gray-300 rounded-2xl" placeholder="Katta input">
+    </div>
+</div>
+
+<!-- ===== 13. FORM GROUP (Guruhlangan inputlar) ===== -->
+<div class="flex">
+    <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-gray-300 bg-gray-50 text-gray-500">+998</span>
+    <input type="tel" class="flex-1 px-4 py-2 border border-gray-300 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="90 123 45 67">
+</div>
+
+<!-- ===== 14. SEARCH INPUT ===== -->
+<div class="relative">
+    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <input type="search" class="w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Qidirish...">
+    <button class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">Qidirish</button>
+</div>
+
+<!-- ===== 15. FLOATING LABEL ===== -->
+<div class="relative">
+    <input type="text" id="floatingInput" class="w-full px-4 pt-5 pb-2 border border-gray-300 rounded-xl peer focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder=" ">
+    <label for="floatingInput" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 transition-all peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600 peer-focus:-translate-y-0 peer-[&:not(:placeholder-shown)]:top-2 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:-translate-y-0">
+        Suzuuchi label
+    </label>
+</div>
+
+<!-- ===== 16. PASSWORD WITH TOGGLE ===== -->
+<div class="relative">
+    <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <input type="password" id="passwordInput" class="w-full pl-11 pr-12 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Parol">
+    <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+        <i id="passwordToggleIcon" class="fas fa-eye"></i>
+    </button>
+</div>
+
+<script>
+    function togglePassword() {
+        const input = document.getElementById('passwordInput');
+        const icon = document.getElementById('passwordToggleIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
+
+<!-- ===== 17. FORM VALIDATION ===== -->
+<form id="validationForm" class="space-y-4" onsubmit="return validateForm(event)">
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ism (kamida 3 harf)</label>
+        <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="Ismingiz">
+        <div class="text-sm text-red-600 hidden mt-1" id="nameError">Ism kamida 3 harfdan iborat bo'lishi kerak</div>
+    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="Email manzil">
+        <div class="text-sm text-red-600 hidden mt-1" id="emailError">Noto'g'ri email format</div>
+    </div>
+    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-xl font-medium hover:bg-blue-700">Tekshirish</button>
+</form>
+
+<script>
+    function validateForm(event) {
+        event.preventDefault();
+        let isValid = true;
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const nameError = document.getElementById('nameError');
+        const emailError = document.getElementById('emailError');
+        
+        if (name.length < 3) {
+            nameError.classList.remove('hidden');
+            isValid = false;
+        } else {
+            nameError.classList.add('hidden');
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            emailError.classList.remove('hidden');
+            isValid = false;
+        } else {
+            emailError.classList.add('hidden');
+        }
+        
+        if (isValid) {
+            alert('Forma muvaffaqiyatli yuborildi!');
+        }
+        
+        return false;
+    }
+</script>
+
+<!-- ===== 18. FORM WITH TOOLTIP ===== -->
+<div class="relative">
+    <label class="block text-sm font-medium text-gray-700 mb-1">
+        Parol
+        <div class="relative inline-block ml-1 group">
+            <i class="fas fa-question-circle text-gray-400 cursor-help"></i>
+            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg whitespace-nowrap hidden group-hover:block z-10">
+                Parol kamida 8 belgidan iborat bo'lishi kerak
+                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-800"></div>
+            </div>
+        </div>
+    </label>
+    <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="••••••••">
+</div>
+
+<!-- ===== 19. AUTOCOMPLETE INPUT ===== -->
+<div class="relative">
+    <input type="text" id="autocompleteInput" class="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="Qidirish..." autocomplete="off">
+    <div id="autocompleteResults" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg hidden z-10"></div>
+</div>
+
+<script>
+    const suggestions = ['HTML', 'CSS', 'JavaScript', 'React', 'Vue', 'Angular', 'Node.js', 'Python'];
+    
+    document.getElementById('autocompleteInput')?.addEventListener('input', function(e) {
+        const value = e.target.value.toLowerCase();
+        const resultsDiv = document.getElementById('autocompleteResults');
+        
+        if (value.length > 0) {
+            const filtered = suggestions.filter(s => s.toLowerCase().includes(value));
+            if (filtered.length > 0) {
+                resultsDiv.innerHTML = filtered.map(s => `<div class="px-4 py-2 hover:bg-gray-100 cursor-pointer">${s}</div>`).join('');
+                resultsDiv.classList.remove('hidden');
+                
+                resultsDiv.querySelectorAll('div').forEach(div => {
+                    div.addEventListener('click', () => {
+                        document.getElementById('autocompleteInput').value = div.textContent;
+                        resultsDiv.classList.add('hidden');
+                    });
+                });
+            } else {
+                resultsDiv.classList.add('hidden');
+            }
+        } else {
+            resultsDiv.classList.add('hidden');
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!document.getElementById('autocompleteInput')?.contains(e.target)) {
+            document.getElementById('autocompleteResults')?.classList.add('hidden');
+        }
+    });
+</script>
+
+<!-- ===== 20. CHARACTER COUNTER ===== -->
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Izoh</label>
+    <textarea id="charCounter" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-xl" maxlength="200" placeholder="Maksimal 200 belgi..."></textarea>
+    <div class="flex justify-end text-sm text-gray-500 mt-1">
+        <span id="charCount">0</span>/200
+    </div>
+</div>
+
+<script>
+    document.getElementById('charCounter')?.addEventListener('input', function() {
+        const count = this.value.length;
+        document.getElementById('charCount').textContent = count;
+        
+        if (count > 180) {
+            document.getElementById('charCount').classList.add('text-orange-500');
+        } else {
+            document.getElementById('charCount').classList.remove('text-orange-500');
+        }
+    });
+</script>
+
+<!-- ===== 21. IMAGE UPLOAD PREVIEW ===== -->
+<div>
+    <label class="block text-sm font-medium text-gray-700 mb-1">Rasm yuklash</label>
+    <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-blue-500 transition-all" onclick="document.getElementById('imageUpload').click()">
+        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+        <p class="text-gray-500">Rasmni tanlang yoki sudrab keltiring</p>
+        <input type="file" id="imageUpload" class="hidden" accept="image/*">
+    </div>
+    <div id="imagePreview" class="mt-4 flex flex-wrap gap-2"></div>
+</div>
+
+<script>
+    document.getElementById('imageUpload')?.addEventListener('change', function(e) {
+        const preview = document.getElementById('imagePreview');
+        preview.innerHTML = '';
+        
+        Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML += `
+                    <div class="relative">
+                        <img src="${e.target.result}" class="w-24 h-24 object-cover rounded-lg border">
+                        <button type="button" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
+
+<!-- ===== 22. FORM WITH STEPS (Wizard) ===== -->
+<div id="stepForm" class="space-y-6">
+    <div class="flex justify-between items-center">
+        <div class="flex-1 h-1 bg-gray-200 rounded-full">
+            <div id="stepProgress" class="h-1 bg-blue-600 rounded-full transition-all" style="width: 33.33%"></div>
+        </div>
+        <div class="flex justify-between absolute left-1/2 transform -translate-x-1/2 w-64">
+            <div id="step1Indicator" class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold z-10">1</div>
+            <div id="step2Indicator" class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold z-10">2</div>
+            <div id="step3Indicator" class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold z-10">3</div>
+        </div>
+    </div>
+    
+    <div id="step1" class="step-content space-y-4">
+        <h3 class="text-lg font-bold">Shaxsiy ma'lumotlar</h3>
+        <input type="text" class="w-full px-4 py-2 border rounded-xl" placeholder="Ism">
+        <input type="email" class="w-full px-4 py-2 border rounded-xl" placeholder="Email">
+    </div>
+    
+    <div id="step2" class="step-content hidden space-y-4">
+        <h3 class="text-lg font-bold">Aloqa ma'lumotlari</h3>
+        <input type="tel" class="w-full px-4 py-2 border rounded-xl" placeholder="Telefon">
+        <input type="text" class="w-full px-4 py-2 border rounded-xl" placeholder="Manzil">
+    </div>
+    
+    <div id="step3" class="step-content hidden space-y-4">
+        <h3 class="text-lg font-bold">Tasdiqlash</h3>
+        <p class="text-gray-600">Ma'lumotlaringizni tekshirib, "Tasdiqlash" tugmasini bosing.</p>
+        <div class="bg-gray-50 p-4 rounded-xl">
+            <p><strong>Ism:</strong> <span id="confirmName">-</span></p>
+            <p><strong>Email:</strong> <span id="confirmEmail">-</span></p>
+            <p><strong>Telefon:</strong> <span id="confirmPhone">-</span></p>
+            <p><strong>Manzil:</strong> <span id="confirmAddress">-</span></p>
+        </div>
+    </div>
+    
+    <div class="flex justify-between gap-3">
+        <button type="button" id="prevBtn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 hidden" onclick="changeStep(-1)">Orqaga</button>
+        <button type="button" id="nextBtn" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700" onclick="changeStep(1)">Davom etish</button>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 3;
+    
+    function updateStepUI() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const stepContent = document.getElementById(`step${i}`);
+            const indicator = document.getElementById(`step${i}Indicator`);
+            if (i === currentStep) {
+                stepContent?.classList.remove('hidden');
+                indicator?.classList.add('bg-blue-600', 'text-white');
+                indicator?.classList.remove('bg-gray-200', 'text-gray-500');
+            } else {
+                stepContent?.classList.add('hidden');
+                if (i < currentStep) {
+                    indicator?.classList.add('bg-green-600', 'text-white');
+                    indicator?.classList.remove('bg-gray-200', 'text-gray-500');
+                } else {
+                    indicator?.classList.remove('bg-blue-600', 'bg-green-600', 'text-white');
+                    indicator?.classList.add('bg-gray-200', 'text-gray-500');
+                }
+            }
+        }
+        
+        const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        document.getElementById('stepProgress').style.width = `${progress}%`;
+        
+        document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
+        document.getElementById('nextBtn').textContent = currentStep === totalSteps ? 'Tasdiqlash' : 'Davom etish';
+        
+        if (currentStep === totalSteps) {
+            const name = document.querySelector('#step1 input:first-child')?.value || '-';
+            const email = document.querySelector('#step1 input:last-child')?.value || '-';
+            const phone = document.querySelector('#step2 input:first-child')?.value || '-';
+            const address = document.querySelector('#step2 input:last-child')?.value || '-';
+            
+            document.getElementById('confirmName').textContent = name;
+            document.getElementById('confirmEmail').textContent = email;
+            document.getElementById('confirmPhone').textContent = phone;
+            document.getElementById('confirmAddress').textContent = address;
+        }
+    }
+    
+    function changeStep(delta) {
+        const newStep = currentStep + delta;
+        if (newStep >= 1 && newStep <= totalSteps) {
+            currentStep = newStep;
+            updateStepUI();
+        }
+        
+        if (currentStep === totalSteps && delta === 1) {
+            document.getElementById('nextBtn').onclick = () => {
+                alert('Forma muvaffaqiyatli yuborildi!');
+            };
+        } else {
+            document.getElementById('nextBtn').onclick = () => changeStep(1);
+        }
+    }
+    
+    updateStepUI();
+</script>
+
+<!-- ===== 23. RATING INPUT ===== -->
+<div class="flex gap-1">
+    <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400 transition-all" data-rating="1"></i>
+    <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400 transition-all" data-rating="2"></i>
+    <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400 transition-all" data-rating="3"></i>
+    <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400 transition-all" data-rating="4"></i>
+    <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400 transition-all" data-rating="5"></i>
+</div>
+<input type="hidden" id="ratingValue" value="0">
+
+<script>
+    const stars = document.querySelectorAll('.fa-star[data-rating]');
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = parseInt(this.dataset.rating);
+            document.getElementById('ratingValue').value = rating;
+            
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.add('text-yellow-400');
+                    s.classList.remove('text-gray-300');
+                } else {
+                    s.classList.add('text-gray-300');
+                    s.classList.remove('text-yellow-400');
+                }
+            });
+        });
+        
+        star.addEventListener('mouseenter', function() {
+            const rating = parseInt(this.dataset.rating);
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.add('text-yellow-200');
+                }
+            });
+        });
+        
+        star.addEventListener('mouseleave', function() {
+            stars.forEach(s => {
+                s.classList.remove('text-yellow-200');
+            });
+        });
+    });
+</script>
+
+<!-- ===== 24. DATE PICKER (Simple) ===== -->
+<div class="relative">
+    <i class="fas fa-calendar-alt absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <input type="date" class="w-full pl-11 pr-4 py-2 border border-gray-300 rounded-xl">
+</div>
+
+<style>
+    /* Form styles */
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        ring: 2px solid #3b82f6;
+        ring-offset: 2px;
+    }
+    
+    /* Dark mode support */
+    .dark input, .dark textarea, .dark select {
+        background: #1f2937;
+        border-color: #374151;
+        color: #f3f4f6;
+    }
+    
+    .dark input:focus, .dark textarea:focus, .dark select:focus {
+        border-color: #3b82f6;
+    }
+    
+    /* Disabled input */
+    input:disabled, textarea:disabled, select:disabled {
+        background: #f3f4f6;
+        cursor: not-allowed;
+    }
+    
+    /* Readonly input */
+    input:read-only, textarea:read-only {
+        background: #f9fafb;
+    }
+</style>

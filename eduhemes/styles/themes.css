@@ -1,0 +1,615 @@
+/* ============================================
+   EduHemis - Mavzular (Themes)
+   Light mode, Dark mode va boshqa mavzular
+   ============================================ */
+
+/* ========== 1. LIGHT MODE (STANDART) ========== */
+:root,
+.theme-light {
+    /* Asosiy ranglar */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-inverse: #111827;
+    
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-tertiary: #9ca3af;
+    --text-inverse: #ffffff;
+    
+    --border-primary: #e5e7eb;
+    --border-secondary: #d1d5db;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    /* Komponent ranglari */
+    --card-bg: #ffffff;
+    --card-border: #e5e7eb;
+    --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    
+    --header-bg: #ffffff;
+    --header-border: #e5e7eb;
+    
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #e5e7eb;
+    
+    --footer-bg: #ffffff;
+    --footer-border: #e5e7eb;
+    
+    --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --input-focus: #3b82f6;
+    
+    --button-primary-bg: #3b82f6;
+    --button-primary-hover: #2563eb;
+    --button-primary-text: #ffffff;
+    
+    --button-secondary-bg: #f3f4f6;
+    --button-secondary-hover: #e5e7eb;
+    --button-secondary-text: #374151;
+    
+    --link-color: #3b82f6;
+    --link-hover: #2563eb;
+    
+    /* Eslatma ranglari */
+    --deadline-overdue-bg: #fee2e2;
+    --deadline-overdue-text: #dc2626;
+    --deadline-overdue-border: #ef4444;
+    
+    --deadline-warning-bg: #fef3c7;
+    --deadline-warning-text: #d97706;
+    --deadline-warning-border: #f59e0b;
+    
+    --deadline-upcoming-bg: #dbeafe;
+    --deadline-upcoming-text: #2563eb;
+    --deadline-upcoming-border: #3b82f6;
+    
+    --deadline-completed-bg: #dcfce7;
+    --deadline-completed-text: #16a34a;
+    --deadline-completed-border: #10b981;
+    
+    /* Status ranglari */
+    --status-online: #10b981;
+    --status-offline: #9ca3af;
+    --status-busy: #ef4444;
+    --status-away: #f59e0b;
+    
+    /* Rol ranglari */
+    --role-admin: #dc2626;
+    --role-teacher: #2563eb;
+    --role-student: #16a34a;
+    --role-moderator: #9333ea;
+    
+    /* Modal */
+    --modal-bg: #ffffff;
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+    
+    /* Toast */
+    --toast-success: #10b981;
+    --toast-error: #ef4444;
+    --toast-warning: #f59e0b;
+    --toast-info: #3b82f6;
+}
+
+/* ========== 2. DARK MODE ========== */
+.theme-dark {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-tertiary: #374151;
+    --bg-inverse: #f9fafb;
+    
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --text-tertiary: #6b7280;
+    --text-inverse: #111827;
+    
+    --border-primary: #374151;
+    --border-secondary: #4b5563;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    
+    --card-bg: #1f2937;
+    --card-border: #374151;
+    --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    
+    --header-bg: #1f2937;
+    --header-border: #374151;
+    
+    --sidebar-bg: #1f2937;
+    --sidebar-border: #374151;
+    
+    --footer-bg: #1f2937;
+    --footer-border: #374151;
+    
+    --input-bg: #374151;
+    --input-border: #4b5563;
+    --input-focus: #60a5fa;
+    
+    --button-primary-bg: #3b82f6;
+    --button-primary-hover: #60a5fa;
+    --button-primary-text: #ffffff;
+    
+    --button-secondary-bg: #374151;
+    --button-secondary-hover: #4b5563;
+    --button-secondary-text: #f3f4f6;
+    
+    --link-color: #60a5fa;
+    --link-hover: #93c5fd;
+    
+    --deadline-overdue-bg: #7f1d1d;
+    --deadline-overdue-text: #fca5a5;
+    --deadline-overdue-border: #dc2626;
+    
+    --deadline-warning-bg: #78350f;
+    --deadline-warning-text: #fcd34d;
+    --deadline-warning-border: #f59e0b;
+    
+    --deadline-upcoming-bg: #1e3a8a;
+    --deadline-upcoming-text: #93c5fd;
+    --deadline-upcoming-border: #3b82f6;
+    
+    --deadline-completed-bg: #064e3b;
+    --deadline-completed-text: #6ee7b7;
+    --deadline-completed-border: #10b981;
+    
+    --modal-bg: #1f2937;
+    --modal-overlay: rgba(0, 0, 0, 0.7);
+}
+
+/* ========== 3. HIGH CONTRAST MODE (YUQORI KONTRAST) ========== */
+.theme-high-contrast {
+    --bg-primary: #000000;
+    --bg-secondary: #111111;
+    --bg-tertiary: #1a1a1a;
+    --bg-inverse: #ffffff;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #e5e5e5;
+    --text-tertiary: #cccccc;
+    --text-inverse: #000000;
+    
+    --border-primary: #ffffff;
+    --border-secondary: #cccccc;
+    
+    --button-primary-bg: #ffffff;
+    --button-primary-hover: #cccccc;
+    --button-primary-text: #000000;
+    
+    --button-secondary-bg: #333333;
+    --button-secondary-hover: #444444;
+    --button-secondary-text: #ffffff;
+    
+    --link-color: #ffff00;
+    --link-hover: #ffff66;
+}
+
+/* ========== 4. SEPIA MODE (QADIMGI QOG'OZ RANGI) ========== */
+.theme-sepia {
+    --bg-primary: #f4ecd8;
+    --bg-secondary: #e8dcc8;
+    --bg-tertiary: #dcccb8;
+    --bg-inverse: #2c2418;
+    
+    --text-primary: #2c2418;
+    --text-secondary: #5c4c38;
+    --text-tertiary: #8c7c68;
+    --text-inverse: #f4ecd8;
+    
+    --border-primary: #dcccb8;
+    --border-secondary: #c8b8a4;
+}
+
+/* ========== 5. BLUE MODE (KO'K MAVZU) ========== */
+.theme-blue {
+    --bg-primary: #eff6ff;
+    --bg-secondary: #dbeafe;
+    --bg-tertiary: #bfdbfe;
+    --bg-inverse: #1e3a8a;
+    
+    --text-primary: #1e3a8a;
+    --text-secondary: #3b82f6;
+    --text-tertiary: #60a5fa;
+    --text-inverse: #ffffff;
+    
+    --border-primary: #bfdbfe;
+    --border-secondary: #93c5fd;
+    
+    --button-primary-bg: #2563eb;
+    --button-primary-hover: #1d4ed8;
+}
+
+/* ========== 6. GREEN MODE (YASHIL MAVZU) ========== */
+.theme-green {
+    --bg-primary: #f0fdf4;
+    --bg-secondary: #dcfce7;
+    --bg-tertiary: #bbf7d0;
+    --bg-inverse: #064e3b;
+    
+    --text-primary: #064e3b;
+    --text-secondary: #16a34a;
+    --text-tertiary: #22c55e;
+    --text-inverse: #ffffff;
+    
+    --border-primary: #bbf7d0;
+    --border-secondary: #86efac;
+    
+    --button-primary-bg: #16a34a;
+    --button-primary-hover: #15803d;
+}
+
+/* ========== 7. PURPLE MODE (BINAFSHA MAVZU) ========== */
+.theme-purple {
+    --bg-primary: #faf5ff;
+    --bg-secondary: #f3e8ff;
+    --bg-tertiary: #e9d5ff;
+    --bg-inverse: #4c1d95;
+    
+    --text-primary: #4c1d95;
+    --text-secondary: #9333ea;
+    --text-tertiary: #a855f7;
+    --text-inverse: #ffffff;
+    
+    --border-primary: #e9d5ff;
+    --border-secondary: #d8b4fe;
+    
+    --button-primary-bg: #9333ea;
+    --button-primary-hover: #7e22ce;
+}
+
+/* ========== 8. AUTOMATIC THEME (TIZIM BO'YICHA) ========== */
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light):not(.theme-high-contrast):not(.theme-sepia):not(.theme-blue):not(.theme-green):not(.theme-purple) {
+        --bg-primary: #111827;
+        --bg-secondary: #1f2937;
+        --bg-tertiary: #374151;
+        --bg-inverse: #f9fafb;
+        
+        --text-primary: #f9fafb;
+        --text-secondary: #9ca3af;
+        --text-tertiary: #6b7280;
+        --text-inverse: #111827;
+        
+        --border-primary: #374151;
+        --border-secondary: #4b5563;
+        
+        --card-bg: #1f2937;
+        --card-border: #374151;
+        
+        --input-bg: #374151;
+        --input-border: #4b5563;
+        
+        --button-secondary-bg: #374151;
+        --button-secondary-hover: #4b5563;
+    }
+}
+
+/* ========== 9. THEME SWITCHER SINFLARI ========== */
+
+/* Body ga mavzu qo'llash */
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Karta */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+}
+
+/* Header */
+.header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+}
+
+/* Footer */
+.footer {
+    background: var(--footer-bg);
+    border-top: 1px solid var(--footer-border);
+}
+
+/* Input */
+.input {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-primary);
+}
+
+.input:focus {
+    border-color: var(--input-focus);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Button */
+.btn-primary {
+    background: var(--button-primary-bg);
+    color: var(--button-primary-text);
+}
+
+.btn-primary:hover {
+    background: var(--button-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+}
+
+.btn-secondary:hover {
+    background: var(--button-secondary-hover);
+}
+
+/* Link */
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* Modal */
+.modal {
+    background: var(--modal-bg);
+}
+
+.modal-overlay {
+    background: var(--modal-overlay);
+}
+
+/* Deadline */
+.deadline-overdue {
+    background: var(--deadline-overdue-bg);
+    color: var(--deadline-overdue-text);
+    border-left-color: var(--deadline-overdue-border);
+}
+
+.deadline-warning {
+    background: var(--deadline-warning-bg);
+    color: var(--deadline-warning-text);
+    border-left-color: var(--deadline-warning-border);
+}
+
+.deadline-upcoming {
+    background: var(--deadline-upcoming-bg);
+    color: var(--deadline-upcoming-text);
+    border-left-color: var(--deadline-upcoming-border);
+}
+
+.deadline-completed {
+    background: var(--deadline-completed-bg);
+    color: var(--deadline-completed-text);
+    border-left-color: var(--deadline-completed-border);
+}
+
+/* Status badges */
+.status-online {
+    background: var(--status-online);
+}
+
+.status-offline {
+    background: var(--status-offline);
+}
+
+.status-busy {
+    background: var(--status-busy);
+}
+
+.status-away {
+    background: var(--status-away);
+}
+
+/* Role badges */
+.role-admin {
+    background: var(--role-admin);
+}
+
+.role-teacher {
+    background: var(--role-teacher);
+}
+
+.role-student {
+    background: var(--role-student);
+}
+
+.role-moderator {
+    background: var(--role-moderator);
+}
+
+/* Toast */
+.toast-success {
+    background: var(--toast-success);
+}
+
+.toast-error {
+    background: var(--toast-error);
+}
+
+.toast-warning {
+    background: var(--toast-warning);
+}
+
+.toast-info {
+    background: var(--toast-info);
+}
+
+/* ========== 10. THEME SWITCHER FUNKSIYALARI ========== */
+
+/* Mavzu o'zgartirish tugmasi */
+.theme-switcher {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Mavzu menyusi */
+.theme-menu {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 150px;
+    box-shadow: var(--shadow-lg);
+    display: none;
+}
+
+.theme-menu.show {
+    display: block;
+}
+
+.theme-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-option:hover {
+    background: var(--bg-tertiary);
+}
+
+.theme-option.active {
+    background: var(--button-primary-bg);
+    color: var(--button-primary-text);
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.theme-icon-light {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+}
+
+.theme-icon-dark {
+    background: #1f2937;
+    border: 1px solid #374151;
+}
+
+.theme-icon-high-contrast {
+    background: #000000;
+    border: 1px solid #ffffff;
+}
+
+.theme-icon-sepia {
+    background: #f4ecd8;
+    border: 1px solid #dcccb8;
+}
+
+.theme-icon-blue {
+    background: #3b82f6;
+}
+
+.theme-icon-green {
+    background: #10b981;
+}
+
+.theme-icon-purple {
+    background: #8b5cf6;
+}
+
+/* ========== 11. THEME TRANSITION ========== */
+* {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* ========== 12. THEME UTILITIES ========== */
+
+/* Mavzu bo'yicha ranglar */
+.bg-theme-primary { background: var(--bg-primary); }
+.bg-theme-secondary { background: var(--bg-secondary); }
+.bg-theme-tertiary { background: var(--bg-tertiary); }
+.bg-theme-inverse { background: var(--bg-inverse); }
+
+.text-theme-primary { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.text-theme-tertiary { color: var(--text-tertiary); }
+.text-theme-inverse { color: var(--text-inverse); }
+
+.border-theme-primary { border-color: var(--border-primary); }
+.border-theme-secondary { border-color: var(--border-secondary); }
+
+/* Mavzu o'zgarishini qo'lda boshqarish */
+.theme-transition {
+    transition: all 0.3s ease;
+}
+
+/* Mavzu qo'llab-quvvatlamaydigan elementlar */
+.no-theme-transition {
+    transition: none;
+}
+
+/* ========== 13. RESPONSIVE THEME ========== */
+@media (max-width: 768px) {
+    .theme-switcher {
+        bottom: 70px;
+        right: 16px;
+    }
+    
+    .theme-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+}
+
+/* ========== 14. PRINT THEME ========== */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .theme-switcher {
+        display: none;
+    }
+    
+    .card, .modal, .sidebar {
+        background: white;
+        border: 1px solid #ccc;
+        box-shadow: none;
+    }
+}

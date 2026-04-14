@@ -1,0 +1,768 @@
+<!-- ========== NOTIFICATION BADGE COMPONENTS ========== -->
+
+<!-- ===== 1. BASIC NOTIFICATION BADGE ===== -->
+<div class="space-y-4">
+    <!-- Simple badge -->
+    <div class="relative inline-block">
+        <i class="fas fa-bell text-2xl text-gray-600"></i>
+        <span class="notification-badge">3</span>
+    </div>
+    
+    <!-- Badge with different colors -->
+    <div class="flex gap-4">
+        <div class="relative inline-block">
+            <i class="fas fa-envelope text-2xl text-gray-600"></i>
+            <span class="notification-badge badge-blue">5</span>
+        </div>
+        <div class="relative inline-block">
+            <i class="fas fa-message text-2xl text-gray-600"></i>
+            <span class="notification-badge badge-green">2</span>
+        </div>
+        <div class="relative inline-block">
+            <i class="fas fa-bell text-2xl text-gray-600"></i>
+            <span class="notification-badge badge-yellow">1</span>
+        </div>
+        <div class="relative inline-block">
+            <i class="fas fa-star text-2xl text-gray-600"></i>
+            <span class="notification-badge badge-purple">7</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .notification-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ef4444;
+        color: white;
+        border-radius: 50%;
+        min-width: 18px;
+        height: 18px;
+        font-size: 10px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        border: 2px solid white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .badge-blue { background: #3b82f6; }
+    .badge-green { background: #10b981; }
+    .badge-yellow { background: #f59e0b; }
+    .badge-purple { background: #8b5cf6; }
+    .badge-pink { background: #ec4899; }
+    .badge-gray { background: #6b7280; }
+</style>
+
+<!-- ===== 2. NOTIFICATION BADGE WITH PULSE ANIMATION ===== -->
+<div class="flex gap-8">
+    <div class="relative inline-block">
+        <i class="fas fa-bell text-2xl text-gray-600"></i>
+        <span class="notification-badge pulse-badge">5</span>
+    </div>
+    
+    <div class="relative inline-block">
+        <i class="fas fa-envelope text-2xl text-gray-600"></i>
+        <span class="notification-badge pulse-badge-blue">3</span>
+    </div>
+    
+    <div class="relative inline-block">
+        <i class="fas fa-message text-2xl text-gray-600"></i>
+        <span class="notification-badge pulse-badge-green">1</span>
+    </div>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes pulse-ring {
+        0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    
+    .pulse-badge {
+        animation: pulse 1s infinite, pulse-ring 1.5s infinite;
+    }
+    
+    .pulse-badge-blue {
+        background: #3b82f6;
+        animation: pulse 1s infinite;
+    }
+    
+    .pulse-badge-green {
+        background: #10b981;
+        animation: pulse 1s infinite;
+    }
+</style>
+
+<!-- ===== 3. NOTIFICATION ITEMS WITH BADGES ===== -->
+<div class="space-y-3">
+    <div class="notification-item unread">
+        <div class="flex items-start gap-3">
+            <div class="relative">
+                <img src="https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff" class="w-10 h-10 rounded-full">
+                <span class="status-dot online"></span>
+            </div>
+            <div class="flex-1">
+                <div class="flex justify-between items-center">
+                    <p class="font-bold">Said Alisherov</p>
+                    <span class="text-xs text-gray-400">10:30</span>
+                </div>
+                <p class="text-sm text-gray-600">Ertaga dars 402-xonada bo'ladi</p>
+            </div>
+            <div class="relative">
+                <i class="fas fa-bell text-gray-400"></i>
+                <span class="mini-badge">2</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification-item">
+        <div class="flex items-start gap-3">
+            <div class="relative">
+                <img src="https://ui-avatars.com/api/?name=Nodira+Karimova&background=4f46e5&color=fff" class="w-10 h-10 rounded-full">
+                <span class="status-dot offline"></span>
+            </div>
+            <div class="flex-1">
+                <div class="flex justify-between items-center">
+                    <p class="font-bold">Nodira Karimova</p>
+                    <span class="text-xs text-gray-400">09:15</span>
+                </div>
+                <p class="text-sm text-gray-600">Laboratoriya ishi topshiriladi</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .notification-item {
+        padding: 12px;
+        background: white;
+        border-radius: 16px;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    
+    .notification-item:hover {
+        background: #f9fafb;
+    }
+    
+    .notification-item.unread {
+        background: #eff6ff;
+        border-left: 3px solid #3b82f6;
+    }
+    
+    .status-dot {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid white;
+    }
+    
+    .status-dot.online { background: #10b981; }
+    .status-dot.offline { background: #9ca3af; }
+    .status-dot.busy { background: #ef4444; }
+    
+    .mini-badge {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        font-size: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<!-- ===== 4. NOTIFICATION DROPDOWN ===== -->
+<div class="relative inline-block">
+    <button id="notificationDropdownBtn" class="relative p-2 hover:bg-gray-100 rounded-full transition-all">
+        <i class="fas fa-bell text-2xl text-gray-600"></i>
+        <span id="notificationCount" class="notification-badge">5</span>
+    </button>
+    
+    <div id="notificationDropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl hidden z-50">
+        <div class="p-4 border-b">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold">Bildirishnomalar</h3>
+                <button onclick="markAllAsRead()" class="text-xs text-blue-600 hover:underline">Hammasini o'qildi</button>
+            </div>
+        </div>
+        
+        <div class="max-h-96 overflow-y-auto">
+            <div class="notification-dropdown-item unread" onclick="markAsRead(this)">
+                <div class="flex gap-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-tasks text-blue-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">Yangi vazifa qo'shildi</p>
+                        <p class="text-xs text-gray-500">HTML portfolio vazifasi qo'shildi</p>
+                        <p class="text-xs text-gray-400 mt-1">2 soat oldin</p>
+                    </div>
+                    <div class="unread-dot"></div>
+                </div>
+            </div>
+            
+            <div class="notification-dropdown-item" onclick="markAsRead(this)">
+                <div class="flex gap-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">Vazifa bajarildi</p>
+                        <p class="text-xs text-gray-500">CSS animatsiyalar vazifasi bajarildi</p>
+                        <p class="text-xs text-gray-400 mt-1">1 kun oldin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-3 border-t text-center">
+            <a href="notifications.html" class="text-sm text-blue-600 hover:underline">Barcha bildirishnomalarni ko'rish</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleNotificationDropdown() {
+        const dropdown = document.getElementById('notificationDropdown');
+        dropdown.classList.toggle('hidden');
+    }
+    
+    document.getElementById('notificationDropdownBtn')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleNotificationDropdown();
+    });
+    
+    document.addEventListener('click', function() {
+        document.getElementById('notificationDropdown')?.classList.add('hidden');
+    });
+    
+    function markAsRead(element) {
+        element.classList.remove('unread');
+        const dot = element.querySelector('.unread-dot');
+        if (dot) dot.remove();
+        updateNotificationCount();
+    }
+    
+    function markAllAsRead() {
+        document.querySelectorAll('.notification-dropdown-item').forEach(item => {
+            item.classList.remove('unread');
+            const dot = item.querySelector('.unread-dot');
+            if (dot) dot.remove();
+        });
+        updateNotificationCount();
+    }
+    
+    function updateNotificationCount() {
+        const unreadCount = document.querySelectorAll('.notification-dropdown-item.unread').length;
+        const badge = document.getElementById('notificationCount');
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+    }
+</script>
+
+<style>
+    .notification-dropdown-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+        position: relative;
+    }
+    
+    .notification-dropdown-item:hover {
+        background: #f9fafb;
+    }
+    
+    .notification-dropdown-item.unread {
+        background: #eff6ff;
+    }
+    
+    .unread-dot {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        background: #3b82f6;
+        border-radius: 50%;
+    }
+</style>
+
+<!-- ===== 5. STATUS BADGES ===== -->
+<div class="flex flex-wrap gap-3">
+    <span class="status-badge status-online"><i class="fas fa-circle text-[8px] mr-1"></i> Online</span>
+    <span class="status-badge status-offline"><i class="fas fa-circle text-[8px] mr-1"></i> Offline</span>
+    <span class="status-badge status-busy"><i class="fas fa-circle text-[8px] mr-1"></i> Darsda</span>
+    <span class="status-badge status-away"><i class="fas fa-circle text-[8px] mr-1"></i> Uzoqda</span>
+    <span class="status-badge status-do-not-disturb"><i class="fas fa-circle text-[8px] mr-1"></i> Bezovta qilmang</span>
+</div>
+
+<style>
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .status-online {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .status-offline {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+    
+    .status-busy {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .status-away {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    .status-do-not-disturb {
+        background: #f3e8ff;
+        color: #9333ea;
+    }
+</style>
+
+<!-- ===== 6. COUNTDOWN BADGE ===== -->
+<div class="space-y-4">
+    <div class="countdown-badge countdown-danger">
+        <i class="fas fa-hourglass-half mr-2"></i>
+        <span id="countdownTimer">02:15:30</span>
+    </div>
+    
+    <div class="countdown-badge countdown-warning">
+        <i class="fas fa-clock mr-2"></i>
+        <span id="deadlineTimer">3 kun 5 soat</span>
+    </div>
+</div>
+
+<script>
+    function startCountdown(hours, minutes, seconds) {
+        let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+        const timerElement = document.getElementById('countdownTimer');
+        
+        const interval = setInterval(() => {
+            if (totalSeconds <= 0) {
+                clearInterval(interval);
+                timerElement.textContent = '00:00:00';
+                timerElement.parentElement.classList.add('countdown-expired');
+                return;
+            }
+            
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = totalSeconds % 60;
+            
+            timerElement.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            totalSeconds--;
+        }, 1000);
+    }
+    
+    startCountdown(2, 15, 30);
+</script>
+
+<style>
+    .countdown-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: monospace;
+    }
+    
+    .countdown-danger {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .countdown-warning {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    .countdown-success {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .countdown-expired {
+        background: #f3f4f6;
+        color: #6b7280;
+        animation: pulse 1s infinite;
+    }
+</style>
+
+<!-- ===== 7. TASK STATUS BADGES ===== -->
+<div class="flex flex-wrap gap-3">
+    <span class="task-badge task-pending"><i class="fas fa-clock mr-1"></i> Kutilmoqda</span>
+    <span class="task-badge task-in-progress"><i class="fas fa-spinner fa-spin mr-1"></i> Jarayonda</span>
+    <span class="task-badge task-submitted"><i class="fas fa-upload mr-1"></i> Topshirilgan</span>
+    <span class="task-badge task-graded"><i class="fas fa-star mr-1"></i> Baholangan</span>
+    <span class="task-badge task-late"><i class="fas fa-exclamation-triangle mr-1"></i> Kechikkan</span>
+    <span class="task-badge task-completed"><i class="fas fa-check-circle mr-1"></i> Bajarilgan</span>
+</div>
+
+<style>
+    .task-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .task-pending {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+    
+    .task-in-progress {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+    
+    .task-submitted {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    .task-graded {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .task-late {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .task-completed {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+</style>
+
+<!-- ===== 8. PRIORITY BADGES ===== -->
+<div class="flex flex-wrap gap-3">
+    <span class="priority-badge priority-high"><i class="fas fa-arrow-up mr-1"></i> Yuqori</span>
+    <span class="priority-badge priority-medium"><i class="fas fa-minus mr-1"></i> O'rtacha</span>
+    <span class="priority-badge priority-low"><i class="fas fa-arrow-down mr-1"></i> Past</span>
+</div>
+
+<style>
+    .priority-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .priority-high {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .priority-medium {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    .priority-low {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+</style>
+
+<!-- ===== 9. ROLE BADGES ===== -->
+<div class="flex flex-wrap gap-3">
+    <span class="role-badge role-admin"><i class="fas fa-crown mr-1"></i> Admin</span>
+    <span class="role-badge role-teacher"><i class="fas fa-chalkboard-teacher mr-1"></i> O'qituvchi</span>
+    <span class="role-badge role-student"><i class="fas fa-user-graduate mr-1"></i> Talaba</span>
+    <span class="role-badge role-moderator"><i class="fas fa-user-shield mr-1"></i> Moderator</span>
+</div>
+
+<style>
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .role-admin {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .role-teacher {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+    
+    .role-student {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .role-moderator {
+        background: #f3e8ff;
+        color: #9333ea;
+    }
+</style>
+
+<!-- ===== 10. NOTIFICATION TOAST ===== -->
+<div id="notificationToast" class="notification-toast hidden">
+    <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-bell text-blue-600"></i>
+        </div>
+        <div class="flex-1">
+            <p class="font-medium text-sm">Yangi bildirishnoma</p>
+            <p class="text-xs text-gray-500">Sizda 3 ta o'qilmagan xabar bor</p>
+        </div>
+        <button onclick="closeToast()" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    function showNotificationToast() {
+        const toast = document.getElementById('notificationToast');
+        toast.classList.remove('hidden');
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            closeToast();
+        }, 5000);
+    }
+    
+    function closeToast() {
+        const toast = document.getElementById('notificationToast');
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 300);
+    }
+    
+    // Show toast after 2 seconds
+    setTimeout(showNotificationToast, 2000);
+</script>
+
+<style>
+    .notification-toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: white;
+        border-radius: 16px;
+        padding: 12px 16px;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        min-width: 300px;
+        z-index: 1000;
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+    }
+    
+    .notification-toast.show {
+        transform: translateX(0);
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+</style>
+
+<!-- ===== 11. LIVE NOTIFICATION BADGE (Auto-updating) ===== -->
+<div class="space-y-4">
+    <div class="relative inline-block">
+        <i class="fas fa-bell text-3xl text-gray-600"></i>
+        <span id="liveBadge" class="notification-badge pulse-badge">0</span>
+    </div>
+    
+    <div class="flex gap-2">
+        <button onclick="addNotification()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm">+ Yangi bildirishnoma</button>
+        <button onclick="resetNotifications()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl text-sm">Tozalash</button>
+    </div>
+</div>
+
+<script>
+    let notificationCount = 5;
+    
+    function updateLiveBadge() {
+        const badge = document.getElementById('liveBadge');
+        if (notificationCount > 0) {
+            badge.textContent = notificationCount > 99 ? '99+' : notificationCount;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+    
+    function addNotification() {
+        notificationCount++;
+        updateLiveBadge();
+        
+        // Show toast
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-20 right-4 bg-white rounded-xl shadow-lg p-3 flex items-center gap-3 animate-slideIn z-50';
+        toast.innerHTML = `
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <i class="fas fa-bell text-blue-600 text-sm"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium">Yangi bildirishnoma</p>
+                <p class="text-xs text-gray-500">Sizga yangi xabar keldi</p>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+    
+    function resetNotifications() {
+        notificationCount = 0;
+        updateLiveBadge();
+    }
+    
+    updateLiveBadge();
+</script>
+
+<style>
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slideIn {
+        animation: slideIn 0.3s ease forwards;
+    }
+</style>
+
+<!-- ===== 12. COMPLETE NOTIFICATION CENTER EXAMPLE ===== -->
+<div class="bg-white rounded-2xl shadow-sm p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold">Bildirishnoma markazi</h3>
+        <div class="relative">
+            <i class="fas fa-bell text-2xl text-gray-600"></i>
+            <span class="notification-badge">8</span>
+        </div>
+    </div>
+    
+    <div class="space-y-4">
+        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-xl">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-tasks text-blue-600"></i>
+                </div>
+                <div>
+                    <p class="font-medium">Yangi vazifa</p>
+                    <p class="text-sm text-gray-500">HTML portfolio vazifasi qo'shildi</p>
+                </div>
+            </div>
+            <span class="text-xs text-gray-400">2 soat oldin</span>
+        </div>
+        
+        <div class="flex items-center justify-between p-3 bg-green-50 rounded-xl">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-check-circle text-green-600"></i>
+                </div>
+                <div>
+                    <p class="font-medium">Vazifa bajarildi</p>
+                    <p class="text-sm text-gray-500">CSS animatsiyalar topshirildi</p>
+                </div>
+            </div>
+            <span class="text-xs text-gray-400">1 kun oldin</span>
+        </div>
+        
+        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-xl">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-clock text-yellow-600"></i>
+                </div>
+                <div>
+                    <p class="font-medium">Muddati yaqin</p>
+                    <p class="text-sm text-gray-500">JavaScript vazifasiga 2 kun qoldi</p>
+                </div>
+            </div>
+            <span class="text-xs text-gray-400">3 soat oldin</span>
+        </div>
+    </div>
+    
+    <button class="mt-6 w-full py-2 text-center text-blue-600 hover:bg-blue-50 rounded-xl transition-all">
+        Barcha bildirishnomalarni ko'rish →
+    </button>
+</div>
+
+<!-- ===== UTILITY FUNCTIONS ===== -->
+<script>
+    // Global notification functions
+    window.showNotification = function(message, type = 'info', duration = 3000) {
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-orange-500' : 'bg-blue-500';
+        const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+        
+        toast.className = `fixed bottom-4 right-4 ${bgColor} text-white rounded-xl shadow-lg p-3 flex items-center gap-3 animate-slideIn z-50`;
+        toast.innerHTML = `
+            <i class="fas ${icon} text-lg"></i>
+            <span class="text-sm">${message}</span>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), duration);
+    };
+    
+    window.updateNotificationBadge = function(selector, count) {
+        const badge = document.querySelector(selector);
+        if (badge) {
+            if (count > 0) {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+    };
+</script>

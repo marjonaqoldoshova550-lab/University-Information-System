@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'qituvchilar - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍🏫</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .teacher-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.3s;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .teacher-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .teacher-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-busy {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-offline {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #f3f4f6;
+        }
+
+        .department-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .contact-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500">O'qituvchilar</p>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex items-center gap-6">
+                <!-- Back to Dashboard -->
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+
+                <!-- User Info -->
+                <div class="text-right hidden md:block">
+                    <p id="userName" class="font-bold text-gray-800">Azimjon Karimov</p>
+                    <p class="text-xs text-gray-500">Talaba • AT-101-20</p>
+                </div>
+
+                <img src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-blue-600 cursor-pointer" onclick="goToProfile()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">👨‍🏫 O'qituvchilar</h1>
+        <div class="text-sm text-gray-500">
+            <i class="fas fa-users mr-1"></i> Jami: <span id="totalTeachers">24</span> ta
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Search -->
+            <div class="search-box md:col-span-2">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="O'qituvchi ismi yoki fan nomi bo'yicha qidirish..." onkeyup="searchTeachers()">
+            </div>
+
+            <!-- Department Filter -->
+            <select id="departmentFilter" class="p-3 border rounded-xl bg-white" onchange="filterTeachers()">
+                <option value="all">Barcha kafedralar</option>
+                <option value="Dasturlash">Dasturlash</option>
+                <option value="Axborot xavfsizligi">Axborot xavfsizligi</option>
+                <option value="Tizimlar">Tizimlar</option>
+                <option value="Iqtisodiyot">Iqtisodiyot</option>
+            </select>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="flex flex-wrap gap-2 mt-4">
+            <button onclick="quickFilter('all')" class="filter-btn active" id="filterAll">Barchasi</button>
+            <button onclick="quickFilter('online')" class="filter-btn" id="filterOnline">Online</button>
+            <button onclick="quickFilter('department')" class="filter-btn" id="filterDepartment">Kafedra mudirlari</button>
+            <button onclick="quickFilter('professor')" class="filter-btn" id="filterProfessor">Professorlar</button>
+            <button onclick="quickFilter('phd')" class="filter-btn" id="filterPhD">PhD</button>
+        </div>
+    </div>
+
+    <!-- Teachers Grid -->
+    <div id="teachersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Teachers will be loaded here -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center gap-2 mt-8">
+        <button onclick="changePage(-1)" class="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center hover:bg-gray-50">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span id="pageInfo" class="px-4 py-2 bg-white rounded-xl shadow-sm">1 / 3</span>
+        <button onclick="changePage(1)" class="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center hover:bg-gray-50">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Teacher Details Modal -->
+<div id="teacherModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="modalTitle">O'qituvchi ma'lumotlari</h3>
+            <button onclick="closeModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- Contact Modal -->
+<div id="contactModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">💬 Xabar yozish</h3>
+            <button onclick="closeContactModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Qabul qiluvchi</label>
+                <input type="text" id="receiverName" class="w-full p-3 border rounded-xl bg-gray-50" readonly>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Mavzu</label>
+                <input type="text" id="messageSubject" class="w-full p-3 border rounded-xl" placeholder="Xabar mavzusi">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Xabar</label>
+                <textarea id="messageContent" rows="5" class="w-full p-3 border rounded-xl" placeholder="Xabaringizni yozing..."></textarea>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="sendMessage()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                    <i class="fab fa-telegram mr-2"></i> Yuborish
+                </button>
+                <button onclick="closeContactModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentPage = 1;
+    let itemsPerPage = 9;
+    let currentFilter = 'all';
+    let currentDepartment = 'all';
+    let searchQuery = '';
+    let selectedTeacherId = null;
+
+    const teachersData = [
+        {
+            id: 2,
+            name: 'Said Alisherov',
+            subject: 'Veb dasturlash',
+            department: 'Dasturlash',
+            degree: 'PhD',
+            title: 'Dotsent',
+            experience: 12,
+            room: '402',
+            building: 'A',
+            email: 's.alisherov@edu.uz',
+            phone: '+998901234567',
+            telegram: '@said_alisherov',
+            status: 'online',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TATU', year: 2007 },
+                { degree: 'Magistr', university: 'TATU', year: 2009 },
+                { degree: 'PhD', university: 'MDU', year: 2014 }
+            ],
+            publications: 45,
+            rating: 4.8,
+            students: 124,
+            courses: ['Veb dasturlash', 'JavaScript', 'React.js']
+        },
+        {
+            id: 3,
+            name: 'Nodira Karimova',
+            subject: 'Ma\'lumotlar bazasi',
+            department: 'Dasturlash',
+            degree: 'PhD',
+            title: 'Katta o\'qituvchi',
+            experience: 10,
+            room: '312',
+            building: 'B',
+            email: 'n.karimova@edu.uz',
+            phone: '+998909876543',
+            telegram: '@nodira_k',
+            status: 'busy',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Nodira+Karimova&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDIU', year: 2010 },
+                { degree: 'Magistr', university: 'TATU', year: 2012 },
+                { degree: 'PhD', university: 'KAIST', year: 2016 }
+            ],
+            publications: 28,
+            rating: 4.7,
+            students: 98,
+            courses: ['Ma\'lumotlar bazasi', 'SQL', 'NoSQL']
+        },
+        {
+            id: 4,
+            name: 'Jasur Usmonov',
+            subject: 'Kiberxavfsizlik',
+            department: 'Axborot xavfsizligi',
+            degree: 'Professor',
+            title: 'Professor',
+            experience: 15,
+            room: '210',
+            building: 'B',
+            email: 'j.usmonov@edu.uz',
+            phone: '+998934560011',
+            telegram: '@jasur_u',
+            status: 'offline',
+            isHead: true,
+            isProfessor: true,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Jasur+Usmonov&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDTU', year: 2002 },
+                { degree: 'Magistr', university: 'TDTU', year: 2004 },
+                { degree: 'DSc', university: 'RFA', year: 2010 }
+            ],
+            publications: 67,
+            rating: 4.9,
+            students: 156,
+            courses: ['Kiberxavfsizlik', 'Kriptografiya', 'Penetration testing']
+        },
+        {
+            id: 5,
+            name: 'Dildora Ahmetova',
+            subject: 'Sun\'iy intellekt',
+            department: 'Dasturlash',
+            degree: 'DSc',
+            title: 'Professor',
+            experience: 20,
+            room: '105',
+            building: 'C',
+            email: 'd.ahmetova@edu.uz',
+            phone: '+998991112233',
+            telegram: '@dildora_a',
+            status: 'online',
+            isHead: false,
+            isProfessor: true,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Dildora+Ahmetova&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDU', year: 1997 },
+                { degree: 'Magistr', university: 'TDU', year: 1999 },
+                { degree: 'PhD', university: 'Stanford', year: 2005 },
+                { degree: 'DSc', university: 'Stanford', year: 2010 }
+            ],
+            publications: 89,
+            rating: 4.9,
+            students: 178,
+            courses: ['Sun\'iy intellekt', 'Machine Learning', 'Deep Learning']
+        },
+        {
+            id: 6,
+            name: 'Aziz Qosimov',
+            subject: 'Tizimli boshqaruv',
+            department: 'Tizimlar',
+            degree: 'PhD',
+            title: 'Dotsent',
+            experience: 8,
+            room: '308',
+            building: 'C',
+            email: 'a.qosimov@edu.uz',
+            phone: '+998977778899',
+            telegram: '@aziz_q',
+            status: 'online',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Aziz+Qosimov&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TATU', year: 2012 },
+                { degree: 'Magistr', university: 'TATU', year: 2014 },
+                { degree: 'PhD', university: 'TU Berlin', year: 2018 }
+            ],
+            publications: 23,
+            rating: 4.6,
+            students: 87,
+            courses: ['Linux', 'Docker', 'Cloud Computing']
+        },
+        {
+            id: 31,
+            name: 'Akmal Hakimov',
+            subject: 'Mikroiqtisodiyot',
+            department: 'Iqtisodiyot',
+            degree: 'PhD',
+            title: 'Dotsent',
+            experience: 11,
+            room: '415',
+            building: 'D',
+            email: 'a.hakimov@edu.uz',
+            phone: '+998935551122',
+            telegram: '@akmal_h',
+            status: 'busy',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Akmal+Hakimov&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDIU', year: 2006 },
+                { degree: 'Magistr', university: 'TDIU', year: 2008 },
+                { degree: 'PhD', university: 'LSE', year: 2015 }
+            ],
+            publications: 34,
+            rating: 4.7,
+            students: 112,
+            courses: ['Mikroiqtisodiyot', 'Ekonometrika']
+        },
+        {
+            id: 32,
+            name: 'Dilbar Xolmatova',
+            subject: 'Makroiqtisodiyot',
+            department: 'Iqtisodiyot',
+            degree: 'PhD',
+            title: 'Dotsent',
+            experience: 9,
+            room: '416',
+            building: 'D',
+            email: 'd.xolmatova@edu.uz',
+            phone: '+998935552233',
+            telegram: '@dilbar_x',
+            status: 'offline',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Dilbar+Xolmatova&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDIU', year: 2009 },
+                { degree: 'Magistr', university: 'TDIU', year: 2011 },
+                { degree: 'PhD', university: 'TU Berlin', year: 2017 }
+            ],
+            publications: 21,
+            rating: 4.5,
+            students: 98,
+            courses: ['Makroiqtisodiyot', 'Xalqaro iqtisodiyot']
+        },
+        {
+            id: 33,
+            name: 'Rustam Aliyev',
+            subject: 'Ekonometrika',
+            department: 'Iqtisodiyot',
+            degree: 'DSc',
+            title: 'Professor',
+            experience: 18,
+            room: '417',
+            building: 'D',
+            email: 'r.aliyev@edu.uz',
+            phone: '+998935553344',
+            telegram: '@rustam_a',
+            status: 'online',
+            isHead: true,
+            isProfessor: true,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Rustam+Aliyev&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDU', year: 1994 },
+                { degree: 'Magistr', university: 'TDU', year: 1996 },
+                { degree: 'PhD', university: 'MDU', year: 2002 },
+                { degree: 'DSc', university: 'RFA', year: 2010 }
+            ],
+            publications: 78,
+            rating: 4.8,
+            students: 145,
+            courses: ['Ekonometrika', 'Statistika']
+        },
+        {
+            id: 34,
+            name: 'Malika Rahimova',
+            subject: 'Biznes statistika',
+            department: 'Iqtisodiyot',
+            degree: 'PhD',
+            title: 'Katta o\'qituvchi',
+            experience: 7,
+            room: '418',
+            building: 'D',
+            email: 'm.rahimova@edu.uz',
+            phone: '+998935554455',
+            telegram: '@malika_r',
+            status: 'online',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Malika+Rahimova&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDIU', year: 2013 },
+                { degree: 'Magistr', university: 'TDIU', year: 2015 },
+                { degree: 'PhD', university: 'Wisconsin', year: 2019 }
+            ],
+            publications: 15,
+            rating: 4.6,
+            students: 89,
+            courses: ['Biznes statistika', 'Marketing tahlili']
+        },
+        {
+            id: 35,
+            name: 'Bahodir Tursunov',
+            subject: 'Kompyuter tarmoqlari',
+            department: 'Tizimlar',
+            degree: 'PhD',
+            title: 'Dotsent',
+            experience: 11,
+            room: '501',
+            building: 'E',
+            email: 'b.tursunov@edu.uz',
+            phone: '+998935556677',
+            telegram: '@bahodir_t',
+            status: 'busy',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Bahodir+Tursunov&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TATU', year: 2007 },
+                { degree: 'Magistr', university: 'TATU', year: 2009 },
+                { degree: 'PhD', university: 'Aalto', year: 2015 }
+            ],
+            publications: 31,
+            rating: 4.7,
+            students: 103,
+            courses: ['Kompyuter tarmoqlari', 'TCP/IP', 'Network Security']
+        },
+        {
+            id: 36,
+            name: 'Gulnora Akramova',
+            subject: 'Algoritmlar',
+            department: 'Dasturlash',
+            degree: 'Professor',
+            title: 'Professor',
+            experience: 22,
+            room: '502',
+            building: 'E',
+            email: 'g.akramova@edu.uz',
+            phone: '+998935557788',
+            telegram: '@gulnora_a',
+            status: 'offline',
+            isHead: false,
+            isProfessor: true,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Gulnora+Akramova&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TDU', year: 1992 },
+                { degree: 'Magistr', university: 'TDU', year: 1994 },
+                { degree: 'PhD', university: 'RFA', year: 2000 },
+                { degree: 'DSc', university: 'RFA', year: 2008 }
+            ],
+            publications: 95,
+            rating: 4.9,
+            students: 167,
+            courses: ['Algoritmlar', 'Ma\'lumotlar tuzilmasi', 'C++']
+        },
+        {
+            id: 37,
+            name: 'Farrux Karimov',
+            subject: 'Sun\'iy intellekt',
+            department: 'Dasturlash',
+            degree: 'PhD',
+            title: 'Katta o\'qituvchi',
+            experience: 6,
+            room: '601',
+            building: 'F',
+            email: 'f.karimov@edu.uz',
+            phone: '+998935558899',
+            telegram: '@farrux_k',
+            status: 'online',
+            isHead: false,
+            isProfessor: false,
+            isPhD: true,
+            avatar: 'https://ui-avatars.com/api/?name=Farrux+Karimov&background=4f46e5&color=fff',
+            education: [
+                { degree: 'Bakalavr', university: 'TATU', year: 2014 },
+                { degree: 'Magistr', university: 'KAIST', year: 2017 },
+                { degree: 'PhD', university: 'KAIST', year: 2020 }
+            ],
+            publications: 12,
+            rating: 4.5,
+            students: 76,
+            courses: ['Sun\'iy intellekt', 'Python', 'TensorFlow']
+        }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        document.getElementById('totalTeachers').textContent = teachersData.length;
+        displayTeachers();
+    };
+
+    function displayTeachers() {
+        const grid = document.getElementById('teachersGrid');
+        let filteredTeachers = [...teachersData];
+        
+        // Apply filters
+        if (searchQuery) {
+            filteredTeachers = filteredTeachers.filter(t => 
+                t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                t.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                t.department.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+        
+        if (currentDepartment !== 'all') {
+            filteredTeachers = filteredTeachers.filter(t => t.department === currentDepartment);
+        }
+        
+        if (currentFilter === 'online') {
+            filteredTeachers = filteredTeachers.filter(t => t.status === 'online');
+        } else if (currentFilter === 'department') {
+            filteredTeachers = filteredTeachers.filter(t => t.isHead);
+        } else if (currentFilter === 'professor') {
+            filteredTeachers = filteredTeachers.filter(t => t.isProfessor);
+        } else if (currentFilter === 'phd') {
+            filteredTeachers = filteredTeachers.filter(t => t.isPhD);
+        }
+        
+        // Pagination
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedTeachers = filteredTeachers.slice(start, end);
+        
+        // Update page info
+        const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+        document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages || 1}`;
+        
+        // Generate HTML
+        grid.innerHTML = '';
+        paginatedTeachers.forEach(teacher => {
+            const statusClass = teacher.status === 'online' ? 'status-online' :
+                               teacher.status === 'busy' ? 'status-busy' : 'status-offline';
+            const statusText = teacher.status === 'online' ? 'Online' :
+                              teacher.status === 'busy' ? 'Darsda' : 'Offline';
+            
+            grid.innerHTML += `
+                <div class="teacher-card card-hover" onclick="showTeacherDetails(${teacher.id})">
+                    <div class="flex items-start gap-4">
+                        <img src="${teacher.avatar}" class="w-20 h-20 rounded-2xl border-2 border-blue-100">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-lg">${teacher.name}</h3>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                            </div>
+                            <p class="text-gray-600">${teacher.subject}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="department-tag">${teacher.department}</span>
+                                <span class="text-xs text-gray-500"><i class="fas fa-star text-yellow-400 mr-1"></i>${teacher.rating}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t">
+                        <div class="text-sm text-gray-500">
+                            <i class="fas fa-briefcase mr-1"></i> ${teacher.experience} yil
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="event.stopPropagation(); showContactModal(${teacher.id})" 
+                                    class="contact-btn bg-blue-50 text-blue-600 hover:bg-blue-100">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); window.open('https://t.me/${teacher.telegram.substring(1)}', '_blank')" 
+                                    class="contact-btn bg-blue-500 text-white hover:bg-blue-600">
+                                <i class="fab fa-telegram-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (paginatedTeachers.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-3 text-center py-12">
+                    <i class="fas fa-search text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Hech narsa topilmadi</p>
+                </div>
+            `;
+        }
+    }
+
+    function showTeacherDetails(teacherId) {
+        const teacher = teachersData.find(t => t.id === teacherId);
+        if (!teacher) return;
+        
+        const statusClass = teacher.status === 'online' ? 'status-online' :
+                           teacher.status === 'busy' ? 'status-busy' : 'status-offline';
+        const statusText = teacher.status === 'online' ? 'Online' :
+                          teacher.status === 'busy' ? 'Darsda' : 'Offline';
+        
+        const educationHtml = teacher.education.map(edu => `
+            <div class="flex justify-between text-sm border-b pb-2">
+                <span>${edu.degree}, ${edu.university}</span>
+                <span class="text-gray-500">${edu.year}</span>
+            </div>
+        `).join('');
+        
+        const coursesHtml = teacher.courses.map(course => 
+            `<span class="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs">${course}</span>`
+        ).join(' ');
+        
+        const modalContent = `
+            <div class="space-y-6">
+                <div class="flex items-center gap-6">
+                    <img src="${teacher.avatar}" class="w-24 h-24 rounded-2xl border-4 border-blue-100">
+                    <div>
+                        <h4 class="text-2xl font-bold">${teacher.name}</h4>
+                        <p class="text-gray-600">${teacher.subject}</p>
+                        <span class="status-badge ${statusClass} mt-2">${statusText}</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Ilmiy daraja</p>
+                        <p class="font-medium">${teacher.degree}</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Unvon</p>
+                        <p class="font-medium">${teacher.title}</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Kafedra</p>
+                        <p class="font-medium">${teacher.department}</p>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Tajriba</p>
+                        <p class="font-medium">${teacher.experience} yil</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-2">📚 Ta'lim</h5>
+                    <div class="space-y-2">
+                        ${educationHtml}
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-2">📖 Fanlar</h5>
+                    <div class="flex flex-wrap gap-2">
+                        ${coursesHtml}
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-2">📊 Statistika</h5>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="text-center">
+                            <p class="text-xl font-bold text-blue-600">${teacher.publications}</p>
+                            <p class="text-xs text-gray-500">Maqolalar</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xl font-bold text-green-600">${teacher.students}</p>
+                            <p class="text-xs text-gray-500">Talabalar</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xl font-bold text-yellow-600">${teacher.rating}</p>
+                            <p class="text-xs text-gray-500">Reyting</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-2">📞 Kontakt</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-map-marker-alt w-6 text-gray-400"></i> ${teacher.room}-xona, ${teacher.building} bino</p>
+                        <p><i class="fas fa-phone w-6 text-gray-400"></i> ${teacher.phone}</p>
+                        <p><i class="fas fa-envelope w-6 text-gray-400"></i> ${teacher.email}</p>
+                        <p><i class="fab fa-telegram w-6 text-gray-400"></i> ${teacher.telegram}</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button onclick="showContactModal(${teacher.id})" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                        <i class="fas fa-envelope mr-2"></i> Xabar yozish
+                    </button>
+                    <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('modalContent').innerHTML = modalContent;
+        document.getElementById('teacherModal').style.display = 'flex';
+    }
+
+    function showContactModal(teacherId) {
+        const teacher = teachersData.find(t => t.id === teacherId);
+        if (!teacher) return;
+        
+        selectedTeacherId = teacherId;
+        document.getElementById('receiverName').value = teacher.name;
+        document.getElementById('contactModal').style.display = 'flex';
+        closeModal();
+    }
+
+    function closeContactModal() {
+        document.getElementById('contactModal').style.display = 'none';
+        document.getElementById('messageSubject').value = '';
+        document.getElementById('messageContent').value = '';
+    }
+
+    function sendMessage() {
+        const subject = document.getElementById('messageSubject').value;
+        const content = document.getElementById('messageContent').value;
+        
+        if (!subject || !content) {
+            showToast('Mavzu va xabarni kiriting!', 'error');
+            return;
+        }
+        
+        showToast('Xabar muvaffaqiyatli yuborildi!', 'success');
+        closeContactModal();
+    }
+
+    // ========== FILTER FUNKSIYALARI ==========
+    function searchTeachers() {
+        searchQuery = document.getElementById('searchInput').value;
+        currentPage = 1;
+        displayTeachers();
+    }
+
+    function filterTeachers() {
+        currentDepartment = document.getElementById('departmentFilter').value;
+        currentPage = 1;
+        displayTeachers();
+    }
+
+    function quickFilter(filter) {
+        currentFilter = filter;
+        currentPage = 1;
+        
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');
+        
+        displayTeachers();
+    }
+
+    function changePage(direction) {
+        const filteredCount = getFilteredCount();
+        const totalPages = Math.ceil(filteredCount / itemsPerPage);
+        
+        currentPage += direction;
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        
+        displayTeachers();
+    }
+
+    function getFilteredCount() {
+        let filtered = [...teachersData];
+        
+        if (searchQuery) {
+            filtered = filtered.filter(t => 
+                t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                t.subject.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+        
+        if (currentDepartment !== 'all') {
+            filtered = filtered.filter(t => t.department === currentDepartment);
+        }
+        
+        if (currentFilter === 'online') {
+            filtered = filtered.filter(t => t.status === 'online');
+        } else if (currentFilter === 'department') {
+            filtered = filtered.filter(t => t.isHead);
+        } else if (currentFilter === 'professor') {
+            filtered = filtered.filter(t => t.isProfessor);
+        } else if (currentFilter === 'phd') {
+            filtered = filtered.filter(t => t.isPhD);
+        }
+        
+        return filtered.length;
+    }
+
+    function closeModal() {
+        document.getElementById('teacherModal').style.display = 'none';
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = 'profile.html';
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        
+        if (type === 'success') toast.classList.add('bg-green-500');
+        else if (type === 'error') toast.classList.add('bg-red-500');
+        else if (type === 'warning') toast.classList.add('bg-orange-500');
+        else toast.classList.add('bg-blue-500');
+        
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+
+    // Modalni yopish (tashqariga bosilganda)
+    window.onclick = function(event) {
+        const teacherModal = document.getElementById('teacherModal');
+        const contactModal = document.getElementById('contactModal');
+        
+        if (event.target === teacherModal) {
+            closeModal();
+        }
+        if (event.target === contactModal) {
+            closeContactModal();
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistika - EduHemis Admin</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .export-btn {
+            transition: all 0.3s;
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            outline: none;
+        }
+        
+        .date-input:focus {
+            border-color: #3b82f6;
+            ring: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Statistika va tahlillar</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Admin User</p>
+                    <p class="text-xs text-gray-500">Administrator</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-red-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📊 Statistika va tahlillar</h1>
+        <div class="flex gap-3">
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-500">Sana oralig'i:</span>
+                <input type="date" id="startDate" class="date-input text-sm">
+                <span class="text-gray-500">-</span>
+                <input type="date" id="endDate" class="date-input text-sm">
+                <button onclick="updateStats()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700">
+                    <i class="fas fa-sync-alt mr-1"></i> Yangilash
+                </button>
+            </div>
+            <button onclick="exportStatistics()" class="px-4 py-2 bg-green-600 text-white rounded-xl text-sm hover:bg-green-700 export-btn">
+                <i class="fas fa-download mr-1"></i> Hisobot
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-sm p-6 card-hover">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jami foydalanuvchilar</p>
+                    <h3 class="text-3xl font-bold mt-1" id="totalUsers">156</h3>
+                    <p class="text-xs text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i> +12 bu oy</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm p-6 card-hover">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Faol talabalar</p>
+                    <h3 class="text-3xl font-bold mt-1 text-green-600" id="activeStudents">142</h3>
+                    <p class="text-xs text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i> +8 bu oy</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 91%"></div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm p-6 card-hover">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Bitiruvchilar</p>
+                    <h3 class="text-3xl font-bold mt-1 text-purple-600" id="graduated">28</h3>
+                    <p class="text-xs text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i> +4 bu oy</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 65%"></div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm p-6 card-hover">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">O'rtacha GPA</p>
+                    <h3 class="text-3xl font-bold mt-1 text-orange-600" id="avgGPA">4.6</h3>
+                    <p class="text-xs text-green-600 mt-2"><i class="fas fa-arrow-up mr-1"></i> +0.2 bu oy</p>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="mt-4 progress-bar">
+                <div class="progress-fill" style="width: 92%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <button onclick="switchTab('overview')" id="tabOverview" class="tab-btn tab-active">📊 Umumiy</button>
+        <button onclick="switchTab('students')" id="tabStudents" class="tab-btn">👨‍🎓 Talabalar</button>
+        <button onclick="switchTab('teachers')" id="tabTeachers" class="tab-btn">👨‍🏫 O'qituvchilar</button>
+        <button onclick="switchTab('academic')" id="tabAcademic" class="tab-btn">📚 Akademik</button>
+        <button onclick="switchTab('finance')" id="tabFinance" class="tab-btn">💰 Moliya</button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div id="overviewTab" class="tab-content">
+        <!-- Charts Row 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📈 Oylik faollik dinamikasi</h3>
+                <canvas id="monthlyActivityChart" height="250"></canvas>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">🥧 Foydalanuvchilar taqsimoti</h3>
+                <canvas id="usersDistributionChart" height="250"></canvas>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📊 Fakultetlar bo'yicha talabalar</h3>
+                <canvas id="facultyStudentsChart" height="250"></canvas>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">🎓 Kurslar bo'yicha taqsimot</h3>
+                <canvas id="coursesChart" height="250"></canvas>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 text-white">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm opacity-90">Bugungi faollik</p>
+                        <p class="text-4xl font-bold mt-1" id="todayActive">87</p>
+                        <p class="text-xs mt-2">foydalanuvchi</p>
+                    </div>
+                    <i class="fas fa-chart-line text-4xl opacity-50"></i>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-6 text-white">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm opacity-90">O'rtacha davomat</p>
+                        <p class="text-4xl font-bold mt-1" id="avgAttendance">94%</p>
+                        <p class="text-xs mt-2">bu hafta</p>
+                    </div>
+                    <i class="fas fa-calendar-check text-4xl opacity-50"></i>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-6 text-white">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm opacity-90">Topshirish foizi</p>
+                        <p class="text-4xl font-bold mt-1" id="submissionRate">78%</p>
+                        <p class="text-xs mt-2">vazifalar</p>
+                    </div>
+                    <i class="fas fa-tasks text-4xl opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students Tab -->
+    <div id="studentsTab" class="tab-content hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📈 Talabalar o'sishi</h3>
+                <canvas id="studentsGrowthChart" height="250"></canvas>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">🏆 Reyting taqsimoti</h3>
+                <canvas id="ratingDistributionChart" height="250"></canvas>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">👨‍🎓 Eng yaxshi talabalar</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-4 text-left">#</th>
+                            <th class="p-4 text-left">Talaba</th>
+                            <th class="p-4 text-left">Guruh</th>
+                            <th class="p-4 text-center">O'rtacha ball</th>
+                            <th class="p-4 text-center">Davomat</th>
+                            <th class="p-4 text-center">Vazifalar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topStudentsTable">
+                        <!-- Top students will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teachers Tab -->
+    <div id="teachersTab" class="tab-content hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📊 Kafedralar bo'yicha o'qituvchilar</h3>
+                <canvas id="teachersDepartmentChart" height="250"></canvas>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">🎓 Ilmiy darajalar taqsimoti</h3>
+                <canvas id="degreesChart" height="250"></canvas>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">👨‍🏫 Eng faol o'qituvchilar</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-4 text-left">#</th>
+                            <th class="p-4 text-left">O'qituvchi</th>
+                            <th class="p-4 text-left">Fan</th>
+                            <th class="p-4 text-center">Guruhlar</th>
+                            <th class="p-4 text-center">Talabalar</th>
+                            <th class="p-4 text-center">Reyting</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topTeachersTable">
+                        <!-- Top teachers will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Tab -->
+    <div id="academicTab" class="tab-content hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📚 Fanlar bo'yicha talabalar</h3>
+                <canvas id="subjectsStudentsChart" height="250"></canvas>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📈 Semestrlar bo'yicha GPA</h3>
+                <canvas id="semesterGPAChart" height="250"></canvas>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📊 Baholar taqsimoti</h3>
+                <canvas id="gradesDistributionChart" height="200"></canvas>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">📋 Eng ommabop fanlar</h3>
+                <div id="popularSubjectsList" class="space-y-3">
+                    <!-- Popular subjects will be loaded here -->
+                </div>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6">
+                <h3 class="text-xl font-bold mb-4">⚠️ Qiyin fanlar</h3>
+                <div id="difficultSubjectsList" class="space-y-3">
+                    <!-- Difficult subjects will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finance Tab -->
+    <div id="financeTab" class="tab-content hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-3xl shadow-sm p-6 text-center">
+                <p class="text-gray-500 text-sm">Kontrakt to'lovlari</p>
+                <h3 class="text-3xl font-bold text-green-600 mt-1" id="contractPayments">2.4 млрд</h3>
+                <p class="text-xs text-gray-500 mt-2">so'm</p>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6 text-center">
+                <p class="text-gray-500 text-sm">Grantlar</p>
+                <h3 class="text-3xl font-bold text-blue-600 mt-1" id="grants">156</h3>
+                <p class="text-xs text-gray-500 mt-2">ta talaba</p>
+            </div>
+            <div class="bg-white rounded-3xl shadow-sm p-6 text-center">
+                <p class="text-gray-500 text-sm">To'lov qarzlari</p>
+                <h3 class="text-3xl font-bold text-red-600 mt-1" id="debts">124 млн</h3>
+                <p class="text-xs text-gray-500 mt-2">so'm</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">📊 To'lovlar dinamikasi</h3>
+            <canvas id="paymentsChart" height="200"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentTab = 'overview';
+    let charts = {};
+    
+    // Demo data
+    const monthlyData = {
+        labels: ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun', 'Iyul', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'],
+        users: [120, 125, 130, 135, 140, 142, 145, 148, 150, 152, 154, 156],
+        students: [98, 102, 106, 110, 114, 118, 122, 126, 130, 134, 138, 142],
+        payments: [180, 190, 195, 200, 210, 215, 220, 225, 230, 235, 240, 245]
+    };
+    
+    const topStudents = [
+        { id: 1, name: 'Azimjon Karimov', group: 'AT-101-20', avgGrade: 4.9, attendance: 98, tasks: 12 },
+        { id: 2, name: 'Dilya Akramova', group: 'AT-101-20', avgGrade: 4.8, attendance: 96, tasks: 12 },
+        { id: 3, name: 'Ali Valiyev', group: 'AT-101-20', avgGrade: 4.7, attendance: 95, tasks: 11 },
+        { id: 4, name: 'Malika Ismoilova', group: 'KI-201-21', avgGrade: 4.9, attendance: 97, tasks: 12 },
+        { id: 5, name: 'Zarina Azizova', group: 'DI-301-22', avgGrade: 4.8, attendance: 94, tasks: 11 }
+    ];
+    
+    const topTeachers = [
+        { id: 1, name: 'Said Alisherov', subject: 'Veb dasturlash', groups: 3, students: 74, rating: 4.9 },
+        { id: 2, name: 'Dildora Ahmetova', subject: 'Sun\'iy intellekt', groups: 2, students: 46, rating: 4.8 },
+        { id: 3, name: 'Jasur Usmonov', subject: 'Kiberxavfsizlik', groups: 2, students: 42, rating: 4.8 },
+        { id: 4, name: 'Nodira Karimova', subject: 'Ma\'lumotlar bazasi', groups: 2, students: 48, rating: 4.7 },
+        { id: 5, name: 'Aziz Qosimov', subject: 'Tizimli boshqaruv', groups: 1, students: 28, rating: 4.6 }
+    ];
+    
+    const popularSubjects = [
+        { name: 'Veb dasturlash', students: 124, percent: 85 },
+        { name: 'Ma\'lumotlar bazasi', students: 98, percent: 67 },
+        { name: 'Sun\'iy intellekt', students: 112, percent: 77 }
+    ];
+    
+    const difficultSubjects = [
+        { name: 'Algoritmlar', avgGrade: 3.8, failRate: 15 },
+        { name: 'Kiberxavfsizlik', avgGrade: 4.0, failRate: 10 },
+        { name: 'Ekonometrika', avgGrade: 3.9, failRate: 12 }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        setDefaultDates();
+        initCharts();
+        loadTopStudents();
+        loadTopTeachers();
+        loadPopularSubjects();
+        loadDifficultSubjects();
+    };
+
+    function setDefaultDates() {
+        const today = new Date();
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        
+        document.getElementById('endDate').value = today.toISOString().split('T')[0];
+        document.getElementById('startDate').value = lastMonth.toISOString().split('T')[0];
+    }
+
+    function initCharts() {
+        // Monthly Activity Chart
+        charts.monthlyActivity = new Chart(document.getElementById('monthlyActivityChart'), {
+            type: 'line',
+            data: {
+                labels: monthlyData.labels,
+                datasets: [{
+                    label: 'Faol foydalanuvchilar',
+                    data: monthlyData.users,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Users Distribution Chart
+        charts.usersDistribution = new Chart(document.getElementById('usersDistributionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Talabalar', 'O\'qituvchilar', 'Adminlar'],
+                datasets: [{ data: [142, 28, 4], backgroundColor: ['#10b981', '#3b82f6', '#ef4444'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+        
+        // Faculty Students Chart
+        charts.facultyStudents = new Chart(document.getElementById('facultyStudentsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['AT', 'KI', 'DI', 'IQ'],
+                datasets: [{ label: 'Talabalar soni', data: [320, 280, 240, 300], backgroundColor: '#3b82f6', borderRadius: 8 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+        });
+        
+        // Courses Chart
+        charts.courses = new Chart(document.getElementById('coursesChart'), {
+            type: 'pie',
+            data: {
+                labels: ['1-kurs', '2-kurs', '3-kurs', '4-kurs'],
+                datasets: [{ data: [180, 220, 200, 160], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+        
+        // Students Growth Chart
+        charts.studentsGrowth = new Chart(document.getElementById('studentsGrowthChart'), {
+            type: 'line',
+            data: {
+                labels: monthlyData.labels,
+                datasets: [{ label: 'Talabalar soni', data: monthlyData.students, borderColor: '#10b981', tension: 0.4, fill: false }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Rating Distribution Chart
+        charts.ratingDistribution = new Chart(document.getElementById('ratingDistributionChart'), {
+            type: 'bar',
+            data: {
+                labels: ['5.0', '4.5-4.9', '4.0-4.4', '3.5-3.9', '<3.5'],
+                datasets: [{ label: 'Talabalar soni', data: [12, 45, 38, 28, 19], backgroundColor: '#f59e0b', borderRadius: 8 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Teachers Department Chart
+        charts.teachersDepartment = new Chart(document.getElementById('teachersDepartmentChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Dasturlash', 'Xavfsizlik', 'Tizimlar', 'Iqtisodiyot'],
+                datasets: [{ label: 'O\'qituvchilar soni', data: [12, 6, 5, 5], backgroundColor: '#8b5cf6', borderRadius: 8 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Degrees Chart
+        charts.degrees = new Chart(document.getElementById('degreesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Professor', 'DSc', 'PhD', 'Dotsent'],
+                datasets: [{ data: [6, 4, 12, 6], backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+        
+        // Subjects Students Chart
+        charts.subjectsStudents = new Chart(document.getElementById('subjectsStudentsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Veb dasturlash', 'Ma\'lumotlar bazasi', 'Sun\'iy intellekt', 'Kiberxavfsizlik', 'Algoritmlar'],
+                datasets: [{ label: 'Talabalar soni', data: [124, 98, 112, 86, 108], backgroundColor: '#3b82f6', borderRadius: 8 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Semester GPA Chart
+        charts.semesterGPA = new Chart(document.getElementById('semesterGPAChart'), {
+            type: 'line',
+            data: {
+                labels: ['1-sem', '2-sem', '3-sem', '4-sem', '5-sem', '6-sem', '7-sem', '8-sem'],
+                datasets: [{ label: 'GPA', data: [4.2, 4.3, 4.4, 4.5, 4.6, 4.5, 4.4, 4.3], borderColor: '#8b5cf6', tension: 0.4, fill: false }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        // Grades Distribution Chart
+        charts.gradesDistribution = new Chart(document.getElementById('gradesDistributionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['5 (A\'lo)', '4 (Yaxshi)', '3 (Qoniqarli)', '2 (Qoniqarsiz)'],
+                datasets: [{ data: [156, 248, 96, 24], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+        
+        // Payments Chart
+        charts.payments = new Chart(document.getElementById('paymentsChart'), {
+            type: 'line',
+            data: {
+                labels: monthlyData.labels,
+                datasets: [{ label: 'To\'lovlar (млн)', data: monthlyData.payments, borderColor: '#10b981', tension: 0.4, fill: true, backgroundColor: 'rgba(16, 185, 129, 0.1)' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    function loadTopStudents() {
+        const tbody = document.getElementById('topStudentsTable');
+        tbody.innerHTML = '';
+        
+        topStudents.forEach((student, index) => {
+            tbody.innerHTML += `
+                <tr class="border-t hover:bg-gray-50">
+                    <td class="p-4 font-bold">${index + 1}${index === 0 ? ' 🏆' : ''}</td>
+                    <td class="p-4 font-medium">${student.name}</td>
+                    <td class="p-4">${student.group}</td>
+                    <td class="p-4 text-center font-bold text-green-600">${student.avgGrade}</td>
+                    <td class="p-4 text-center font-bold text-blue-600">${student.attendance}%</td>
+                    <td class="p-4 text-center">${student.tasks}/12</td>
+                </tr>
+            `;
+        });
+    }
+
+    function loadTopTeachers() {
+        const tbody = document.getElementById('topTeachersTable');
+        tbody.innerHTML = '';
+        
+        topTeachers.forEach((teacher, index) => {
+            tbody.innerHTML += `
+                <tr class="border-t hover:bg-gray-50">
+                    <td class="p-4 font-bold">${index + 1}${index === 0 ? ' 🏆' : ''}</td>
+                    <td class="p-4 font-medium">${teacher.name}</td>
+                    <td class="p-4">${teacher.subject}</td>
+                    <td class="p-4 text-center">${teacher.groups}</td>
+                    <td class="p-4 text-center">${teacher.students}</td>
+                    <td class="p-4 text-center font-bold text-yellow-600">${teacher.rating}</td>
+                </tr>
+            `;
+        });
+    }
+
+    function loadPopularSubjects() {
+        const container = document.getElementById('popularSubjectsList');
+        container.innerHTML = '';
+        
+        popularSubjects.forEach(subject => {
+            container.innerHTML += `
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium">${subject.name}</p>
+                        <p class="text-xs text-gray-500">${subject.students} talaba</p>
+                    </div>
+                    <div class="w-32">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${subject.percent}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function loadDifficultSubjects() {
+        const container = document.getElementById('difficultSubjectsList');
+        container.innerHTML = '';
+        
+        difficultSubjects.forEach(subject => {
+            container.innerHTML += `
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium">${subject.name}</p>
+                        <p class="text-xs text-gray-500">O'rtacha: ${subject.avgGrade}</p>
+                    </div>
+                    <span class="px-2 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">${subject.failRate}%</span>
+                </div>
+            `;
+        });
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('tab-active');
+        
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+        document.getElementById(`${tab}Tab`).classList.remove('hidden');
+    }
+
+    function updateStats() {
+        showToast('Statistika yangilandi!', 'success');
+    }
+
+    function exportStatistics() {
+        showToast('Hisobot yuklab olindi!', 'success');
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=admin';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>

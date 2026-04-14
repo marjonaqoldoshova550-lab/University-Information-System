@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>EduHemis</title>
+    
+    <!-- Google Fonts - Inter (eng zamonaviy shrift) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts - Roboto (mashhur shrift) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts - Montserrat (chiroyli shrift) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts - Open Sans (o'qish oson) -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Inter shriftini qo'llash */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Roboto shriftini qo'llash */
+        .roboto-text {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        /* Montserrat shriftini qo'llash */
+        .montserrat-text {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Open Sans shriftini qo'llash */
+        .opensans-text {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-3xl font-bold">EduHemis - Inter shrift</h1>
+    <p class="roboto-text">Bu matn Roboto shriftida</p>
+    <p class="montserrat-text">Bu matn Montserrat shriftida</p>
+    <p class="opensans-text">Bu matn Open Sans shriftida</p>
+</body>
+</html>

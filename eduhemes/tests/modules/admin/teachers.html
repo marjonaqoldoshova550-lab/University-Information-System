@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'qituvchilar - EduHemis Admin</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍🏫</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-onleave {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .table-row-hover:hover {
+            background: #f9fafb;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pagination-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+        }
+        
+        .degree-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .degree-professor { background: #ede9fe; color: #6d28d9; }
+        .degree-doctor { background: #dbeafe; color: #1e40af; }
+        .degree-phd { background: #dcfce7; color: #166534; }
+        .degree-master { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">O'qituvchilar boshqaruvi</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Admin User</p>
+                    <p class="text-xs text-gray-500">Administrator</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-red-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">👨‍🏫 O'qituvchilar</h1>
+        <button onclick="showAddTeacherModal()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            <span>Yangi o'qituvchi</span>
+        </button>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jami</p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalTeachers">28</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Faol</p>
+                    <h3 class="text-2xl font-bold mt-1 text-green-600" id="activeCount">24</h3>
+                </div>
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Professorlar</p>
+                    <h3 class="text-2xl font-bold mt-1 text-purple-600" id="professorCount">6</h3>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">PhD</p>
+                    <h3 class="text-2xl font-bold mt-1 text-blue-600" id="phdCount">15</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">O'rtacha tajriba</p>
+                    <h3 class="text-2xl font-bold mt-1 text-orange-600" id="avgExperience">12.5</h3>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+            </div>
+            <div class="mt-2 progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="search-box md:col-span-2">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Ism, fan yoki kafedra bo'yicha..." onkeyup="searchTeachers()">
+            </div>
+            <select id="departmentFilter" class="p-3 border rounded-xl bg-white" onchange="filterTeachers()">
+                <option value="all">Barcha kafedralar</option>
+                <option value="Dasturlash">Dasturlash</option>
+                <option value="Axborot xavfsizligi">Axborot xavfsizligi</option>
+                <option value="Tizimlar">Tizimlar</option>
+                <option value="Iqtisodiyot">Iqtisodiyot</option>
+            </select>
+            <select id="degreeFilter" class="p-3 border rounded-xl bg-white" onchange="filterTeachers()">
+                <option value="all">Barcha darajalar</option>
+                <option value="Professor">Professor</option>
+                <option value="DSc">DSc</option>
+                <option value="PhD">PhD</option>
+                <option value="Dotsent">Dotsent</option>
+            </select>
+            <select id="statusFilter" class="p-3 border rounded-xl bg-white" onchange="filterTeachers()">
+                <option value="all">Barcha holatlar</option>
+                <option value="active">Faol</option>
+                <option value="onleave">Ta'tilda</option>
+                <option value="inactive">No faol</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bg-white rounded-2xl shadow-sm p-4 mb-6 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+            <label for="selectAll" class="text-sm">Barchasini belgilash</label>
+            <span class="text-gray-300">|</span>
+            <div class="flex gap-2">
+                <button onclick="bulkActivate()" class="px-3 py-1 bg-green-100 text-green-600 rounded-lg text-sm hover:bg-green-200">
+                    <i class="fas fa-check-circle mr-1"></i> Faollashtirish
+                </button>
+                <button onclick="bulkExport()" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200">
+                    <i class="fas fa-download mr-1"></i> Eksport
+                </button>
+                <button onclick="bulkDelete()" class="px-3 py-1 bg-red-100 text-red-600 rounded-lg text-sm hover:bg-red-200">
+                    <i class="fas fa-trash mr-1"></i> O'chirish
+                </button>
+            </div>
+        </div>
+        <div class="text-sm text-gray-500">
+            <span id="selectedCount">0</span> ta tanlangan
+        </div>
+    </div>
+
+    <!-- Teachers Table -->
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 text-left w-12"><input type="checkbox" id="selectAllHeader" onchange="toggleSelectAll()"></th>
+                        <th class="p-4 text-left">O'qituvchi</th>
+                        <th class="p-4 text-left">ID</th>
+                        <th class="p-4 text-left">Fan</th>
+                        <th class="p-4 text-left">Kafedra</th>
+                        <th class="p-4 text-left">Daraja</th>
+                        <th class="p-4 text-center">Tajriba</th>
+                        <th class="p-4 text-left">Email</th>
+                        <th class="p-4 text-left">Telefon</th>
+                        <th class="p-4 text-center">Guruhlar</th>
+                        <th class="p-4 text-left">Holat</th>
+                        <th class="p-4 text-left">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="teachersTable">
+                    <!-- Teachers will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center gap-2 mt-8">
+        <button onclick="changePage(-1)" class="pagination-btn bg-white shadow-sm">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span id="pageInfo" class="px-4 py-2 bg-white rounded-xl shadow-sm">1 / 3</span>
+        <button onclick="changePage(1)" class="pagination-btn bg-white shadow-sm">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</div>
+
+<!-- Add Teacher Modal -->
+<div id="addTeacherModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi o'qituvchi qo'shish</h3>
+            <button onclick="closeAddTeacherModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">To'liq ism</label>
+                <input type="text" id="newTeacherName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="newTeacherEmail" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan</label>
+                <input type="text" id="newTeacherSubject" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kafedra</label>
+                <select id="newTeacherDepartment" class="w-full p-3 border rounded-xl">
+                    <option value="Dasturlash">Dasturlash</option>
+                    <option value="Axborot xavfsizligi">Axborot xavfsizligi</option>
+                    <option value="Tizimlar">Tizimlar</option>
+                    <option value="Iqtisodiyot">Iqtisodiyot</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Ilmiy daraja</label>
+                <select id="newTeacherDegree" class="w-full p-3 border rounded-xl">
+                    <option value="Professor">Professor</option>
+                    <option value="DSc">DSc</option>
+                    <option value="PhD">PhD</option>
+                    <option value="Dotsent">Dotsent</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Tajriba (yil)</label>
+                <input type="number" id="newTeacherExperience" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Xona</label>
+                <input type="text" id="newTeacherRoom" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Login</label>
+                <input type="text" id="newTeacherUsername" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Parol</label>
+                <input type="password" id="newTeacherPassword" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telefon</label>
+                <input type="tel" id="newTeacherPhone" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telegram</label>
+                <input type="text" id="newTeacherTelegram" class="w-full p-3 border rounded-xl">
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addTeacher()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddTeacherModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Teacher Modal -->
+<div id="editTeacherModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">✏️ O'qituvchini tahrirlash</h3>
+            <button onclick="closeEditTeacherModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">To'liq ism</label>
+                <input type="text" id="editTeacherName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="editTeacherEmail" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan</label>
+                <input type="text" id="editTeacherSubject" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kafedra</label>
+                <select id="editTeacherDepartment" class="w-full p-3 border rounded-xl">
+                    <option value="Dasturlash">Dasturlash</option>
+                    <option value="Axborot xavfsizligi">Axborot xavfsizligi</option>
+                    <option value="Tizimlar">Tizimlar</option>
+                    <option value="Iqtisodiyot">Iqtisodiyot</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Ilmiy daraja</label>
+                <select id="editTeacherDegree" class="w-full p-3 border rounded-xl">
+                    <option value="Professor">Professor</option>
+                    <option value="DSc">DSc</option>
+                    <option value="PhD">PhD</option>
+                    <option value="Dotsent">Dotsent</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Tajriba (yil)</label>
+                <input type="number" id="editTeacherExperience" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Xona</label>
+                <input type="text" id="editTeacherRoom" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telefon</label>
+                <input type="tel" id="editTeacherPhone" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Telegram</label>
+                <input type="text" id="editTeacherTelegram" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Holat</label>
+                <select id="editTeacherStatus" class="w-full p-3 border rounded-xl">
+                    <option value="active">Faol</option>
+                    <option value="onleave">Ta'tilda</option>
+                    <option value="inactive">No faol</option>
+                </select>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="updateTeacher()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                    <i class="fas fa-save mr-2"></i> Yangilash
+                </button>
+                <button onclick="closeEditTeacherModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Teacher Details Modal -->
+<div id="teacherDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="detailsModalTitle">O'qituvchi ma'lumotlari</h3>
+            <button onclick="closeTeacherDetailsModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="detailsModalContent"></div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    let currentFilter = { search: '', department: 'all', degree: 'all', status: 'all' };
+    let selectedTeachers = new Set();
+    
+    let teachersData = [
+        { id: 2, name: 'Said Alisherov', username: 'teacher', email: 's.alisherov@edu.uz', phone: '+998901234567', subject: 'Veb dasturlash', department: 'Dasturlash', degree: 'PhD', experience: 12, room: '402', telegram: '@said_alisherov', status: 'active', groups: 3, students: 74, rating: 4.8, createdAt: '2014-09-01' },
+        { id: 3, name: 'Nodira Karimova', username: 'nodira', email: 'n.karimova@edu.uz', phone: '+998909876543', subject: 'Ma\'lumotlar bazasi', department: 'Dasturlash', degree: 'PhD', experience: 10, room: '312', telegram: '@nodira_k', status: 'active', groups: 2, students: 48, rating: 4.7, createdAt: '2016-09-01' },
+        { id: 4, name: 'Jasur Usmonov', username: 'jasur', email: 'j.usmonov@edu.uz', phone: '+998934560011', subject: 'Kiberxavfsizlik', department: 'Axborot xavfsizligi', degree: 'Professor', experience: 15, room: '210', telegram: '@jasur_u', status: 'active', groups: 2, students: 42, rating: 4.9, createdAt: '2010-09-01' },
+        { id: 5, name: 'Dildora Ahmetova', username: 'dildora', email: 'd.ahmetova@edu.uz', phone: '+998991112233', subject: 'Sun\'iy intellekt', department: 'Dasturlash', degree: 'DSc', experience: 20, room: '105', telegram: '@dildora_a', status: 'active', groups: 2, students: 46, rating: 4.9, createdAt: '2005-09-01' },
+        { id: 6, name: 'Aziz Qosimov', username: 'aziz', email: 'a.qosimov@edu.uz', phone: '+998977778899', subject: 'Tizimli boshqaruv', department: 'Tizimlar', degree: 'PhD', experience: 8, room: '308', telegram: '@aziz_q', status: 'active', groups: 1, students: 28, rating: 4.6, createdAt: '2018-09-01' },
+        { id: 31, name: 'Akmal Hakimov', username: 'akmal', email: 'a.hakimov@edu.uz', phone: '+998935551122', subject: 'Mikroiqtisodiyot', department: 'Iqtisodiyot', degree: 'PhD', experience: 11, room: '415', telegram: '@akmal_h', status: 'active', groups: 1, students: 25, rating: 4.7, createdAt: '2015-09-01' },
+        { id: 32, name: 'Dilbar Xolmatova', username: 'dilbar', email: 'd.xolmatova@edu.uz', phone: '+998935552233', subject: 'Makroiqtisodiyot', department: 'Iqtisodiyot', degree: 'PhD', experience: 9, room: '416', telegram: '@dilbar_x', status: 'onleave', groups: 1, students: 23, rating: 4.5, createdAt: '2017-09-01' },
+        { id: 33, name: 'Rustam Aliyev', username: 'rustam', email: 'r.aliyev@edu.uz', phone: '+998935553344', subject: 'Ekonometrika', department: 'Iqtisodiyot', degree: 'DSc', experience: 18, room: '417', telegram: '@rustam_a', status: 'active', groups: 1, students: 22, rating: 4.8, createdAt: '2002-09-01' },
+        { id: 34, name: 'Malika Rahimova', username: 'malika', email: 'm.rahimova@edu.uz', phone: '+998935554455', subject: 'Biznes statistika', department: 'Iqtisodiyot', degree: 'PhD', experience: 7, room: '418', telegram: '@malika_r', status: 'active', groups: 1, students: 20, rating: 4.6, createdAt: '2019-09-01' },
+        { id: 35, name: 'Bahodir Tursunov', username: 'bahodir', email: 'b.tursunov@edu.uz', phone: '+998935556677', subject: 'Kompyuter tarmoqlari', department: 'Tizimlar', degree: 'PhD', experience: 11, room: '501', telegram: '@bahodir_t', status: 'inactive', groups: 0, students: 0, rating: 4.7, createdAt: '2015-09-01' },
+        { id: 36, name: 'Gulnora Akramova', username: 'gulnora', email: 'g.akramova@edu.uz', phone: '+998935557788', subject: 'Algoritmlar', department: 'Dasturlash', degree: 'Professor', experience: 22, room: '502', telegram: '@gulnora_a', status: 'active', groups: 2, students: 52, rating: 4.9, createdAt: '2000-09-01' },
+        { id: 37, name: 'Farrux Karimov', username: 'farrux', email: 'f.karimov@edu.uz', phone: '+998935558899', subject: 'Sun\'iy intellekt', department: 'Dasturlash', degree: 'PhD', experience: 6, room: '601', telegram: '@farrux_k', status: 'active', groups: 1, students: 24, rating: 4.5, createdAt: '2020-09-01' }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        loadTeachers();
+        updateStatistics();
+    };
+
+    function loadTeachers() {
+        let filteredTeachers = [...teachersData];
+        
+        // Apply search
+        if (currentFilter.search) {
+            const searchLower = currentFilter.search.toLowerCase();
+            filteredTeachers = filteredTeachers.filter(t => 
+                t.name.toLowerCase().includes(searchLower) ||
+                t.subject.toLowerCase().includes(searchLower) ||
+                t.department.toLowerCase().includes(searchLower)
+            );
+        }
+        
+        // Apply department filter
+        if (currentFilter.department !== 'all') {
+            filteredTeachers = filteredTeachers.filter(t => t.department === currentFilter.department);
+        }
+        
+        // Apply degree filter
+        if (currentFilter.degree !== 'all') {
+            filteredTeachers = filteredTeachers.filter(t => t.degree === currentFilter.degree);
+        }
+        
+        // Apply status filter
+        if (currentFilter.status !== 'all') {
+            filteredTeachers = filteredTeachers.filter(t => t.status === currentFilter.status);
+        }
+        
+        // Pagination
+        const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+        const start = (currentPage - 1) * itemsPerPage;
+        const paginatedTeachers = filteredTeachers.slice(start, start + itemsPerPage);
+        
+        document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages || 1}`;
+        
+        const tbody = document.getElementById('teachersTable');
+        tbody.innerHTML = '';
+        
+        paginatedTeachers.forEach(teacher => {
+            const statusClass = teacher.status === 'active' ? 'status-active' :
+                               teacher.status === 'onleave' ? 'status-onleave' : 'status-inactive';
+            const statusText = teacher.status === 'active' ? 'Faol' :
+                              teacher.status === 'onleave' ? 'Ta\'tilda' : 'No faol';
+            
+            let degreeClass = '';
+            if (teacher.degree === 'Professor') degreeClass = 'degree-professor';
+            else if (teacher.degree === 'DSc') degreeClass = 'degree-doctor';
+            else if (teacher.degree === 'PhD') degreeClass = 'degree-phd';
+            else degreeClass = 'degree-master';
+            
+            tbody.innerHTML += `
+                <tr class="border-t table-row-hover">
+                    <td class="p-4 text-center">
+                        <input type="checkbox" class="teacher-checkbox" data-id="${teacher.id}" onchange="updateSelectedCount()">
+                    </td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-3 cursor-pointer" onclick="showTeacherDetails(${teacher.id})">
+                            <img src="https://ui-avatars.com/api/?name=${teacher.name.split(' ').join('+')}&background=4f46e5&color=fff" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="font-medium">${teacher.name}</p>
+                                <p class="text-xs text-gray-500">${teacher.username}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-4 text-gray-500">T-${teacher.id}00${teacher.id}</td>
+                    <td class="p-4 font-medium">${teacher.subject}</td>
+                    <td class="p-4">${teacher.department}</td>
+                    <td class="p-4"><span class="degree-badge ${degreeClass}">${teacher.degree}</span></td>
+                    <td class="p-4 text-center">${teacher.experience} yil</td>
+                    <td class="p-4 text-gray-500">${teacher.email}</td>
+                    <td class="p-4">${teacher.phone}</td>
+                    <td class="p-4 text-center">
+                        <span class="font-medium">${teacher.groups}</span>
+                    </td>
+                    <td class="p-4"><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="p-4">
+                        <div class="flex gap-2">
+                            <button onclick="editTeacher(${teacher.id})" class="text-blue-600 hover:text-blue-800" title="Tahrirlash">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteTeacher(${teacher.id})" class="text-red-600 hover:text-red-800" title="O'chirish">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button onclick="showTeacherDetails(${teacher.id})" class="text-green-600 hover:text-green-800" title="Batafsil">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        if (paginatedTeachers.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="12" class="p-12 text-center text-gray-500">
+                        <i class="fas fa-chalkboard-teacher text-4xl text-gray-300 mb-2"></i>
+                        <p>O'qituvchilar topilmadi</p>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    function updateStatistics() {
+        const total = teachersData.length;
+        const active = teachersData.filter(t => t.status === 'active').length;
+        const professors = teachersData.filter(t => t.degree === 'Professor').length;
+        const phd = teachersData.filter(t => t.degree === 'PhD').length;
+        const avgExp = (teachersData.reduce((sum, t) => sum + t.experience, 0) / total).toFixed(1);
+        
+        document.getElementById('totalTeachers').textContent = total;
+        document.getElementById('activeCount').textContent = active;
+        document.getElementById('professorCount').textContent = professors;
+        document.getElementById('phdCount').textContent = phd;
+        document.getElementById('avgExperience').textContent = avgExp;
+    }
+
+    function updateSelectedCount() {
+        const checkboxes = document.querySelectorAll('.teacher-checkbox:checked');
+        selectedTeachers.clear();
+        checkboxes.forEach(cb => selectedTeachers.add(parseInt(cb.dataset.id)));
+        document.getElementById('selectedCount').textContent = selectedTeachers.size;
+    }
+
+    function toggleSelectAll() {
+        const isChecked = document.getElementById('selectAll').checked;
+        const checkboxes = document.querySelectorAll('.teacher-checkbox');
+        checkboxes.forEach(cb => cb.checked = isChecked);
+        updateSelectedCount();
+    }
+
+    function searchTeachers() {
+        currentFilter.search = document.getElementById('searchInput').value;
+        currentPage = 1;
+        loadTeachers();
+    }
+
+    function filterTeachers() {
+        currentFilter.department = document.getElementById('departmentFilter').value;
+        currentFilter.degree = document.getElementById('degreeFilter').value;
+        currentFilter.status = document.getElementById('statusFilter').value;
+        currentPage = 1;
+        loadTeachers();
+    }
+
+    function changePage(delta) {
+        currentPage += delta;
+        if (currentPage < 1) currentPage = 1;
+        loadTeachers();
+    }
+
+    function showAddTeacherModal() {
+        document.getElementById('addTeacherModal').style.display = 'flex';
+    }
+
+    function closeAddTeacherModal() {
+        document.getElementById('addTeacherModal').style.display = 'none';
+        document.getElementById('newTeacherName').value = '';
+        document.getElementById('newTeacherEmail').value = '';
+        document.getElementById('newTeacherSubject').value = '';
+        document.getElementById('newTeacherUsername').value = '';
+        document.getElementById('newTeacherPassword').value = '';
+        document.getElementById('newTeacherPhone').value = '';
+        document.getElementById('newTeacherTelegram').value = '';
+    }
+
+    function addTeacher() {
+        const name = document.getElementById('newTeacherName').value;
+        const email = document.getElementById('newTeacherEmail').value;
+        const subject = document.getElementById('newTeacherSubject').value;
+        const department = document.getElementById('newTeacherDepartment').value;
+        const degree = document.getElementById('newTeacherDegree').value;
+        const experience = document.getElementById('newTeacherExperience').value;
+        const room = document.getElementById('newTeacherRoom').value;
+        const username = document.getElementById('newTeacherUsername').value;
+        const password = document.getElementById('newTeacherPassword').value;
+        const phone = document.getElementById('newTeacherPhone').value;
+        const telegram = document.getElementById('newTeacherTelegram').value;
+        
+        if (!name || !email || !subject || !username || !password) {
+            showToast('Barcha majburiy maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        const newTeacher = {
+            id: teachersData.length + 1,
+            name: name,
+            username: username,
+            email: email,
+            phone: phone,
+            subject: subject,
+            department: department,
+            degree: degree,
+            experience: parseInt(experience) || 0,
+            room: room,
+            telegram: telegram || '',
+            status: 'active',
+            groups: 0,
+            students: 0,
+            rating: 0,
+            createdAt: new Date().toISOString().split('T')[0]
+        };
+        
+        teachersData.push(newTeacher);
+        closeAddTeacherModal();
+        loadTeachers();
+        updateStatistics();
+        showToast('O\'qituvchi muvaffaqiyatli qo\'shildi!', 'success');
+    }
+
+    function editTeacher(teacherId) {
+        const teacher = teachersData.find(t => t.id === teacherId);
+        if (!teacher) return;
+        
+        document.getElementById('editTeacherName').value = teacher.name;
+        document.getElementById('editTeacherEmail').value = teacher.email;
+        document.getElementById('editTeacherSubject').value = teacher.subject;
+        document.getElementById('editTeacherDepartment').value = teacher.department;
+        document.getElementById('editTeacherDegree').value = teacher.degree;
+        document.getElementById('editTeacherExperience').value = teacher.experience;
+        document.getElementById('editTeacherRoom').value = teacher.room;
+        document.getElementById('editTeacherPhone').value = teacher.phone;
+        document.getElementById('editTeacherTelegram').value = teacher.telegram || '';
+        document.getElementById('editTeacherStatus').value = teacher.status;
+        
+        document.getElementById('editTeacherModal').style.display = 'flex';
+        window.currentEditId = teacherId;
+    }
+
+    function closeEditTeacherModal() {
+        document.getElementById('editTeacherModal').style.display = 'none';
+    }
+
+    function updateTeacher() {
+        const teacher = teachersData.find(t => t.id === window.currentEditId);
+        if (!teacher) return;
+        
+        teacher.name = document.getElementById('editTeacherName').value;
+        teacher.email = document.getElementById('editTeacherEmail').value;
+        teacher.subject = document.getElementById('editTeacherSubject').value;
+        teacher.department = document.getElementById('editTeacherDepartment').value;
+        teacher.degree = document.getElementById('editTeacherDegree').value;
+        teacher.experience = parseInt(document.getElementById('editTeacherExperience').value);
+        teacher.room = document.getElementById('editTeacherRoom').value;
+        teacher.phone = document.getElementById('editTeacherPhone').value;
+        teacher.telegram = document.getElementById('editTeacherTelegram').value;
+        teacher.status = document.getElementById('editTeacherStatus').value;
+        
+        closeEditTeacherModal();
+        loadTeachers();
+        updateStatistics();
+        showToast('O\'qituvchi yangilandi!', 'success');
+    }
+
+    function deleteTeacher(teacherId) {
+        if (confirm('Haqiqatan ham bu o\'qituvchini o\'chirmoqchimisiz?')) {
+            teachersData = teachersData.filter(t => t.id !== teacherId);
+            loadTeachers();
+            updateStatistics();
+            showToast('O\'qituvchi o\'chirildi!', 'success');
+        }
+    }
+
+    function showTeacherDetails(teacherId) {
+        const teacher = teachersData.find(t => t.id === teacherId);
+        if (!teacher) return;
+        
+        const statusClass = teacher.status === 'active' ? 'status-active' :
+                           teacher.status === 'onleave' ? 'status-onleave' : 'status-inactive';
+        const statusText = teacher.status === 'active' ? 'Faol' :
+                          teacher.status === 'onleave' ? 'Ta\'tilda' : 'No faol';
+        
+        let degreeClass = '';
+        if (teacher.degree === 'Professor') degreeClass = 'degree-professor';
+        else if (teacher.degree === 'DSc') degreeClass = 'degree-doctor';
+        else if (teacher.degree === 'PhD') degreeClass = 'degree-phd';
+        else degreeClass = 'degree-master';
+        
+        const modalContent = `
+            <div class="space-y-6">
+                <div class="flex items-center gap-6">
+                    <img src="https://ui-avatars.com/api/?name=${teacher.name.split(' ').join('+')}&background=4f46e5&color=fff" class="w-24 h-24 rounded-2xl border-4 border-blue-100">
+                    <div>
+                        <h4 class="text-2xl font-bold">${teacher.name}</h4>
+                        <p class="text-gray-500">ID: T-${teacher.id}00${teacher.id}</p>
+                        <p class="text-gray-500">Login: ${teacher.username}</p>
+                        <span class="status-badge ${statusClass} mt-2">${statusText}</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Fan</p>
+                        <p class="font-medium">${teacher.subject}</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Kafedra</p>
+                        <p class="font-medium">${teacher.department}</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Ilmiy daraja</p>
+                        <p class="font-medium"><span class="degree-badge ${degreeClass}">${teacher.degree}</span></p>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Tajriba</p>
+                        <p class="text-2xl font-bold text-orange-600">${teacher.experience}</p>
+                        <p class="text-xs">yil</p>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Xona</p>
+                        <p class="font-medium">${teacher.room}</p>
+                    </div>
+                    <div class="bg-pink-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Reyting</p>
+                        <p class="text-2xl font-bold text-pink-600">${teacher.rating}</p>
+                        <p class="text-xs">/ 5.0</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">📞 Aloqa ma'lumotlari</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-envelope w-6 text-gray-400"></i> ${teacher.email}</p>
+                        <p><i class="fas fa-phone w-6 text-gray-400"></i> ${teacher.phone}</p>
+                        <p><i class="fab fa-telegram w-6 text-gray-400"></i> ${teacher.telegram || 'Kiritilmagan'}</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">📊 Statistika</h5>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-blue-50 p-3 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-blue-600">${teacher.groups}</p>
+                            <p class="text-xs text-gray-500">Guruhlar</p>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-green-600">${teacher.students}</p>
+                            <p class="text-xs text-gray-500">Talabalar</p>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-yellow-600">${teacher.rating}</p>
+                            <p class="text-xs text-gray-500">Reyting</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">📅 Tizim ma'lumotlari</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-calendar w-6 text-gray-400"></i> Qo'shilgan: ${teacher.createdAt}</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button onclick="editTeacher(${teacher.id}); closeTeacherDetailsModal()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                        <i class="fas fa-edit mr-2"></i> Tahrirlash
+                    </button>
+                    <button onclick="closeTeacherDetailsModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('detailsModalContent').innerHTML = modalContent;
+        document.getElementById('teacherDetailsModal').style.display = 'flex';
+    }
+
+    function bulkActivate() {
+        if (selectedTeachers.size === 0) {
+            showToast('Hech qanday o\'qituvchi tanlanmagan!', 'warning');
+            return;
+        }
+        
+        teachersData.forEach(teacher => {
+            if (selectedTeachers.has(teacher.id)) {
+                teacher.status = 'active';
+            }
+        });
+        
+        loadTeachers();
+        updateStatistics();
+        showToast(`${selectedTeachers.size} ta o'qituvchi faollashtirildi!`, 'success');
+    }
+
+    function bulkExport() {
+        if (selectedTeachers.size === 0) {
+            showToast('Hech qanday o\'qituvchi tanlanmagan!', 'warning');
+            return;
+        }
+        
+        let csv = "ID,Ism,Fan,Kafedra,Daraja,Tajriba,Email,Telefon,Holat\n";
+        teachersData.forEach(teacher => {
+            if (selectedTeachers.has(teacher.id)) {
+                csv += `${teacher.id},${teacher.name},${teacher.subject},${teacher.department},${teacher.degree},${teacher.experience},${teacher.email},${teacher.phone},${teacher.status}\n`;
+            }
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `oqituvchilar_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        showToast(`${selectedTeachers.size} ta o'qituvchi eksport qilindi!`, 'success');
+    }
+
+    function bulkDelete() {
+        if (selectedTeachers.size === 0) {
+            showToast('Hech qanday o\'qituvchi tanlanmagan!', 'warning');
+            return;
+        }
+        
+        if (confirm(`${selectedTeachers.size} ta o'qituvchini o\'chirmoqchimisiz?`)) {
+            teachersData = teachersData.filter(t => !selectedTeachers.has(t.id));
+            loadTeachers();
+            updateStatistics();
+            showToast(`${selectedTeachers.size} ta o'qituvchi o\'chirildi!`, 'success');
+            selectedTeachers.clear();
+            document.getElementById('selectAll').checked = false;
+        }
+    }
+
+    function closeTeacherDetailsModal() {
+        document.getElementById('teacherDetailsModal').style.display = 'none';
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=admin';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    window.onclick = function(event) {
+        const addModal = document.getElementById('addTeacherModal');
+        const editModal = document.getElementById('editTeacherModal');
+        const detailsModal = document.getElementById('teacherDetailsModal');
+        if (event.target === addModal) closeAddTeacherModal();
+        if (event.target === editModal) closeEditTeacherModal();
+        if (event.target === detailsModal) closeTeacherDetailsModal();
+    }
+</script>
+
+</body>
+</html>

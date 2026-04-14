@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vazifalar - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .task-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s;
+            border-left: 4px solid;
+        }
+        
+        .task-overdue { border-left-color: #ef4444; background-color: #fef2f2; }
+        .task-warning { border-left-color: #f59e0b; background-color: #fffbeb; }
+        .task-upcoming { border-left-color: #3b82f6; background-color: #eff6ff; }
+        .task-completed { border-left-color: #10b981; background-color: #f0fdf4; }
+        
+        .priority-high { background: #fee2e2; color: #dc2626; }
+        .priority-medium { background: #fef3c7; color: #d97706; }
+        .priority-low { background: #dbeafe; color: #2563eb; }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .student-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+        
+        .student-item:hover {
+            background: #f9fafb;
+        }
+        
+        .grade-input {
+            width: 70px;
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .grade-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            ring: 2px solid #3b82f6;
+        }
+        
+        .file-attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        
+        .file-attachment:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500">Vazifalar boshqaruvi</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Said Alisherov</p>
+                    <p class="text-xs text-gray-500">O'qituvchi • Veb dasturlash</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-purple-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📋 Vazifalar</h1>
+        <button onclick="showAddTaskModal()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            <span>Yangi vazifa</span>
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <button onclick="filterTasks('all')" id="filterAll" class="tab-btn tab-active">Barchasi</button>
+        <button onclick="filterTasks('overdue')" id="filterOverdue" class="tab-btn">🔴 Muddati o'tgan</button>
+        <button onclick="filterTasks('warning')" id="filterWarning" class="tab-btn">🟡 Muddati yaqin</button>
+        <button onclick="filterTasks('active')" id="filterActive" class="tab-btn">🟢 Faol</button>
+        <button onclick="filterTasks('completed')" id="filterCompleted" class="tab-btn">✅ Bajarilgan</button>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Vazifa nomi bo'yicha qidirish..." onkeyup="searchTasks()">
+            </div>
+            <select id="groupFilter" class="p-3 border rounded-xl bg-white" onchange="filterTasksByGroup()">
+                <option value="all">Barcha guruhlar</option>
+                <option value="AT-101-20">AT-101-20</option>
+                <option value="AT-102-20">AT-102-20</option>
+                <option value="KI-201-21">KI-201-21</option>
+            </select>
+            <select id="priorityFilter" class="p-3 border rounded-xl bg-white" onchange="filterTasksByPriority()">
+                <option value="all">Barcha prioritetlar</option>
+                <option value="high">Yuqori prioritet</option>
+                <option value="medium">O'rtacha prioritet</option>
+                <option value="low">Past prioritet</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Tasks List -->
+    <div id="tasksList" class="space-y-4 mb-8">
+        <!-- Tasks will be loaded here -->
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-blue-600" id="totalTasks">0</p>
+            <p class="text-sm text-gray-500">Jami vazifalar</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-green-600" id="completedTasks">0</p>
+            <p class="text-sm text-gray-500">Bajarilgan</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-orange-600" id="activeTasks">0</p>
+            <p class="text-sm text-gray-500">Faol</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-red-600" id="overdueTasks">0</p>
+            <p class="text-sm text-gray-500">Muddati o'tgan</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-purple-600" id="submissionRate">0%</p>
+            <p class="text-sm text-gray-500">Topshirish foizi</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Task Details Modal -->
+<div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="modalTitle">Vazifa tafsilotlari</h3>
+            <button onclick="closeTaskModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- Add Task Modal -->
+<div id="addTaskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi vazifa qo'shish</h3>
+            <button onclick="closeAddTaskModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Guruh</label>
+                <select id="taskGroup" class="w-full p-3 border rounded-xl">
+                    <option value="AT-101-20">AT-101-20 (24 talaba)</option>
+                    <option value="AT-102-20">AT-102-20 (26 talaba)</option>
+                    <option value="KI-201-21">KI-201-21 (22 talaba)</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Vazifa nomi</label>
+                <input type="text" id="taskTitle" class="w-full p-3 border rounded-xl" placeholder="Vazifa nomi">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Tavsif</label>
+                <textarea id="taskDesc" rows="3" class="w-full p-3 border rounded-xl" placeholder="Vazifa tavsifi..."></textarea>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Muddat</label>
+                <input type="date" id="taskDeadline" class="w-full p-3 border rounded-xl">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Maksimal ball</label>
+                    <input type="number" id="taskMaxScore" value="100" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Prioritet</label>
+                    <select id="taskPriority" class="w-full p-3 border rounded-xl">
+                        <option value="high">Yuqori</option>
+                        <option value="medium" selected>O'rtacha</option>
+                        <option value="low">Past</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Biriktirilgan fayllar</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center">
+                    <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
+                    <p class="text-sm text-gray-500">Fayllarni tanlang yoki sudrab keltiring</p>
+                    <input type="file" id="taskFiles" multiple class="hidden">
+                    <button onclick="document.getElementById('taskFiles').click()" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
+                        Fayl tanlash
+                    </button>
+                </div>
+                <div id="fileList" class="mt-2 space-y-1"></div>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addTask()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddTaskModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Grade Modal -->
+<div id="gradeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">📝 Baholash</h3>
+            <button onclick="closeGradeModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="gradeModalContent"></div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentFilter = 'all';
+    let currentGroupFilter = 'all';
+    let currentPriorityFilter = 'all';
+    let currentSearch = '';
+    
+    let tasksData = [
+        {
+            id: 1,
+            title: 'HTML portfolio',
+            group: 'AT-101-20',
+            description: 'Shaxsiy portfolio sayt yaratish. HTML va CSS dan foydalaning. Saytda siz haqingizda ma\'lumot, qobiliyatlar va aloqa bo\'limi bo\'lishi kerak.',
+            deadline: '2025-03-25',
+            maxScore: 100,
+            priority: 'high',
+            status: 'active',
+            submitted: 18,
+            total: 24,
+            submissions: [
+                { studentId: 7, name: 'Azimjon Karimov', status: 'submitted', score: null, submittedAt: '2025-03-23', file: 'portfolio-azimjon.zip' },
+                { studentId: 8, name: 'Ali Valiyev', status: 'pending', score: null, submittedAt: null, file: null },
+                { studentId: 9, name: 'Dilya Akramova', status: 'submitted', score: null, submittedAt: '2025-03-24', file: 'portfolio-dilya.zip' }
+            ]
+        },
+        {
+            id: 2,
+            title: 'CSS animatsiyalar',
+            group: 'AT-101-20',
+            description: '3 xil CSS animatsiya yaratish. Animatsiyalar: yuklash spinneri, kartochka hover effekti va menyu animatsiyasi.',
+            deadline: '2025-03-15',
+            maxScore: 50,
+            priority: 'high',
+            status: 'overdue',
+            submitted: 22,
+            total: 24,
+            submissions: [
+                { studentId: 7, name: 'Azimjon Karimov', status: 'submitted', score: 45, submittedAt: '2025-03-14', file: 'animations.css', feedback: 'Yaxshi, 45 ball' },
+                { studentId: 8, name: 'Ali Valiyev', status: 'submitted', score: 48, submittedAt: '2025-03-13', file: 'style.css', feedback: 'Ajoyib, 48 ball' },
+                { studentId: 9, name: 'Dilya Akramova', status: 'late', score: 40, submittedAt: '2025-03-16', file: 'animations.zip', feedback: 'Kech topshirilgan, 40 ball' }
+            ]
+        },
+        {
+            id: 3,
+            title: 'ER diagramma',
+            group: 'AT-102-20',
+            description: 'Universitet ma\'lumotlar bazasi uchun ER diagramma chizish. Kamida 5 ta jadval bo\'lsin.',
+            deadline: '2025-03-28',
+            maxScore: 80,
+            priority: 'medium',
+            status: 'active',
+            submitted: 15,
+            total: 26,
+            submissions: [
+                { studentId: 10, name: 'Jasur Karimov', status: 'submitted', score: null, submittedAt: '2025-03-26', file: 'er-diagram.pdf' },
+                { studentId: 15, name: 'Shoxrux Aliyev', status: 'pending', score: null, submittedAt: null, file: null }
+            ]
+        },
+        {
+            id: 4,
+            title: 'JavaScript masalalari',
+            group: 'AT-101-20',
+            description: '10 ta JavaScript masalasini yechish. Massivlar, obyektlar, funksiyalar bilan ishlash.',
+            deadline: '2025-03-20',
+            maxScore: 100,
+            priority: 'medium',
+            status: 'active',
+            submitted: 20,
+            total: 24,
+            submissions: [
+                { studentId: 7, name: 'Azimjon Karimov', status: 'submitted', score: null, submittedAt: '2025-03-19', file: 'js-tasks.js' },
+                { studentId: 8, name: 'Ali Valiyev', status: 'submitted', score: null, submittedAt: '2025-03-18', file: 'solutions.js' }
+            ]
+        },
+        {
+            id: 5,
+            title: 'Xavfsizlik hisoboti',
+            group: 'KI-201-21',
+            description: 'Zamonaviy kiber tahdidlar haqida hisobot tayyorlash. Kamida 3 xil tahdid va ularga qarshi himoya choralari.',
+            deadline: '2025-03-30',
+            maxScore: 100,
+            priority: 'low',
+            status: 'active',
+            submitted: 12,
+            total: 22,
+            submissions: [
+                { studentId: 11, name: 'Malika Ismoilova', status: 'submitted', score: null, submittedAt: '2025-03-28', file: 'security-report.pdf' }
+            ]
+        }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        document.getElementById('taskDeadline').value = new Date().toISOString().split('T')[0];
+        loadTasks();
+        updateStatistics();
+    };
+
+    function loadTasks() {
+        const container = document.getElementById('tasksList');
+        let filteredTasks = [...tasksData];
+        
+        // Apply filter
+        if (currentFilter !== 'all') {
+            filteredTasks = filteredTasks.filter(t => t.status === currentFilter);
+        }
+        
+        // Apply search
+        if (currentSearch) {
+            filteredTasks = filteredTasks.filter(t => t.title.toLowerCase().includes(currentSearch.toLowerCase()));
+        }
+        
+        // Apply group filter
+        if (currentGroupFilter !== 'all') {
+            filteredTasks = filteredTasks.filter(t => t.group === currentGroupFilter);
+        }
+        
+        // Apply priority filter
+        if (currentPriorityFilter !== 'all') {
+            filteredTasks = filteredTasks.filter(t => t.priority === currentPriorityFilter);
+        }
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        container.innerHTML = '';
+        
+        if (filteredTasks.length === 0) {
+            container.innerHTML = `
+                <div class="bg-white p-12 rounded-2xl text-center">
+                    <i class="fas fa-tasks text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Vazifalar topilmadi</p>
+                </div>
+            `;
+            return;
+        }
+        
+        filteredTasks.forEach(task => {
+            const daysLeft = Math.ceil((new Date(task.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+            let statusClass = '';
+            let statusText = '';
+            
+            if (task.status === 'overdue') {
+                statusClass = 'task-overdue';
+                statusText = 'Muddati o\'tgan';
+            } else if (daysLeft < 0) {
+                statusClass = 'task-overdue';
+                statusText = 'Muddati o\'tgan';
+                task.status = 'overdue';
+            } else if (daysLeft <= 3) {
+                statusClass = 'task-warning';
+                statusText = `${daysLeft} kun qoldi`;
+            } else {
+                statusClass = 'task-upcoming';
+                statusText = `${daysLeft} kun qoldi`;
+            }
+            
+            const priorityClass = task.priority === 'high' ? 'priority-high' : 
+                                 task.priority === 'medium' ? 'priority-medium' : 'priority-low';
+            const priorityText = task.priority === 'high' ? 'Yuqori' :
+                                task.priority === 'medium' ? 'O\'rtacha' : 'Past';
+            
+            const submittedPercent = Math.round((task.submitted / task.total) * 100);
+            
+            container.innerHTML += `
+                <div class="task-card ${statusClass} cursor-pointer" onclick="showTaskDetails(${task.id})">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">${task.title}</h3>
+                            <p class="text-sm text-gray-600">${task.group}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold ${priorityClass}">${priorityText}</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600">${statusText}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 text-sm mt-2">${task.description.substring(0, 100)}...</p>
+                    
+                    <div class="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                        <span><i class="far fa-calendar mr-1"></i> Muddat: ${task.deadline}</span>
+                        <span><i class="fas fa-star mr-1"></i> Max ball: ${task.maxScore}</span>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Topshirganlar: ${task.submitted}/${task.total}</span>
+                            <span>${submittedPercent}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${submittedPercent}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="event.stopPropagation(); viewSubmissions(${task.id})" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm hover:bg-blue-100">
+                            <i class="fas fa-users mr-1"></i> Talabalar (${task.submitted}/${task.total})
+                        </button>
+                        <button onclick="event.stopPropagation(); editTask(${task.id})" class="flex-1 py-2 bg-yellow-50 text-yellow-600 rounded-xl text-sm hover:bg-yellow-100">
+                            <i class="fas fa-edit mr-1"></i> Tahrirlash
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function showTaskDetails(taskId) {
+        const task = tasksData.find(t => t.id === taskId);
+        if (!task) return;
+        
+        const daysLeft = Math.ceil((new Date(task.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+        const submittedPercent = Math.round((task.submitted / task.total) * 100);
+        
+        const modalContent = `
+            <div class="space-y-4">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-2xl">
+                    <h4 class="text-xl font-bold">${task.title}</h4>
+                    <p class="text-blue-100 mt-1">${task.group}</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Muddat</p>
+                        <p class="font-medium">${task.deadline}</p>
+                        <p class="text-xs ${daysLeft < 0 ? 'text-red-600' : daysLeft <= 3 ? 'text-orange-600' : 'text-green-600'} mt-1">
+                            ${daysLeft < 0 ? `${Math.abs(daysLeft)} kun o'tgan` : `${daysLeft} kun qoldi`}
+                        </p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Maksimal ball</p>
+                        <p class="font-medium">${task.maxScore}</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <p class="font-medium">📝 Tavsif</p>
+                    <p class="text-sm text-gray-600 mt-1">${task.description}</p>
+                </div>
+                
+                <div>
+                    <h5 class="font-bold mb-2">📊 Statistika</h5>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-green-50 p-3 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-green-600">${task.submitted}</p>
+                            <p class="text-xs text-gray-500">Topshirganlar</p>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-red-600">${task.total - task.submitted}</p>
+                            <p class="text-xs text-gray-500">Topshirmaganlar</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Bajarilish</span>
+                            <span>${submittedPercent}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${submittedPercent}%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button onclick="viewSubmissions(${task.id})" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                        <i class="fas fa-users mr-2"></i> Talabalar ro'yxati
+                    </button>
+                    <button onclick="editTask(${task.id})" class="flex-1 bg-yellow-600 text-white p-3 rounded-xl font-bold hover:bg-yellow-700">
+                        <i class="fas fa-edit mr-2"></i> Tahrirlash
+                    </button>
+                    <button onclick="closeTaskModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('modalContent').innerHTML = modalContent;
+        document.getElementById('taskModal').style.display = 'flex';
+    }
+
+    function viewSubmissions(taskId) {
+        const task = tasksData.find(t => t.id === taskId);
+        if (!task) return;
+        
+        let studentsHtml = `
+            <div class="space-y-4">
+                <h4 class="text-xl font-bold">${task.title} - Talabalar (${task.submitted}/${task.total})</h4>
+                <div class="max-h-96 overflow-y-auto">
+        `;
+        
+        task.submissions.forEach(student => {
+            const statusIcon = student.status === 'submitted' ? '✅' : 
+                              student.status === 'late' ? '⚠️' : '⏳';
+            const statusColor = student.status === 'submitted' ? 'text-green-600' : 
+                               student.status === 'late' ? 'text-orange-600' : 'text-gray-500';
+            
+            studentsHtml += `
+                <div class="student-item">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=${student.name.split(' ').join('+')}&background=3b82f6&color=fff" class="w-8 h-8 rounded-full">
+                        <div>
+                            <p class="font-medium">${student.name}</p>
+                            ${student.submittedAt ? `<p class="text-xs text-gray-400">Topshirilgan: ${student.submittedAt}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        ${student.file ? `
+                            <div class="file-attachment">
+                                <i class="fas fa-paperclip"></i>
+                                <span>${student.file}</span>
+                            </div>
+                        ` : ''}
+                        <span class="${statusColor} text-xl">${statusIcon}</span>
+                        <button onclick="showGradeModal(${task.id}, ${student.studentId})" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200">
+                            <i class="fas fa-star mr-1"></i> Baholash
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        studentsHtml += `
+                </div>
+                <button onclick="closeTaskModal()" class="w-full bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300 mt-4">
+                    Yopish
+                </button>
+            </div>
+        `;
+        
+        document.getElementById('modalContent').innerHTML = studentsHtml;
+        document.getElementById('taskModal').style.display = 'flex';
+    }
+
+    function showGradeModal(taskId, studentId) {
+        const task = tasksData.find(t => t.id === taskId);
+        const student = task.submissions.find(s => s.studentId === studentId);
+        
+        const modalContent = `
+            <div class="text-center mb-4">
+                <img src="https://ui-avatars.com/api/?name=${student.name.split(' ').join('+')}&background=3b82f6&color=fff" class="w-16 h-16 rounded-full mx-auto mb-3">
+                <h4 class="font-bold">${student.name}</h4>
+                <p class="text-sm text-gray-500">${task.title}</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Baho (0-${task.maxScore})</label>
+                    <input type="number" id="gradeScore" class="w-full p-3 border rounded-xl" min="0" max="${task.maxScore}" value="${student.score || ''}">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Izoh</label>
+                    <textarea id="gradeFeedback" rows="3" class="w-full p-3 border rounded-xl" placeholder="Talabaga izoh...">${student.feedback || ''}</textarea>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="saveGrade(${taskId}, ${studentId})" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                        <i class="fas fa-save mr-2"></i> Saqlash
+                    </button>
+                    <button onclick="closeGradeModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Bekor qilish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('gradeModalContent').innerHTML = modalContent;
+        document.getElementById('gradeModal').style.display = 'flex';
+    }
+
+    function saveGrade(taskId, studentId) {
+        const score = document.getElementById('gradeScore').value;
+        const feedback = document.getElementById('gradeFeedback').value;
+        
+        if (!score) {
+            showToast('Baho kiriting!', 'error');
+            return;
+        }
+        
+        const task = tasksData.find(t => t.id === taskId);
+        const student = task.submissions.find(s => s.studentId === studentId);
+        student.score = parseInt(score);
+        student.feedback = feedback;
+        
+        closeGradeModal();
+        closeTaskModal();
+        loadTasks();
+        updateStatistics();
+        showToast('Baho muvaffaqiyatli saqlandi!', 'success');
+    }
+
+    function updateStatistics() {
+        const total = tasksData.length;
+        const completed = tasksData.filter(t => t.status === 'completed').length;
+        const active = tasksData.filter(t => t.status === 'active').length;
+        const overdue = tasksData.filter(t => t.status === 'overdue').length;
+        
+        let totalSubmitted = 0;
+        let totalStudents = 0;
+        tasksData.forEach(task => {
+            totalSubmitted += task.submitted;
+            totalStudents += task.total;
+        });
+        const submissionRate = totalStudents ? Math.round((totalSubmitted / totalStudents) * 100) : 0;
+        
+        document.getElementById('totalTasks').textContent = total;
+        document.getElementById('completedTasks').textContent = completed;
+        document.getElementById('activeTasks').textContent = active;
+        document.getElementById('overdueTasks').textContent = overdue;
+        document.getElementById('submissionRate').textContent = `${submissionRate}%`;
+    }
+
+    // ========== FILTER FUNKSIYALARI ==========
+    function filterTasks(filter) {
+        currentFilter = filter;
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('tab-active');
+        });
+        document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('tab-active');
+        
+        loadTasks();
+    }
+    
+    function searchTasks() {
+        currentSearch = document.getElementById('searchInput').value;
+        loadTasks();
+    }
+    
+    function filterTasksByGroup() {
+        currentGroupFilter = document.getElementById('groupFilter').value;
+        loadTasks();
+    }
+    
+    function filterTasksByPriority() {
+        currentPriorityFilter = document.getElementById('priorityFilter').value;
+        loadTasks();
+    }
+
+    // ========== CRUD FUNKSIYALARI ==========
+    function showAddTaskModal() {
+        document.getElementById('addTaskModal').style.display = 'flex';
+        document.getElementById('taskDeadline').value = new Date().toISOString().split('T')[0];
+    }
+    
+    function closeAddTaskModal() {
+        document.getElementById('addTaskModal').style.display = 'none';
+    }
+    
+    function addTask() {
+        const group = document.getElementById('taskGroup').value;
+        const title = document.getElementById('taskTitle').value;
+        const desc = document.getElementById('taskDesc').value;
+        const deadline = document.getElementById('taskDeadline').value;
+        const maxScore = document.getElementById('taskMaxScore').value;
+        const priority = document.getElementById('taskPriority').value;
+        
+        if (!group || !title || !desc || !deadline || !maxScore) {
+            showToast('Barcha maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        const totalStudents = group === 'AT-101-20' ? 24 : group === 'AT-102-20' ? 26 : 22;
+        
+        const newTask = {
+            id: tasksData.length + 1,
+            title: title,
+            group: group,
+            description: desc,
+            deadline: deadline,
+            maxScore: parseInt(maxScore),
+            priority: priority,
+            status: 'active',
+            submitted: 0,
+            total: totalStudents,
+            submissions: []
+        };
+        
+        tasksData.push(newTask);
+        loadTasks();
+        updateStatistics();
+        closeAddTaskModal();
+        showToast('Vazifa muvaffaqiyatli qo\'shildi!', 'success');
+    }
+    
+    function editTask(taskId) {
+        const task = tasksData.find(t => t.id === taskId);
+        if (!task) return;
+        
+        document.getElementById('taskGroup').value = task.group;
+        document.getElementById('taskTitle').value = task.title;
+        document.getElementById('taskDesc').value = task.description;
+        document.getElementById('taskDeadline').value = task.deadline;
+        document.getElementById('taskMaxScore').value = task.maxScore;
+        document.getElementById('taskPriority').value = task.priority;
+        
+        showAddTaskModal();
+        
+        const originalAdd = addTask;
+        window.addTask = function() {
+            task.group = document.getElementById('taskGroup').value;
+            task.title = document.getElementById('taskTitle').value;
+            task.description = document.getElementById('taskDesc').value;
+            task.deadline = document.getElementById('taskDeadline').value;
+            task.maxScore = parseInt(document.getElementById('taskMaxScore').value);
+            task.priority = document.getElementById('taskPriority').value;
+            
+            loadTasks();
+            updateStatistics();
+            closeAddTaskModal();
+            showToast('Vazifa yangilandi!', 'success');
+            window.addTask = originalAdd;
+        };
+    }
+    
+    function deleteTask(taskId) {
+        if (confirm('Haqiqatan ham bu vazifani o\'chirmoqchimisiz?')) {
+            tasksData = tasksData.filter(t => t.id !== taskId);
+            loadTasks();
+            updateStatistics();
+            showToast('Vazifa o\'chirildi!', 'success');
+        }
+    }
+
+    function closeTaskModal() {
+        document.getElementById('taskModal').style.display = 'none';
+    }
+    
+    function closeGradeModal() {
+        document.getElementById('gradeModal').style.display = 'none';
+    }
+
+    // File upload handling
+    document.getElementById('taskFiles')?.addEventListener('change', function(e) {
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
+        
+        Array.from(e.target.files).forEach(file => {
+            fileList.innerHTML += `
+                <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                    <span><i class="fas fa-file mr-2"></i> ${file.name}</span>
+                    <span class="text-xs text-gray-500">${(file.size / 1024).toFixed(1)} KB</span>
+                </div>
+            `;
+        });
+    });
+
+    // ========== NAVIGATSIYA ==========
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+    
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=teacher';
+    }
+    
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+    
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    window.onclick = function(event) {
+        const taskModal = document.getElementById('taskModal');
+        const addTaskModal = document.getElementById('addTaskModal');
+        const gradeModal = document.getElementById('gradeModal');
+        if (event.target === taskModal) closeTaskModal();
+        if (event.target === addTaskModal) closeAddTaskModal();
+        if (event.target === gradeModal) closeGradeModal();
+    }
+</script>
+
+</body>
+</html>

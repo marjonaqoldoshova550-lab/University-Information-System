@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👤</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .info-row {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .info-label {
+            width: 140px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #1f2937;
+            font-weight: 500;
+        }
+        
+        .edit-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .edit-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .status-online {
+            position: relative;
+        }
+        
+        .status-online::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            bottom: 5px;
+            right: 5px;
+            border: 2px solid white;
+        }
+        
+        .achievement-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500">Shaxsiy profil</p>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex items-center gap-6">
+                <!-- Back to Dashboard -->
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+
+                <!-- Logout -->
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden md:inline">Chiqish</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Profile Header -->
+    <div class="bg-white rounded-3xl shadow-sm p-8 mb-6 animate-fadeIn">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-8">
+            <!-- Avatar -->
+            <div class="relative">
+                <div class="w-32 h-32 rounded-3xl overflow-hidden border-4 border-blue-100 shadow-lg">
+                    <img id="profileAvatar" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-2 -right-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                    <i class="fas fa-circle text-[8px]"></i>
+                    <span id="onlineStatus">Online</span>
+                </div>
+                <button onclick="changeAvatar()" class="absolute -bottom-2 -left-2 bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700 transition-all">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+
+            <!-- Basic Info -->
+            <div class="flex-1">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 id="profileName" class="text-3xl font-bold text-gray-800">Azimjon Karimov</h2>
+                        <p id="profileRole" class="text-gray-500 mt-1">Talaba • AT-101-20 guruhi</p>
+                        <p id="profileEmail" class="text-sm text-gray-400 mt-1">a.karimov@student.uz</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="editProfile()" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all flex items-center gap-2">
+                            <i class="fas fa-edit"></i>
+                            <span>Tahrirlash</span>
+                        </button>
+                        <button onclick="changePassword()" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all flex items-center gap-2">
+                            <i class="fas fa-key"></i>
+                            <span>Parolni o'zgartirish</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                    <div class="bg-blue-50 p-4 rounded-xl text-center">
+                        <p class="text-2xl font-bold text-blue-600" id="statYears">2</p>
+                        <p class="text-xs text-gray-500">O'qigan yili</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl text-center">
+                        <p class="text-2xl font-bold text-green-600" id="statCourses">6</p>
+                        <p class="text-xs text-gray-500">Fanlar</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl text-center">
+                        <p class="text-2xl font-bold text-purple-600" id="statAverage">4.7</p>
+                        <p class="text-xs text-gray-500">O'rtacha</p>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-xl text-center">
+                        <p class="text-2xl font-bold text-orange-600" id="statAttendance">95%</p>
+                        <p class="text-xs text-gray-500">Davomat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Tabs -->
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <!-- Tab Headers -->
+        <div class="flex border-b overflow-x-auto">
+            <button onclick="switchTab('personal')" id="tabPersonal" class="tab-btn tab-active px-6 py-4 whitespace-nowrap">
+                <i class="fas fa-user mr-2"></i>Shaxsiy ma'lumotlar
+            </button>
+            <button onclick="switchTab('education')" id="tabEducation" class="tab-btn px-6 py-4 whitespace-nowrap">
+                <i class="fas fa-graduation-cap mr-2"></i>O'qish ma'lumotlari
+            </button>
+            <button onclick="switchTab('achievements')" id="tabAchievements" class="tab-btn px-6 py-4 whitespace-nowrap">
+                <i class="fas fa-trophy mr-2"></i>Yutuqlar
+            </button>
+            <button onclick="switchTab('activity')" id="tabActivity" class="tab-btn px-6 py-4 whitespace-nowrap">
+                <i class="fas fa-chart-line mr-2"></i>Faoliyat
+            </button>
+            <button onclick="switchTab('security')" id="tabSecurity" class="tab-btn px-6 py-4 whitespace-nowrap">
+                <i class="fas fa-shield-alt mr-2"></i>Xavfsizlik
+            </button>
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="p-8">
+
+            <!-- Personal Information Tab -->
+            <div id="tabPersonalContent" class="tab-content active">
+                <h3 class="text-xl font-bold mb-6">👤 Shaxsiy ma'lumotlar</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="info-row">
+                            <span class="info-label">To'liq ism:</span>
+                            <span class="info-value" id="displayFullName">Azimjon Karimov</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Tug'ilgan sana:</span>
+                            <span class="info-value" id="displayBirthDate">15.05.2003</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Yosh:</span>
+                            <span class="info-value" id="displayAge">22 yosh</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Jins:</span>
+                            <span class="info-value" id="displayGender">Erkak</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Millati:</span>
+                            <span class="info-value" id="displayNationality">O'zbek</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="info-row">
+                            <span class="info-label">Telefon:</span>
+                            <span class="info-value" id="displayPhone">+998 90 123 45 67</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value" id="displayEmail">a.karimov@student.uz</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Manzil:</span>
+                            <span class="info-value" id="displayAddress">Toshkent sh., Chilonzor tumani</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Passport:</span>
+                            <span class="info-value" id="displayPassport">AA1234567</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">JSHSHIR:</span>
+                            <span class="info-value" id="displayPinfl">12345678901234</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ota-ona ma'lumotlari -->
+                <h4 class="font-bold text-lg mt-8 mb-4">👪 Ota-ona ma'lumotlari</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <p class="font-bold text-blue-600">Ota</p>
+                        <div class="mt-2 space-y-1">
+                            <p><span class="text-gray-500">Ism:</span> Karimov Rustam</p>
+                            <p><span class="text-gray-500">Telefon:</span> +998 90 123 45 67</p>
+                            <p><span class="text-gray-500">Ish joyi:</span> Xususiy tadbirkor</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <p class="font-bold text-pink-600">Ona</p>
+                        <div class="mt-2 space-y-1">
+                            <p><span class="text-gray-500">Ism:</span> Karimova Dilbar</p>
+                            <p><span class="text-gray-500">Telefon:</span> +998 90 123 45 68</p>
+                            <p><span class="text-gray-500">Ish joyi:</span> O'qituvchi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education Information Tab -->
+            <div id="tabEducationContent" class="tab-content hidden">
+                <h3 class="text-xl font-bold mb-6">📚 O'qish ma'lumotlari</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="info-row">
+                            <span class="info-label">Fakultet:</span>
+                            <span class="info-value" id="displayFaculty">Axborot texnologiyalari</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Yo'nalish:</span>
+                            <span class="info-value" id="displayDirection">Dasturiy injiniring</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Guruh:</span>
+                            <span class="info-value" id="displayGroup">AT-101-20</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Kurs:</span>
+                            <span class="info-value" id="displayCourse">2-kurs</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Semestr:</span>
+                            <span class="info-value" id="displaySemester">4-semestr</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="info-row">
+                            <span class="info-label">O'qish turi:</span>
+                            <span class="info-value" id="displayStudyType">Kunduzgi</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Qabul yili:</span>
+                            <span class="info-value" id="displayEnrollmentYear">2020</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Bitiruv yili:</span>
+                            <span class="info-value" id="displayGraduationYear">2024</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Talaba ID:</span>
+                            <span class="info-value" id="displayStudentId">S-100293</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Reyting:</span>
+                            <span class="info-value" id="displayRating">15 / 124</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fanlar ro'yxati -->
+                <h4 class="font-bold text-lg mt-8 mb-4">📖 Joriy semestr fanlari</h4>
+                <div id="subjectsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Subjects will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Achievements Tab -->
+            <div id="tabAchievementsContent" class="tab-content hidden">
+                <h3 class="text-xl font-bold mb-6">🏆 Yutuqlar</h3>
+                
+                <div id="achievementsStats" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <!-- Achievement cards will be loaded dynamically -->
+                </div>
+
+                <h4 class="font-bold text-lg mb-4">🎖️ Sertifikatlar</h4>
+                <div id="certificatesList" class="space-y-3">
+                    <!-- Certificates will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Activity Tab -->
+            <div id="tabActivityContent" class="tab-content hidden">
+                <h3 class="text-xl font-bold mb-6">📊 Faoliyat</h3>
+                
+                <div id="activityStats" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <!-- Activity stats will be loaded dynamically -->
+                </div>
+
+                <h4 class="font-bold text-lg mb-4">🕒 So'nggi faoliyat</h4>
+                <div id="recentActivity" class="space-y-3">
+                    <!-- Recent activity will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div id="tabSecurityContent" class="tab-content hidden">
+                <h3 class="text-xl font-bold mb-6">🔒 Xavfsizlik</h3>
+
+                <!-- Change Password Form -->
+                <div class="bg-gray-50 p-6 rounded-2xl mb-6">
+                    <h4 class="font-bold text-lg mb-4">Parolni o'zgartirish</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Joriy parol</label>
+                            <input type="password" id="currentPassword" class="w-full p-3 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Yangi parol</label>
+                            <input type="password" id="newPassword" class="w-full p-3 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Yangi parol (takror)</label>
+                            <input type="password" id="confirmPassword" class="w-full p-3 border rounded-xl">
+                        </div>
+                        <button onclick="updatePassword()" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
+                            <i class="fas fa-save mr-2"></i> Saqlash
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Two Factor Authentication -->
+                <div class="bg-gray-50 p-6 rounded-2xl mb-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-bold text-lg">Ikki bosqichli autentifikatsiya</h4>
+                            <p class="text-sm text-gray-500">Hisobingiz xavfsizligini oshiring</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="twoFactor" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Login Sessions -->
+                <div class="bg-gray-50 p-6 rounded-2xl">
+                    <h4 class="font-bold text-lg mb-4">Faol seanslar</h4>
+                    <div id="sessionsList" class="space-y-3">
+                        <!-- Sessions will be loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">✏️ Profilni tahrirlash</h3>
+                <button onclick="closeEditModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Ism</label>
+                        <input type="text" id="editFirstName" value="Azimjon" class="w-full p-3 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Familya</label>
+                        <input type="text" id="editLastName" value="Karimov" class="w-full p-3 border rounded-xl">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Tug'ilgan sana</label>
+                    <input type="date" id="editBirthDate" value="2003-05-15" class="w-full p-3 border rounded-xl">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Telefon</label>
+                    <input type="tel" id="editPhone" value="+998901234567" class="w-full p-3 border rounded-xl">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Manzil</label>
+                    <input type="text" id="editAddress" value="Toshkent sh., Chilonzor tumani" class="w-full p-3 border rounded-xl">
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button onclick="saveProfile()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                        <i class="fas fa-save mr-2"></i> Saqlash
+                    </button>
+                    <button onclick="closeEditModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Bekor qilish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Avatar Modal -->
+    <div id="avatarModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">📸 Rasmni o'zgartirish</h3>
+                <button onclick="closeAvatarModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex justify-center">
+                    <img id="currentAvatarPreview" src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff" 
+                         class="w-32 h-32 rounded-2xl border-4 border-blue-100">
+                </div>
+
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-sm text-gray-500 mb-2">Rasmni tanlang yoki sudrab keltiring</p>
+                    <input type="file" id="avatarUpload" accept="image/*" class="hidden">
+                    <button onclick="document.getElementById('avatarUpload').click()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700">
+                        Rasm tanlash
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2">
+                    <img src="https://ui-avatars.com/api/?name=User1&background=0284c7&color=fff" class="w-16 h-16 rounded-xl cursor-pointer border-2 hover:border-blue-600" onclick="selectAvatar(1)">
+                    <img src="https://ui-avatars.com/api/?name=User2&background=4f46e5&color=fff" class="w-16 h-16 rounded-xl cursor-pointer border-2 hover:border-blue-600" onclick="selectAvatar(2)">
+                    <img src="https://ui-avatars.com/api/?name=User3&background=dc2626&color=fff" class="w-16 h-16 rounded-xl cursor-pointer border-2 hover:border-blue-600" onclick="selectAvatar(3)">
+                    <img src="https://ui-avatars.com/api/?name=User4&background=059669&color=fff" class="w-16 h-16 rounded-xl cursor-pointer border-2 hover:border-blue-600" onclick="selectAvatar(4)">
+                </div>
+
+                <button onclick="saveAvatar()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700 mt-4">
+                    Saqlash
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== O'ZGARUVCHILAR ==========
+    let currentTab = 'personal';
+    let userRole = 'student'; // student, teacher, admin
+    
+    // Role specific data
+    const roleData = {
+        student: {
+            name: 'Azimjon Karimov',
+            role: 'Talaba',
+            group: 'AT-101-20',
+            email: 'a.karimov@student.uz',
+            avatar: 'https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff',
+            stats: { years: 2, courses: 6, average: 4.7, attendance: 95 },
+            subjects: [
+                { name: 'Veb dasturlash', teacher: 'Said Alisherov', credits: 5 },
+                { name: 'Ma\'lumotlar bazasi', teacher: 'Nodira Karimova', credits: 4 },
+                { name: 'Kiberxavfsizlik', teacher: 'Jasur Usmonov', credits: 4 },
+                { name: 'Sun\'iy intellekt', teacher: 'Dildora Ahmetova', credits: 5 },
+                { name: 'Tizimli boshqaruv', teacher: 'Aziz Qosimov', credits: 3 },
+                { name: 'Algoritmlar', teacher: 'Gulnora Akramova', credits: 5 }
+            ],
+            achievements: [
+                { title: 'Reytingda 15-o\'rin', value: '15', unit: '/124', color: 'yellow' },
+                { title: 'O\'rtacha ball', value: '4.7', unit: '/5.0', color: 'blue' }
+            ],
+            certificates: [
+                { name: 'IELTS 6.5', issuer: 'British Council', year: 2024, icon: 'certificate' },
+                { name: 'Web dasturlash', issuer: 'Najot Ta\'lim', year: 2023, icon: 'laptop-code' }
+            ],
+            activities: [
+                { action: 'Vazifa topshirildi', detail: 'CSS animatsiyalar', time: '2 soat oldin', icon: 'check' },
+                { action: 'Baho qo\'yildi', detail: 'Veb dasturlash • 5 ball', time: '1 kun oldin', icon: 'star' },
+                { action: 'Darsda qatnashdi', detail: 'Ma\'lumotlar bazasi', time: '2 kun oldin', icon: 'calendar-check' }
+            ]
+        },
+        teacher: {
+            name: 'Said Alisherov',
+            role: 'O\'qituvchi',
+            group: 'Veb dasturlash',
+            email: 's.alisherov@edu.uz',
+            avatar: 'https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff',
+            stats: { years: 12, courses: 3, average: 4.8, attendance: 98 },
+            subjects: [
+                { name: 'Veb dasturlash', teacher: 'Said Alisherov', credits: 5 },
+                { name: 'JavaScript', teacher: 'Said Alisherov', credits: 4 },
+                { name: 'React.js', teacher: 'Said Alisherov', credits: 4 }
+            ],
+            achievements: [
+                { title: 'Tajriba', value: '12', unit: 'yil', color: 'blue' },
+                { title: 'Maqolalar', value: '45', unit: 'ta', color: 'green' }
+            ],
+            certificates: [
+                { name: 'PhD', issuer: 'MDU', year: 2014, icon: 'graduation-cap' },
+                { name: 'React Developer', issuer: 'Meta', year: 2021, icon: 'react' }
+            ],
+            activities: [
+                { action: 'Dars o\'tdi', detail: 'AT-101-20 guruhi', time: '1 soat oldin', icon: 'chalkboard-teacher' },
+                { action: 'Vazifa qo\'shildi', detail: 'HTML portfolio', time: '3 soat oldin', icon: 'tasks' }
+            ]
+        },
+        admin: {
+            name: 'Admin User',
+            role: 'Administrator',
+            group: 'Tizim boshqaruvi',
+            email: 'admin@edu.uz',
+            avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff',
+            stats: { years: 5, courses: 0, average: 0, attendance: 0 },
+            subjects: [],
+            achievements: [
+                { title: 'Foydalanuvchilar', value: '156', unit: 'ta', color: 'blue' },
+                { title: 'Tizim uptime', value: '99.9', unit: '%', color: 'green' }
+            ],
+            certificates: [],
+            activities: [
+                { action: 'Foydalanuvchi qo\'shildi', detail: 'Yangi talaba', time: '1 soat oldin', icon: 'user-plus' },
+                { action: 'Sozlamalar o\'zgartirildi', detail: 'Tizim sozlamalari', time: '3 soat oldin', icon: 'cog' }
+            ]
+        }
+    };
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        // URL dan rol va foydalanuvchi ma'lumotlarini olish
+        const urlParams = new URLSearchParams(window.location.search);
+        userRole = urlParams.get('role') || 'student';
+        
+        loadUserData();
+    };
+
+    function loadUserData() {
+        const data = roleData[userRole];
+        
+        document.getElementById('profileName').textContent = data.name;
+        document.getElementById('profileRole').textContent = `${data.role} • ${data.group}`;
+        document.getElementById('profileEmail').textContent = data.email;
+        document.getElementById('profileAvatar').src = data.avatar;
+        
+        document.getElementById('statYears').textContent = data.stats.years;
+        document.getElementById('statCourses').textContent = data.stats.courses;
+        document.getElementById('statAverage').textContent = data.stats.average;
+        document.getElementById('statAttendance').textContent = `${data.stats.attendance}%`;
+        
+        // Personal info
+        document.getElementById('displayFullName').textContent = data.name;
+        document.getElementById('displayEmail').textContent = data.email;
+        
+        // Subjects
+        if (data.subjects.length > 0) {
+            const subjectsHtml = data.subjects.map(s => `
+                <div class="bg-blue-50 p-4 rounded-xl">
+                    <p class="font-bold">${s.name}</p>
+                    <p class="text-sm text-gray-600">${s.teacher}</p>
+                    <p class="text-xs text-gray-500 mt-1">${s.credits} kredit</p>
+                </div>
+            `).join('');
+            document.getElementById('subjectsList').innerHTML = subjectsHtml;
+        } else {
+            document.getElementById('subjectsList').innerHTML = '<div class="col-span-3 text-center text-gray-500 py-4">Fanlar yo\'q</div>';
+        }
+        
+        // Achievements
+        document.getElementById('achievementsStats').innerHTML = data.achievements.map(a => `
+            <div class="bg-gradient-to-r from-${a.color}-400 to-${a.color}-600 text-white p-6 rounded-2xl">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <i class="fas fa-${a.title === 'Reytingda 15-o\'rin' ? 'crown' : a.title === 'O\'rtacha ball' ? 'star' : a.title === 'Tajriba' ? 'briefcase' : 'file-alt'} text-3xl mb-2"></i>
+                        <h4 class="font-bold text-lg">${a.title}</h4>
+                        <p class="text-sm opacity-90">${a.value}${a.unit}</p>
+                    </div>
+                    <span class="text-4xl font-black">${a.value}</span>
+                </div>
+            </div>
+        `).join('');
+        
+        // Certificates
+        if (data.certificates.length > 0) {
+            const certsHtml = data.certificates.map(c => `
+                <div class="border rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-${c.icon}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold">${c.name}</p>
+                            <p class="text-sm text-gray-500">${c.issuer} • ${c.year}</p>
+                        </div>
+                    </div>
+                    <span class="text-green-600">✅</span>
+                </div>
+            `).join('');
+            document.getElementById('certificatesList').innerHTML = certsHtml;
+        } else {
+            document.getElementById('certificatesList').innerHTML = '<div class="text-center text-gray-500 py-4">Sertifikatlar yo\'q</div>';
+        }
+        
+        // Activities
+        const activityStats = `
+            <div class="bg-blue-50 p-4 rounded-xl text-center">
+                <p class="text-3xl font-bold text-blue-600">156</p>
+                <p class="text-sm">Qatnashgan darslar</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl text-center">
+                <p class="text-3xl font-bold text-green-600">28</p>
+                <p class="text-sm">Topshirilgan vazifalar</p>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-xl text-center">
+                <p class="text-3xl font-bold text-purple-600">12</p>
+                <p class="text-sm">Qo'yilgan baholar</p>
+            </div>
+        `;
+        document.getElementById('activityStats').innerHTML = activityStats;
+        
+        const recentHtml = data.activities.map(a => `
+            <div class="flex items-center gap-3 p-3 border-b">
+                <div class="w-8 h-8 bg-${a.action === 'Vazifa topshirildi' ? 'green' : a.action === 'Baho qo\'yildi' ? 'blue' : a.action === 'Darsda qatnashdi' ? 'yellow' : 'purple'}-100 text-${a.action === 'Vazifa topshirildi' ? 'green' : a.action === 'Baho qo\'yildi' ? 'blue' : a.action === 'Darsda qatnashdi' ? 'yellow' : 'purple'}-600 rounded-full flex items-center justify-center">
+                    <i class="fas fa-${a.icon}"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="font-medium">${a.action}</p>
+                    <p class="text-sm text-gray-500">${a.detail}</p>
+                </div>
+                <div class="text-xs text-gray-400">${a.time}</div>
+            </div>
+        `).join('');
+        document.getElementById('recentActivity').innerHTML = recentHtml;
+        
+        // Sessions
+        const sessionsHtml = `
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="font-medium">Bu qurilma</p>
+                    <p class="text-sm text-gray-500">Chrome • Toshkent, O'zbekiston</p>
+                </div>
+                <span class="text-green-600 text-sm">Hozirgi</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="font-medium">iPhone 13</p>
+                    <p class="text-sm text-gray-500">Safari • Toshkent, O'zbekiston</p>
+                </div>
+                <button class="text-red-600 text-sm">Chiqarish</button>
+            </div>
+        `;
+        document.getElementById('sessionsList').innerHTML = sessionsHtml;
+    }
+
+    // ========== TAB FUNKSIYALARI ==========
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('tab-active');
+        });
+        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('tab-active');
+
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}Content`).classList.remove('hidden');
+
+        currentTab = tab;
+    }
+
+    // ========== PROFIL FUNKSIYALARI ==========
+    function editProfile() {
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    function saveProfile() {
+        showToast('Profil muvaffaqiyatli yangilandi!', 'success');
+        closeEditModal();
+    }
+
+    function changePassword() {
+        switchTab('security');
+        showToast('Parolni o\'zgartirish uchun "Xavfsizlik" bo\'limiga o\'ting', 'info');
+    }
+
+    function updatePassword() {
+        const current = document.getElementById('currentPassword').value;
+        const newPass = document.getElementById('newPassword').value;
+        const confirm = document.getElementById('confirmPassword').value;
+
+        if (!current || !newPass || !confirm) {
+            showToast('Barcha maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+
+        if (newPass !== confirm) {
+            showToast('Yangi parollar mos kelmadi!', 'error');
+            return;
+        }
+
+        if (newPass.length < 6) {
+            showToast('Parol kamida 6 belgidan iborat bo\'lishi kerak!', 'error');
+            return;
+        }
+
+        showToast('Parol muvaffaqiyatli o\'zgartirildi!', 'success');
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    // ========== AVATAR FUNKSIYALARI ==========
+    function changeAvatar() {
+        document.getElementById('avatarModal').style.display = 'flex';
+    }
+
+    function closeAvatarModal() {
+        document.getElementById('avatarModal').style.display = 'none';
+    }
+
+    function selectAvatar(num) {
+        const colors = ['0284c7', '4f46e5', 'dc2626', '059669'];
+        const avatarUrl = `https://ui-avatars.com/api/?name=User${num}&background=${colors[num-1]}&color=fff`;
+        document.getElementById('currentAvatarPreview').src = avatarUrl;
+    }
+
+    function saveAvatar() {
+        const newAvatar = document.getElementById('currentAvatarPreview').src;
+        document.getElementById('profileAvatar').src = newAvatar;
+        showToast('Rasm muvaffaqiyatli o\'zgartirildi!', 'success');
+        closeAvatarModal();
+    }
+
+    // File upload preview
+    document.getElementById('avatarUpload')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('currentAvatarPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // ========== NAVIGATSIYA ==========
+    function goToDashboard() {
+        if (userRole === 'student') {
+            window.location.href = '../student/dashboard.html';
+        } else if (userRole === 'teacher') {
+            window.location.href = '../teacher/dashboard.html';
+        } else {
+            window.location.href = '../admin/dashboard.html';
+        }
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+
+    // Modalni yopish (tashqariga bosilganda)
+    window.onclick = function(event) {
+        const editModal = document.getElementById('editModal');
+        const avatarModal = document.getElementById('avatarModal');
+        
+        if (event.target === editModal) {
+            closeEditModal();
+        }
+        if (event.target === avatarModal) {
+            closeAvatarModal();
+        }
+    }
+</script>
+
+</body>
+</html>

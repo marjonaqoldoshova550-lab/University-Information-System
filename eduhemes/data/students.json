@@ -1,0 +1,796 @@
+{
+  "students": [
+    {
+      "id": 7,
+      "name": "Azimjon Karimov",
+      "username": "student",
+      "password": "123",
+      "group": "AT-101-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "a.karimov@student.uz",
+      "phone": "+998901234501",
+      "address": "Toshkent sh., Chilonzor tumani",
+      "birthDate": "2003-05-15",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234567",
+      "avatar": "https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-01T09:00:00.000Z",
+      "lastLogin": "2026-03-19T08:15:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Karimov Rustam",
+          "phone": "+998901234567",
+          "work": "Xususiy tadbirkor"
+        },
+        "mother": {
+          "name": "Karimova Dilbar",
+          "phone": "+998901234568",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Ali Valiyev",
+      "username": "ali",
+      "password": "123",
+      "group": "AT-101-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "a.valiyev@student.uz",
+      "phone": "+998901234502",
+      "address": "Toshkent vil., Chirchiq shahri",
+      "birthDate": "2003-08-20",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234568",
+      "avatar": "https://ui-avatars.com/api/?name=Ali+Valiyev&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-01T10:30:00.000Z",
+      "lastLogin": "2026-03-18T16:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Valiyev Akram",
+          "phone": "+998901234569",
+          "work": "Muhandis"
+        },
+        "mother": {
+          "name": "Valiyeva Malika",
+          "phone": "+998901234570",
+          "work": "Uy bekasi"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Dilya Akramova",
+      "username": "dilya",
+      "password": "123",
+      "group": "AT-101-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "d.akramova@student.uz",
+      "phone": "+998901234503",
+      "address": "Toshkent sh., Yunusobod tumani",
+      "birthDate": "2004-02-10",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234569",
+      "avatar": "https://ui-avatars.com/api/?name=Dilya+Akramova&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-02T11:45:00.000Z",
+      "lastLogin": "2026-03-19T07:50:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Akramov Shavkat",
+          "phone": "+998901234571",
+          "work": "Tadbirkor"
+        },
+        "mother": {
+          "name": "Akramova Nilufar",
+          "phone": "+998901234572",
+          "work": "Shifokor"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "Jasur Karimov",
+      "username": "jasur_student",
+      "password": "123",
+      "group": "AT-102-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "j.karimov@student.uz",
+      "phone": "+998901234504",
+      "address": "Samarqand sh., Registon ko'chasi",
+      "birthDate": "2003-11-05",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234570",
+      "avatar": "https://ui-avatars.com/api/?name=Jasur+Karimov&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-03T09:15:00.000Z",
+      "lastLogin": "2026-03-17T13:20:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Karimov Bahodir",
+          "phone": "+998901234573",
+          "work": "Quruvchi"
+        },
+        "mother": {
+          "name": "Karimova Zebo",
+          "phone": "+998901234574",
+          "work": "Sotuvchi"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "name": "Malika Ismoilova",
+      "username": "malika",
+      "password": "123",
+      "group": "KI-201-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "m.ismoilova@student.uz",
+      "phone": "+998901234505",
+      "address": "Buxoro sh., Bahouddin Naqshband ko'chasi",
+      "birthDate": "2002-07-18",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234571",
+      "avatar": "https://ui-avatars.com/api/?name=Malika+Ismoilova&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-01T12:30:00.000Z",
+      "lastLogin": "2026-03-18T09:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Ismoilov Akbar",
+          "phone": "+998901234575",
+          "work": "Haydovchi"
+        },
+        "mother": {
+          "name": "Ismoilova Sarvinoz",
+          "phone": "+998901234576",
+          "work": "Tikuvchi"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "name": "Sardor Abdurahmonov",
+      "username": "sardor",
+      "password": "123",
+      "group": "KI-201-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "s.abdurahmonov@student.uz",
+      "phone": "+998901234506",
+      "address": "Andijon sh., Navoiy ko'chasi",
+      "birthDate": "2002-03-25",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234572",
+      "avatar": "https://ui-avatars.com/api/?name=Sardor+Abdurahmonov&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-02T14:45:00.000Z",
+      "lastLogin": "2026-03-16T10:45:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Abdurahmonov Toxir",
+          "phone": "+998901234577",
+          "work": "Fermer"
+        },
+        "mother": {
+          "name": "Abdurahmonova Mohira",
+          "phone": "+998901234578",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "name": "Zarina Azizova",
+      "username": "zarina",
+      "password": "123",
+      "group": "DI-301-22",
+      "course": 2,
+      "faculty": "Dasturlash injiniringi",
+      "email": "z.azizova@student.uz",
+      "phone": "+998901234507",
+      "address": "Farg'ona sh., Al-Farg'oniy ko'chasi",
+      "birthDate": "2004-01-12",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234573",
+      "avatar": "https://ui-avatars.com/api/?name=Zarina+Azizova&background=0284c7&color=fff",
+      "enrollmentYear": 2022,
+      "status": "active",
+      "createdAt": "2022-09-01T10:00:00.000Z",
+      "lastLogin": "2026-03-19T08:00:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Azizov Qodir",
+          "phone": "+998901234579",
+          "work": "Iqtisodchi"
+        },
+        "mother": {
+          "name": "Azizova Munira",
+          "phone": "+998901234580",
+          "work": "Uy bekasi"
+        }
+      }
+    },
+    {
+      "id": 14,
+      "name": "Rustam Xolmatov",
+      "username": "rustam",
+      "password": "123",
+      "group": "DI-301-22",
+      "course": 2,
+      "faculty": "Dasturlash injiniringi",
+      "email": "r.xolmatov@student.uz",
+      "phone": "+998901234508",
+      "address": "Namangan sh., Do'stlik ko'chasi",
+      "birthDate": "2003-09-08",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234574",
+      "avatar": "https://ui-avatars.com/api/?name=Rustam+Xolmatov&background=0284c7&color=fff",
+      "enrollmentYear": 2022,
+      "status": "active",
+      "createdAt": "2022-09-02T11:30:00.000Z",
+      "lastLogin": "2026-03-17T12:15:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Xolmatov Anvar",
+          "phone": "+998901234581",
+          "work": "Qurilish"
+        },
+        "mother": {
+          "name": "Xolmatova Sabohat",
+          "phone": "+998901234582",
+          "work": "Sartarosh"
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "Shoxrux Aliyev",
+      "username": "shoxrux",
+      "password": "123",
+      "group": "AT-102-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "sh.aliyev@student.uz",
+      "phone": "+998901234509",
+      "address": "Qashqadaryo vil., Qarshi shahri",
+      "birthDate": "2003-12-03",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234575",
+      "avatar": "https://ui-avatars.com/api/?name=Shoxrux+Aliyev&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-04T13:15:00.000Z",
+      "lastLogin": "2026-03-18T14:10:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Aliyev Ulug'bek",
+          "phone": "+998901234583",
+          "work": "Vrach"
+        },
+        "mother": {
+          "name": "Aliyeva Maftuna",
+          "phone": "+998901234584",
+          "work": "Hamshira"
+        }
+      }
+    },
+    {
+      "id": 16,
+      "name": "Nilufar Rahimova",
+      "username": "nilufar",
+      "password": "123",
+      "group": "AT-102-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "n.rahimova@student.uz",
+      "phone": "+998901234510",
+      "address": "Surxondaryo vil., Termiz shahri",
+      "birthDate": "2004-04-17",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234576",
+      "avatar": "https://ui-avatars.com/api/?name=Nilufar+Rahimova&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-05T14:30:00.000Z",
+      "lastLogin": "2026-03-19T07:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Rahimov Komil",
+          "phone": "+998901234585",
+          "work": "Bog'bon"
+        },
+        "mother": {
+          "name": "Rahimova Shahlo",
+          "phone": "+998901234586",
+          "work": "Oshpaz"
+        }
+      }
+    },
+    {
+      "id": 17,
+      "name": "Madina Xasanova",
+      "username": "madina",
+      "password": "123",
+      "group": "AT-201-21",
+      "course": 3,
+      "faculty": "Axborot texnologiyalari",
+      "email": "m.xasanova@student.uz",
+      "phone": "+998901234511",
+      "address": "Jizzax sh., Sharof Rashidov ko'chasi",
+      "birthDate": "2002-10-22",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234577",
+      "avatar": "https://ui-avatars.com/api/?name=Madina+Xasanova&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-03T09:45:00.000Z",
+      "lastLogin": "2026-03-18T11:20:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Xasanov Baxrom",
+          "phone": "+998901234587",
+          "work": "Muhandis"
+        },
+        "mother": {
+          "name": "Xasanova Nargiza",
+          "phone": "+998901234588",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 18,
+      "name": "Jamshid Turgunov",
+      "username": "jamshid",
+      "password": "123",
+      "group": "AT-201-21",
+      "course": 3,
+      "faculty": "Axborot texnologiyalari",
+      "email": "j.turgunov@student.uz",
+      "phone": "+998901234512",
+      "address": "Sirdaryo vil., Guliston shahri",
+      "birthDate": "2002-06-14",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234578",
+      "avatar": "https://ui-avatars.com/api/?name=Jamshid+Turgunov&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-04T15:30:00.000Z",
+      "lastLogin": "2026-03-17T15:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Turgunov Mansur",
+          "phone": "+998901234589",
+          "work": "Tadbirkor"
+        },
+        "mother": {
+          "name": "Turgunova Lola",
+          "phone": "+998901234590",
+          "work": "Dizayner"
+        }
+      }
+    },
+    {
+      "id": 19,
+      "name": "Gulnora Karimova",
+      "username": "gulnora",
+      "password": "123",
+      "group": "KI-202-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "g.karimova@student.uz",
+      "phone": "+998901234513",
+      "address": "Navoiy sh., Ipak yo'li ko'chasi",
+      "birthDate": "2002-12-29",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234579",
+      "avatar": "https://ui-avatars.com/api/?name=Gulnora+Karimova&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-05T10:15:00.000Z",
+      "lastLogin": "2026-03-16T13:40:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Karimov Shuxrat",
+          "phone": "+998901234591",
+          "work": "Hisobchi"
+        },
+        "mother": {
+          "name": "Karimova Barno",
+          "phone": "+998901234592",
+          "work": "Sotuvchi"
+        }
+      }
+    },
+    {
+      "id": 20,
+      "name": "Bobur Mirzo",
+      "username": "bobur",
+      "password": "123",
+      "group": "KI-202-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "b.mirzo@student.uz",
+      "phone": "+998901234514",
+      "address": "Xorazm vil., Urganch shahri",
+      "birthDate": "2002-08-07",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234580",
+      "avatar": "https://ui-avatars.com/api/?name=Bobur+Mirzo&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-06T12:45:00.000Z",
+      "lastLogin": "2026-03-19T09:15:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Mirzayev Asror",
+          "phone": "+998901234593",
+          "work": "Mexanik"
+        },
+        "mother": {
+          "name": "Mirzayeva Dilorom",
+          "phone": "+998901234594",
+          "work": "Tikuvchi"
+        }
+      }
+    },
+    {
+      "id": 21,
+      "name": "Shahzod Ergashev",
+      "username": "shahzod",
+      "password": "123",
+      "group": "KI-203-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "s.ergashev@student.uz",
+      "phone": "+998901234515",
+      "address": "Toshkent sh., Olmazor tumani",
+      "birthDate": "2002-05-19",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234581",
+      "avatar": "https://ui-avatars.com/api/?name=Shahzod+Ergashev&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-07T08:30:00.000Z",
+      "lastLogin": "2026-03-18T10:45:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Ergashev Furqat",
+          "phone": "+998901234595",
+          "work": "Haydovchi"
+        },
+        "mother": {
+          "name": "Ergasheva Mahbuba",
+          "phone": "+998901234596",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 22,
+      "name": "Sevara Abduvohidova",
+      "username": "sevara",
+      "password": "123",
+      "group": "DI-302-22",
+      "course": 2,
+      "faculty": "Dasturlash injiniringi",
+      "email": "s.abduvohidova@student.uz",
+      "phone": "+998901234516",
+      "address": "Toshkent vil., Angren shahri",
+      "birthDate": "2004-03-11",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234582",
+      "avatar": "https://ui-avatars.com/api/?name=Sevara+Abduvohidova&background=0284c7&color=fff",
+      "enrollmentYear": 2022,
+      "status": "active",
+      "createdAt": "2022-09-03T13:45:00.000Z",
+      "lastLogin": "2026-03-19T08:45:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Abduvohidov Nodir",
+          "phone": "+998901234597",
+          "work": "Iqtisodchi"
+        },
+        "mother": {
+          "name": "Abduvohidova Zarina",
+          "phone": "+998901234598",
+          "work": "Uy bekasi"
+        }
+      }
+    },
+    {
+      "id": 23,
+      "name": "Jahongir Toshmatov",
+      "username": "jahongir",
+      "password": "123",
+      "group": "AT-103-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "j.toshmatov@student.uz",
+      "phone": "+998901234517",
+      "address": "Samarqand vil., Kattaqo'rg'on shahri",
+      "birthDate": "2003-07-23",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234583",
+      "avatar": "https://ui-avatars.com/api/?name=Jahongir+Toshmatov&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-06T16:00:00.000Z",
+      "lastLogin": "2026-03-17T09:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Toshmatov Ibrohim",
+          "phone": "+998901234599",
+          "work": "Quruvchi"
+        },
+        "mother": {
+          "name": "Toshmatova Zuhra",
+          "phone": "+998901234600",
+          "work": "Fermer"
+        }
+      }
+    },
+    {
+      "id": 24,
+      "name": "Mahliyo Qodirova",
+      "username": "mahliyo",
+      "password": "123",
+      "group": "KI-204-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "m.qodirova@student.uz",
+      "phone": "+998901234518",
+      "address": "Buxoro vil., G'ijduvon shahri",
+      "birthDate": "2002-11-30",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234584",
+      "avatar": "https://ui-avatars.com/api/?name=Mahliyo+Qodirova&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-08T11:15:00.000Z",
+      "lastLogin": "2026-03-18T12:15:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Qodirov Shuhrat",
+          "phone": "+998901234601",
+          "work": "Vrach"
+        },
+        "mother": {
+          "name": "Qodirova Nozima",
+          "phone": "+998901234602",
+          "work": "Hamshira"
+        }
+      }
+    },
+    {
+      "id": 25,
+      "name": "Islombek Abdullayev",
+      "username": "islombek",
+      "password": "123",
+      "group": "DI-303-22",
+      "course": 2,
+      "faculty": "Dasturlash injiniringi",
+      "email": "i.abdullayev@student.uz",
+      "phone": "+998901234519",
+      "address": "Farg'ona vil., Qo'qon shahri",
+      "birthDate": "2004-01-05",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234585",
+      "avatar": "https://ui-avatars.com/api/?name=Islombek+Abdullayev&background=0284c7&color=fff",
+      "enrollmentYear": 2022,
+      "status": "active",
+      "createdAt": "2022-09-04T09:30:00.000Z",
+      "lastLogin": "2026-03-19T07:15:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Abdullayev Bahrom",
+          "phone": "+998901234603",
+          "work": "Tadbirkor"
+        },
+        "mother": {
+          "name": "Abdullayeva Hilola",
+          "phone": "+998901234604",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 26,
+      "name": "Dilnoza Raxmatova",
+      "username": "dilnoza",
+      "password": "123",
+      "group": "AT-202-21",
+      "course": 3,
+      "faculty": "Axborot texnologiyalari",
+      "email": "d.raxmatova@student.uz",
+      "phone": "+998901234520",
+      "address": "Andijon vil., Xonobod shahri",
+      "birthDate": "2002-09-14",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234586",
+      "avatar": "https://ui-avatars.com/api/?name=Dilnoza+Raxmatova&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-09T14:45:00.000Z",
+      "lastLogin": "2026-03-18T15:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Raxmatov Xurshid",
+          "phone": "+998901234605",
+          "work": "Muhandis"
+        },
+        "mother": {
+          "name": "Raxmatova Feruza",
+          "phone": "+998901234606",
+          "work": "Sotuvchi"
+        }
+      }
+    },
+    {
+      "id": 27,
+      "name": "Nodirbek Hamidov",
+      "username": "nodirbek",
+      "password": "123",
+      "group": "KI-205-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "n.hamidov@student.uz",
+      "phone": "+998901234521",
+      "address": "Namangan vil., Chust shahri",
+      "birthDate": "2002-04-28",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234587",
+      "avatar": "https://ui-avatars.com/api/?name=Nodirbek+Hamidov&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-10T10:30:00.000Z",
+      "lastLogin": "2026-03-17T14:50:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Hamidov Elyor",
+          "phone": "+998901234607",
+          "work": "Hisobchi"
+        },
+        "mother": {
+          "name": "Hamidova Nilufar",
+          "phone": "+998901234608",
+          "work": "Uy bekasi"
+        }
+      }
+    },
+    {
+      "id": 28,
+      "name": "Zilola Sobirova",
+      "username": "zilola",
+      "password": "123",
+      "group": "DI-304-22",
+      "course": 2,
+      "faculty": "Dasturlash injiniringi",
+      "email": "z.sobirova@student.uz",
+      "phone": "+998901234522",
+      "address": "Qashqadaryo vil., Shahrisabz shahri",
+      "birthDate": "2004-06-19",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234588",
+      "avatar": "https://ui-avatars.com/api/?name=Zilola+Sobirova&background=0284c7&color=fff",
+      "enrollmentYear": 2022,
+      "status": "active",
+      "createdAt": "2022-09-05T12:15:00.000Z",
+      "lastLogin": "2026-03-19T09:45:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Sobirov Baxtiyor",
+          "phone": "+998901234609",
+          "work": "Quruvchi"
+        },
+        "mother": {
+          "name": "Sobirova Rayxona",
+          "phone": "+998901234610",
+          "work": "Tikuvchi"
+        }
+      }
+    },
+    {
+      "id": 29,
+      "name": "Abror Xolmirzayev",
+      "username": "abror",
+      "password": "123",
+      "group": "AT-104-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "a.xolmirzayev@student.uz",
+      "phone": "+998901234523",
+      "address": "Surxondaryo vil., Denov shahri",
+      "birthDate": "2003-10-31",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "passport": "AA1234589",
+      "avatar": "https://ui-avatars.com/api/?name=Abror+Xolmirzayev&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-07T15:45:00.000Z",
+      "lastLogin": "2026-03-16T11:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Xolmirzayev Rustam",
+          "phone": "+998901234611",
+          "work": "Fermer"
+        },
+        "mother": {
+          "name": "Xolmirzayeva Mastura",
+          "phone": "+998901234612",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 30,
+      "name": "Mohinur Yo'ldoshova",
+      "username": "mohinur",
+      "password": "123",
+      "group": "KI-206-21",
+      "course": 3,
+      "faculty": "Kompyuter injiniringi",
+      "email": "m.yoldoshova@student.uz",
+      "phone": "+998901234524",
+      "address": "Xorazm vil., Xiva shahri",
+      "birthDate": "2002-02-08",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "passport": "AA1234590",
+      "avatar": "https://ui-avatars.com/api/?name=Mohinur+Yo%27ldoshova&background=0284c7&color=fff",
+      "enrollmentYear": 2021,
+      "status": "active",
+      "createdAt": "2021-09-11T09:00:00.000Z",
+      "lastLogin": "2026-03-18T13:20:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Yo'ldoshov Akmal",
+          "phone": "+998901234613",
+          "work": "Hunarmand"
+        },
+        "mother": {
+          "name": "Yo'ldoshova Gulnora",
+          "phone": "+998901234614",
+          "work": "Uy bekasi"
+        }
+      }
+    }
+  ]
+}

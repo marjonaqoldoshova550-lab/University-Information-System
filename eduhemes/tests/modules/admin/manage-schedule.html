@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dars jadvali - EduHemis Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card-hover { transition: all 0.3s; cursor: pointer; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 12px 24px; border-radius: 50px; z-index: 1001; display: none; }
+        .schedule-cell { min-height: 80px; padding: 8px; border: 1px solid #e5e7eb; border-radius: 8px; transition: all 0.2s; }
+        .schedule-cell:hover { background: #eff6ff; transform: scale(1.02); }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Header -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Dars jadvalini boshqarish</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100">
+                    <i class="fas fa-arrow-left"></i> Bosh sahifa
+                </button>
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📅 Dars jadvali</h1>
+        <button onclick="showAddLessonModal()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700">
+            <i class="fas fa-plus"></i> Yangi dars
+        </button>
+    </div>
+
+    <!-- Filter -->
+    <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <select id="groupFilter" class="p-3 border rounded-xl" onchange="loadSchedule()">
+                <option value="all">Barcha guruhlar</option>
+                <option value="AT-101-20">AT-101-20</option>
+                <option value="AT-102-20">AT-102-20</option>
+                <option value="KI-201-21">KI-201-21</option>
+            </select>
+            <select id="teacherFilter" class="p-3 border rounded-xl" onchange="loadSchedule()">
+                <option value="all">Barcha o'qituvchilar</option>
+                <option value="2">Said Alisherov</option>
+                <option value="3">Nodira Karimova</option>
+                <option value="4">Jasur Usmonov</option>
+            </select>
+            <select id="dayFilter" class="p-3 border rounded-xl" onchange="loadSchedule()">
+                <option value="all">Barcha kunlar</option>
+                <option value="monday">Dushanba</option>
+                <option value="tuesday">Seshanba</option>
+                <option value="wednesday">Chorshanba</option>
+                <option value="thursday">Payshanba</option>
+                <option value="friday">Juma</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Schedule Table -->
+    <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 text-left">Vaqt</th>
+                        <th class="p-4 text-center">Dushanba</th>
+                        <th class="p-4 text-center">Seshanba</th>
+                        <th class="p-4 text-center">Chorshanba</th>
+                        <th class="p-4 text-center">Payshanba</th>
+                        <th class="p-4 text-center">Juma</th>
+                        <th class="p-4 text-center">Shanba</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleTable">
+                    <!-- Jadval JS orqali yuklanadi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add Lesson Modal -->
+<div id="addLessonModal" class="modal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">➕ Yangi dars qo'shish</h3>
+            <button onclick="closeModal()" class="text-2xl text-gray-500">&times;</button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Guruh</label>
+                <select id="lessonGroup" class="w-full p-3 border rounded-xl">
+                    <option value="AT-101-20">AT-101-20</option>
+                    <option value="AT-102-20">AT-102-20</option>
+                    <option value="KI-201-21">KI-201-21</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan</label>
+                <select id="lessonSubject" class="w-full p-3 border rounded-xl">
+                    <option value="Veb dasturlash">Veb dasturlash</option>
+                    <option value="Ma'lumotlar bazasi">Ma'lumotlar bazasi</option>
+                    <option value="Kiberxavfsizlik">Kiberxavfsizlik</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">O'qituvchi</label>
+                <select id="lessonTeacher" class="w-full p-3 border rounded-xl">
+                    <option value="2">Said Alisherov</option>
+                    <option value="3">Nodira Karimova</option>
+                    <option value="4">Jasur Usmonov</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Kun</label>
+                    <select id="lessonDay" class="w-full p-3 border rounded-xl">
+                        <option value="monday">Dushanba</option>
+                        <option value="tuesday">Seshanba</option>
+                        <option value="wednesday">Chorshanba</option>
+                        <option value="thursday">Payshanba</option>
+                        <option value="friday">Juma</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Vaqt</label>
+                    <input type="text" id="lessonTime" placeholder="09:00-10:20" class="w-full p-3 border rounded-xl">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Xona</label>
+                <input type="text" id="lessonRoom" placeholder="402" class="w-full p-3 border rounded-xl">
+            </div>
+            <div class="flex gap-3">
+                <button onclick="addLesson()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    Saqlash
+                </button>
+                <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Lesson Modal -->
+<div id="editLessonModal" class="modal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">✏️ Darsni tahrirlash</h3>
+            <button onclick="closeEditModal()" class="text-2xl text-gray-500">&times;</button>
+        </div>
+        <div id="editModalContent"></div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+    let scheduleData = [
+        { id: 1, day: 'monday', time: '09:00-10:20', group: 'AT-101-20', subject: 'Veb dasturlash', teacher: 'Said Alisherov', teacherId: 2, room: '402' },
+        { id: 2, day: 'tuesday', time: '11:00-12:30', group: 'AT-102-20', subject: "Ma'lumotlar bazasi", teacher: 'Nodira Karimova', teacherId: 3, room: '312' },
+        { id: 3, day: 'wednesday', time: '14:00-15:30', group: 'KI-201-21', subject: 'Kiberxavfsizlik', teacher: 'Jasur Usmonov', teacherId: 4, room: '210' }
+    ];
+
+    const timeSlots = ['09:00-10:20', '10:30-11:50', '13:00-14:20', '14:30-15:50', '16:00-17:20'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const dayNames = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
+
+    window.onload = function() {
+        loadSchedule();
+    };
+
+    function loadSchedule() {
+        const groupFilter = document.getElementById('groupFilter').value;
+        const teacherFilter = document.getElementById('teacherFilter').value;
+        const dayFilter = document.getElementById('dayFilter').value;
+        
+        let filtered = [...scheduleData];
+        
+        if (groupFilter !== 'all') {
+            filtered = filtered.filter(l => l.group === groupFilter);
+        }
+        if (teacherFilter !== 'all') {
+            filtered = filtered.filter(l => l.teacherId == teacherFilter);
+        }
+        if (dayFilter !== 'all') {
+            filtered = filtered.filter(l => l.day === dayFilter);
+        }
+        
+        const tbody = document.getElementById('scheduleTable');
+        tbody.innerHTML = '';
+        
+        timeSlots.forEach(time => {
+            let row = `<tr class="border-t"><td class="p-4 font-medium text-gray-600">${time}</td>`;
+            
+            days.forEach(day => {
+                const lessons = filtered.filter(l => l.day === day && l.time === time);
+                
+                if (lessons.length > 0) {
+                    row += `<td class="p-2">
+                        <div class="schedule-cell cursor-pointer" onclick="editLesson(${lessons[0].id})">
+                            <p class="font-bold text-sm">${lessons[0].subject}</p>
+                            <p class="text-xs text-gray-500">${lessons[0].group}</p>
+                            <p class="text-xs text-gray-400">${lessons[0].teacher}</p>
+                            <p class="text-xs text-gray-400">${lessons[0].room}</p>
+                        </div>
+                    </td>`;
+                } else {
+                    row += `<td class="p-2"><div class="schedule-cell text-center text-gray-300">-</div></td>`;
+                }
+            });
+            
+            row += `</tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    function showAddLessonModal() {
+        document.getElementById('addLessonModal').style.display = 'flex';
+    }
+
+    function addLesson() {
+        const group = document.getElementById('lessonGroup').value;
+        const subject = document.getElementById('lessonSubject').value;
+        const teacherId = document.getElementById('lessonTeacher').value;
+        const teacherName = document.getElementById('lessonTeacher').options[document.getElementById('lessonTeacher').selectedIndex].text;
+        const day = document.getElementById('lessonDay').value;
+        const time = document.getElementById('lessonTime').value;
+        const room = document.getElementById('lessonRoom').value;
+        
+        if (!group || !subject || !time || !room) {
+            showToast('Barcha maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        const newLesson = {
+            id: scheduleData.length + 1,
+            day: day,
+            time: time,
+            group: group,
+            subject: subject,
+            teacher: teacherName,
+            teacherId: parseInt(teacherId),
+            room: room
+        };
+        
+        scheduleData.push(newLesson);
+        saveToLocalStorage();
+        loadSchedule();
+        closeModal();
+        showToast('Dars qo\'shildi!');
+    }
+
+    function editLesson(lessonId) {
+        const lesson = scheduleData.find(l => l.id === lessonId);
+        if (!lesson) return;
+        
+        document.getElementById('editModalContent').innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Guruh</label>
+                    <input type="text" id="editGroup" value="${lesson.group}" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Fan</label>
+                    <input type="text" id="editSubject" value="${lesson.subject}" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">O'qituvchi</label>
+                    <input type="text" id="editTeacher" value="${

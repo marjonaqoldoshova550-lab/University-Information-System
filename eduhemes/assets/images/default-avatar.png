@@ -1,0 +1,15 @@
+<!-- UI Avatars - avtomatik avatar yaratish (kod yetarli) -->
+<img src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff&size=128" 
+     alt="Azimjon Karimov" 
+     class="w-12 h-12 rounded-full">
+
+<!-- Turli xil variantlar -->
+<img src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff&size=128&bold=true&rounded=true">
+
+<!-- Parameterlar -->
+<!-- name = Ism familya -->
+<!-- background = fon rangi (hex kod) -->
+<!-- color = matn rangi -->
+<!-- size = o'lcham -->
+<!-- bold = qalin harf -->
+<!-- rounded = yumaloq -->

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fanlar - EduHemis Admin</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .table-row-hover:hover {
+            background: #f9fafb;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pagination-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+        }
+        
+        .subject-card {
+            transition: all 0.3s;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+        
+        .credit-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Fanlar boshqaruvi</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Admin User</p>
+                    <p class="text-xs text-gray-500">Administrator</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-red-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📚 Fanlar</h1>
+        <button onclick="showAddSubjectModal()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            <span>Yangi fan</span>
+        </button>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jami fanlar</p>
+                    <h3 class="text-2xl font-bold mt-1" id="totalSubjects">45</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-book"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Faol fanlar</p>
+                    <h3 class="text-2xl font-bold mt-1 text-green-600" id="activeSubjects">42</h3>
+                </div>
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jami kreditlar</p>
+                    <h3 class="text-2xl font-bold mt-1 text-purple-600" id="totalCredits">187</h3>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="mt-2 progress-bar">
+                <div class="progress-fill" style="width: 78%"></div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">O'rtacha kredit</p>
+                    <h3 class="text-2xl font-bold mt-1 text-orange-600" id="avgCredits">4.2</h3>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">O'qituvchilar</p>
+                    <h3 class="text-2xl font-bold mt-1 text-indigo-600" id="teacherCount">28</h3>
+                </div>
+                <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">📊 Fakultetlar bo'yicha fanlar</h3>
+            <canvas id="facultyChart" height="200"></canvas>
+        </div>
+        <div class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4">📈 Kreditlar bo'yicha taqsimot</h3>
+            <canvas id="creditsChart" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="search-box md:col-span-2">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Fan nomi, kod yoki o'qituvchi bo'yicha..." onkeyup="searchSubjects()">
+            </div>
+            <select id="facultyFilter" class="p-3 border rounded-xl bg-white" onchange="filterSubjects()">
+                <option value="all">Barcha fakultetlar</option>
+                <option value="Axborot texnologiyalari">Axborot texnologiyalari</option>
+                <option value="Kompyuter injiniringi">Kompyuter injiniringi</option>
+                <option value="Dasturlash injiniringi">Dasturlash injiniringi</option>
+                <option value="Iqtisodiyot">Iqtisodiyot</option>
+            </select>
+            <select id="semesterFilter" class="p-3 border rounded-xl bg-white" onchange="filterSubjects()">
+                <option value="all">Barcha semestrlar</option>
+                <option value="1">1-semestr</option>
+                <option value="2">2-semestr</option>
+                <option value="3">3-semestr</option>
+                <option value="4">4-semestr</option>
+                <option value="5">5-semestr</option>
+                <option value="6">6-semestr</option>
+                <option value="7">7-semestr</option>
+                <option value="8">8-semestr</option>
+            </select>
+            <select id="statusFilter" class="p-3 border rounded-xl bg-white" onchange="filterSubjects()">
+                <option value="all">Barcha holatlar</option>
+                <option value="active">Faol</option>
+                <option value="inactive">Arxiv</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Subjects Grid -->
+    <div id="subjectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Subjects will be loaded here -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center gap-2 mt-8">
+        <button onclick="changePage(-1)" class="pagination-btn bg-white shadow-sm">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span id="pageInfo" class="px-4 py-2 bg-white rounded-xl shadow-sm">1 / 4</span>
+        <button onclick="changePage(1)" class="pagination-btn bg-white shadow-sm">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</div>
+
+<!-- Add Subject Modal -->
+<div id="addSubjectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi fan qo'shish</h3>
+            <button onclick="closeAddSubjectModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan nomi</label>
+                <input type="text" id="newSubjectName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan kodi</label>
+                <input type="text" id="newSubjectCode" class="w-full p-3 border rounded-xl" placeholder="Masalan: CS-2024">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fakultet</label>
+                <select id="newSubjectFaculty" class="w-full p-3 border rounded-xl">
+                    <option value="Axborot texnologiyalari">Axborot texnologiyalari</option>
+                    <option value="Kompyuter injiniringi">Kompyuter injiniringi</option>
+                    <option value="Dasturlash injiniringi">Dasturlash injiniringi</option>
+                    <option value="Iqtisodiyot">Iqtisodiyot</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kreditlar</label>
+                <input type="number" id="newSubjectCredits" min="1" max="10" value="3" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Soatlar</label>
+                <input type="number" id="newSubjectHours" min="1" value="72" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Semestr</label>
+                <select id="newSubjectSemester" class="w-full p-3 border rounded-xl">
+                    <option value="1">1-semestr</option>
+                    <option value="2">2-semestr</option>
+                    <option value="3">3-semestr</option>
+                    <option value="4">4-semestr</option>
+                    <option value="5">5-semestr</option>
+                    <option value="6">6-semestr</option>
+                    <option value="7">7-semestr</option>
+                    <option value="8">8-semestr</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">O'qituvchi</label>
+                <select id="newSubjectTeacher" class="w-full p-3 border rounded-xl">
+                    <option value="">Tanlang</option>
+                    <option value="Said Alisherov">Said Alisherov</option>
+                    <option value="Nodira Karimova">Nodira Karimova</option>
+                    <option value="Jasur Usmonov">Jasur Usmonov</option>
+                    <option value="Dildora Ahmetova">Dildora Ahmetova</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Ikonka</label>
+                <select id="newSubjectIcon" class="w-full p-3 border rounded-xl">
+                    <option value="laptop-code">💻 Dasturlash</option>
+                    <option value="database">🗄️ Ma'lumotlar bazasi</option>
+                    <option value="shield-alt">🛡️ Xavfsizlik</option>
+                    <option value="brain">🧠 Sun'iy intellekt</option>
+                    <option value="chart-line">📈 Iqtisodiyot</option>
+                    <option value="flask">🧪 Kimyo</option>
+                    <option value="atom">⚛️ Fizika</option>
+                    <option value="square-root-alt">📐 Matematika</option>
+                    <option value="book">📖 Filologiya</option>
+                </select>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addSubject()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddSubjectModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Subject Modal -->
+<div id="editSubjectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">✏️ Fanni tahrirlash</h3>
+            <button onclick="closeEditSubjectModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan nomi</label>
+                <input type="text" id="editSubjectName" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fan kodi</label>
+                <input type="text" id="editSubjectCode" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Fakultet</label>
+                <select id="editSubjectFaculty" class="w-full p-3 border rounded-xl">
+                    <option value="Axborot texnologiyalari">Axborot texnologiyalari</option>
+                    <option value="Kompyuter injiniringi">Kompyuter injiniringi</option>
+                    <option value="Dasturlash injiniringi">Dasturlash injiniringi</option>
+                    <option value="Iqtisodiyot">Iqtisodiyot</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Kreditlar</label>
+                <input type="number" id="editSubjectCredits" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Soatlar</label>
+                <input type="number" id="editSubjectHours" class="w-full p-3 border rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Semestr</label>
+                <select id="editSubjectSemester" class="w-full p-3 border rounded-xl">
+                    <option value="1">1-semestr</option>
+                    <option value="2">2-semestr</option>
+                    <option value="3">3-semestr</option>
+                    <option value="4">4-semestr</option>
+                    <option value="5">5-semestr</option>
+                    <option value="6">6-semestr</option>
+                    <option value="7">7-semestr</option>
+                    <option value="8">8-semestr</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">O'qituvchi</label>
+                <select id="editSubjectTeacher" class="w-full p-3 border rounded-xl">
+                    <option value="">Tanlang</option>
+                    <option value="Said Alisherov">Said Alisherov</option>
+                    <option value="Nodira Karimova">Nodira Karimova</option>
+                    <option value="Jasur Usmonov">Jasur Usmonov</option>
+                    <option value="Dildora Ahmetova">Dildora Ahmetova</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Holat</label>
+                <select id="editSubjectStatus" class="w-full p-3 border rounded-xl">
+                    <option value="active">Faol</option>
+                    <option value="inactive">Arxiv</option>
+                </select>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="updateSubject()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                    <i class="fas fa-save mr-2"></i> Yangilash
+                </button>
+                <button onclick="closeEditSubjectModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Subject Details Modal -->
+<div id="subjectDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="detailsModalTitle">Fan ma'lumotlari</h3>
+            <button onclick="closeSubjectDetailsModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="detailsModalContent"></div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentPage = 1;
+    let itemsPerPage = 9;
+    let currentFilter = { search: '', faculty: 'all', semester: 'all', status: 'all' };
+    let facultyChart = null;
+    let creditsChart = null;
+    
+    let subjectsData = [
+        { id: 1, name: 'Veb dasturlash', code: 'CS-2024', faculty: 'Axborot texnologiyalari', credits: 5, hours: 120, semester: 4, teacher: 'Said Alisherov', status: 'active', icon: 'laptop-code', color: 'blue', students: 124 },
+        { id: 2, name: "Ma'lumotlar bazasi", code: 'DB-4001', faculty: 'Axborot texnologiyalari', credits: 4, hours: 96, semester: 3, teacher: 'Nodira Karimova', status: 'active', icon: 'database', color: 'green', students: 98 },
+        { id: 3, name: 'Kiberxavfsizlik', code: 'SEC-102', faculty: 'Kompyuter injiniringi', credits: 4, hours: 96, semester: 5, teacher: 'Jasur Usmonov', status: 'active', icon: 'shield-alt', color: 'orange', students: 86 },
+        { id: 4, name: "Sun'iy intellekt", code: 'AI-500', faculty: 'Axborot texnologiyalari', credits: 5, hours: 120, semester: 6, teacher: 'Dildora Ahmetova', status: 'active', icon: 'brain', color: 'purple', students: 112 },
+        { id: 5, name: 'Tizimli boshqaruv', code: 'SYS-301', faculty: 'Dasturlash injiniringi', credits: 3, hours: 72, semester: 4, teacher: 'Aziz Qosimov', status: 'active', icon: 'network-wired', color: 'red', students: 76 },
+        { id: 6, name: 'Algoritmlar', code: 'CS-203', faculty: 'Axborot texnologiyalari', credits: 5, hours: 120, semester: 3, teacher: 'Said Alisherov', status: 'active', icon: 'code-branch', color: 'indigo', students: 108 },
+        { id: 7, name: 'Mikroiqtisodiyot', code: 'EC-201', faculty: 'Iqtisodiyot', credits: 4, hours: 96, semester: 3, teacher: 'Akmal Hakimov', status: 'active', icon: 'chart-line', color: 'green', students: 92 },
+        { id: 8, name: 'Makroiqtisodiyot', code: 'EC-202', faculty: 'Iqtisodiyot', credits: 4, hours: 96, semester: 4, teacher: 'Dilbar Xolmatova', status: 'active', icon: 'chart-bar', color: 'blue', students: 88 },
+        { id: 9, name: 'Ekonometrika', code: 'EC-301', faculty: 'Iqtisodiyot', credits: 4, hours: 96, semester: 5, teacher: 'Rustam Aliyev', status: 'inactive', icon: 'calculator', color: 'orange', students: 64 },
+        { id: 10, name: 'Biznes statistika', code: 'EC-302', faculty: 'Iqtisodiyot', credits: 3, hours: 72, semester: 5, teacher: 'Malika Rahimova', status: 'active', icon: 'chart-pie', color: 'purple', students: 72 },
+        { id: 11, name: 'Kompyuter tarmoqlari', code: 'CS-204', faculty: 'Kompyuter injiniringi', credits: 4, hours: 96, semester: 4, teacher: 'Bahodir Tursunov', status: 'active', icon: 'network-wired', color: 'red', students: 84 },
+        { id: 12, name: 'JavaScript', code: 'CS-205', faculty: 'Axborot texnologiyalari', credits: 4, hours: 96, semester: 4, teacher: 'Said Alisherov', status: 'active', icon: 'js', color: 'yellow', students: 96 }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        loadSubjects();
+        updateStatistics();
+        initCharts();
+    };
+
+    function loadSubjects() {
+        let filteredSubjects = [...subjectsData];
+        
+        // Apply search
+        if (currentFilter.search) {
+            const searchLower = currentFilter.search.toLowerCase();
+            filteredSubjects = filteredSubjects.filter(s => 
+                s.name.toLowerCase().includes(searchLower) ||
+                s.code.toLowerCase().includes(searchLower) ||
+                s.teacher.toLowerCase().includes(searchLower)
+            );
+        }
+        
+        // Apply faculty filter
+        if (currentFilter.faculty !== 'all') {
+            filteredSubjects = filteredSubjects.filter(s => s.faculty === currentFilter.faculty);
+        }
+        
+        // Apply semester filter
+        if (currentFilter.semester !== 'all') {
+            filteredSubjects = filteredSubjects.filter(s => s.semester === parseInt(currentFilter.semester));
+        }
+        
+        // Apply status filter
+        if (currentFilter.status !== 'all') {
+            filteredSubjects = filteredSubjects.filter(s => s.status === currentFilter.status);
+        }
+        
+        // Pagination
+        const totalPages = Math.ceil(filteredSubjects.length / itemsPerPage);
+        const start = (currentPage - 1) * itemsPerPage;
+        const paginatedSubjects = filteredSubjects.slice(start, start + itemsPerPage);
+        
+        document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages || 1}`;
+        
+        const container = document.getElementById('subjectsGrid');
+        container.innerHTML = '';
+        
+        paginatedSubjects.forEach(subject => {
+            const statusClass = subject.status === 'active' ? 'status-active' : 'status-inactive';
+            const statusText = subject.status === 'active' ? 'Faol' : 'Arxiv';
+            const iconColor = {
+                blue: 'bg-blue-100 text-blue-600',
+                green: 'bg-green-100 text-green-600',
+                orange: 'bg-orange-100 text-orange-600',
+                purple: 'bg-purple-100 text-purple-600',
+                red: 'bg-red-100 text-red-600',
+                indigo: 'bg-indigo-100 text-indigo-600',
+                yellow: 'bg-yellow-100 text-yellow-600'
+            }[subject.color] || 'bg-gray-100 text-gray-600';
+            
+            container.innerHTML += `
+                <div class="bg-white rounded-2xl shadow-sm p-6 subject-card cursor-pointer" onclick="showSubjectDetails(${subject.id})">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="subject-icon ${iconColor}">
+                            <i class="fas fa-${subject.icon}"></i>
+                        </div>
+                        <span class="credit-badge">${subject.credits} kredit</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-lg">${subject.name}</h3>
+                    <p class="text-sm text-gray-500">${subject.code}</p>
+                    <p class="text-sm text-gray-600 mt-1">O'qituvchi: ${subject.teacher}</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t">
+                        <div>
+                            <p class="text-xs text-gray-500">Soatlar</p>
+                            <p class="text-xl font-bold">${subject.hours}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Semestr</p>
+                            <p class="text-xl font-bold">${subject.semester}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Talabalar</p>
+                            <p class="text-xl font-bold">${subject.students}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Holat</p>
+                            <p class="status-badge ${statusClass} text-xs">${statusText}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="event.stopPropagation(); editSubject(${subject.id})" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm hover:bg-blue-100">
+                            <i class="fas fa-edit mr-1"></i> Tahrirlash
+                        </button>
+                        <button onclick="event.stopPropagation(); deleteSubject(${subject.id})" class="flex-1 py-2 bg-red-50 text-red-600 rounded-xl text-sm hover:bg-red-100">
+                            <i class="fas fa-trash mr-1"></i> O'chirish
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (paginatedSubjects.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-3 text-center py-12">
+                    <i class="fas fa-book text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Fanlar topilmadi</p>
+                </div>
+            `;
+        }
+    }
+
+    function updateStatistics() {
+        const total = subjectsData.length;
+        const active = subjectsData.filter(s => s.status === 'active').length;
+        const totalCredits = subjectsData.reduce((sum, s) => sum + s.credits, 0);
+        const avgCredits = (totalCredits / total).toFixed(1);
+        const teachers = [...new Set(subjectsData.map(s => s.teacher))].length;
+        
+        document.getElementById('totalSubjects').textContent = total;
+        document.getElementById('activeSubjects').textContent = active;
+        document.getElementById('totalCredits').textContent = totalCredits;
+        document.getElementById('avgCredits').textContent = avgCredits;
+        document.getElementById('teacherCount').textContent = teachers;
+    }
+
+    function initCharts() {
+        // Faculty chart
+        const facultyStats = {
+            'Axborot texnologiyalari': subjectsData.filter(s => s.faculty === 'Axborot texnologiyalari').length,
+            'Kompyuter injiniringi': subjectsData.filter(s => s.faculty === 'Kompyuter injiniringi').length,
+            'Dasturlash injiniringi': subjectsData.filter(s => s.faculty === 'Dasturlash injiniringi').length,
+            'Iqtisodiyot': subjectsData.filter(s => s.faculty === 'Iqtisodiyot').length
+        };
+        
+        const ctx1 = document.getElementById('facultyChart').getContext('2d');
+        facultyChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(facultyStats),
+                datasets: [{
+                    label: 'Fanlar soni',
+                    data: Object.values(facultyStats),
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, stepSize: 1 } }
+            }
+        });
+        
+        // Credits distribution chart
+        const creditRanges = { '1-3': 0, '4-5': 0, '6+': 0 };
+        subjectsData.forEach(s => {
+            if (s.credits <= 3) creditRanges['1-3']++;
+            else if (s.credits <= 5) creditRanges['4-5']++;
+            else creditRanges['6+']++;
+        });
+        
+        const ctx2 = document.getElementById('creditsChart').getContext('2d');
+        creditsChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['1-3 kredit', '4-5 kredit', '6+ kredit'],
+                datasets: [{
+                    data: [creditRanges['1-3'], creditRanges['4-5'], creditRanges['6+']],
+                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+
+    function searchSubjects() {
+        currentFilter.search = document.getElementById('searchInput').value;
+        currentPage = 1;
+        loadSubjects();
+    }
+
+    function filterSubjects() {
+        currentFilter.faculty = document.getElementById('facultyFilter').value;
+        currentFilter.semester = document.getElementById('semesterFilter').value;
+        currentFilter.status = document.getElementById('statusFilter').value;
+        currentPage = 1;
+        loadSubjects();
+    }
+
+    function changePage(delta) {
+        currentPage += delta;
+        if (currentPage < 1) currentPage = 1;
+        loadSubjects();
+    }
+
+    function showAddSubjectModal() {
+        document.getElementById('addSubjectModal').style.display = 'flex';
+    }
+
+    function closeAddSubjectModal() {
+        document.getElementById('addSubjectModal').style.display = 'none';
+        document.getElementById('newSubjectName').value = '';
+        document.getElementById('newSubjectCode').value = '';
+    }
+
+    function addSubject() {
+        const name = document.getElementById('newSubjectName').value;
+        const code = document.getElementById('newSubjectCode').value;
+        const faculty = document.getElementById('newSubjectFaculty').value;
+        const credits = document.getElementById('newSubjectCredits').value;
+        const hours = document.getElementById('newSubjectHours').value;
+        const semester = document.getElementById('newSubjectSemester').value;
+        const teacher = document.getElementById('newSubjectTeacher').value;
+        const icon = document.getElementById('newSubjectIcon').value;
+        
+        if (!name || !code || !credits || !hours) {
+            showToast('Barcha majburiy maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        const newSubject = {
+            id: subjectsData.length + 1,
+            name: name,
+            code: code,
+            faculty: faculty,
+            credits: parseInt(credits),
+            hours: parseInt(hours),
+            semester: parseInt(semester),
+            teacher: teacher || '-',
+            status: 'active',
+            icon: icon,
+            color: 'blue',
+            students: 0,
+            createdAt: new Date().toISOString().split('T')[0]
+        };
+        
+        subjectsData.push(newSubject);
+        closeAddSubjectModal();
+        loadSubjects();
+        updateStatistics();
+        initCharts();
+        showToast('Fan muvaffaqiyatli qo\'shildi!', 'success');
+    }
+
+    function editSubject(subjectId) {
+        const subject = subjectsData.find(s => s.id === subjectId);
+        if (!subject) return;
+        
+        document.getElementById('editSubjectName').value = subject.name;
+        document.getElementById('editSubjectCode').value = subject.code;
+        document.getElementById('editSubjectFaculty').value = subject.faculty;
+        document.getElementById('editSubjectCredits').value = subject.credits;
+        document.getElementById('editSubjectHours').value = subject.hours;
+        document.getElementById('editSubjectSemester').value = subject.semester;
+        document.getElementById('editSubjectTeacher').value = subject.teacher;
+        document.getElementById('editSubjectStatus').value = subject.status;
+        
+        document.getElementById('editSubjectModal').style.display = 'flex';
+        window.currentEditId = subjectId;
+    }
+
+    function closeEditSubjectModal() {
+        document.getElementById('editSubjectModal').style.display = 'none';
+    }
+
+    function updateSubject() {
+        const subject = subjectsData.find(s => s.id === window.currentEditId);
+        if (!subject) return;
+        
+        subject.name = document.getElementById('editSubjectName').value;
+        subject.code = document.getElementById('editSubjectCode').value;
+        subject.faculty = document.getElementById('editSubjectFaculty').value;
+        subject.credits = parseInt(document.getElementById('editSubjectCredits').value);
+        subject.hours = parseInt(document.getElementById('editSubjectHours').value);
+        subject.semester = parseInt(document.getElementById('editSubjectSemester').value);
+        subject.teacher = document.getElementById('editSubjectTeacher').value;
+        subject.status = document.getElementById('editSubjectStatus').value;
+        
+        closeEditSubjectModal();
+        loadSubjects();
+        updateStatistics();
+        initCharts();
+        showToast('Fan yangilandi!', 'success');
+    }
+
+    function deleteSubject(subjectId) {
+        if (confirm('Haqiqatan ham bu fanni o\'chirmoqchimisiz?')) {
+            subjectsData = subjectsData.filter(s => s.id !== subjectId);
+            loadSubjects();
+            updateStatistics();
+            initCharts();
+            showToast('Fan o\'chirildi!', 'success');
+        }
+    }
+
+    function showSubjectDetails(subjectId) {
+        const subject = subjectsData.find(s => s.id === subjectId);
+        if (!subject) return;
+        
+        const statusClass = subject.status === 'active' ? 'status-active' : 'status-inactive';
+        const statusText = subject.status === 'active' ? 'Faol' : 'Arxiv';
+        const iconColor = {
+            blue: 'bg-blue-100 text-blue-600',
+            green: 'bg-green-100 text-green-600',
+            orange: 'bg-orange-100 text-orange-600',
+            purple: 'bg-purple-100 text-purple-600',
+            red: 'bg-red-100 text-red-600',
+            indigo: 'bg-indigo-100 text-indigo-600',
+            yellow: 'bg-yellow-100 text-yellow-600'
+        }[subject.color] || 'bg-gray-100 text-gray-600';
+        
+        const modalContent = `
+            <div class="space-y-6">
+                <div class="flex items-center gap-6">
+                    <div class="subject-icon ${iconColor} text-3xl">
+                        <i class="fas fa-${subject.icon}"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold">${subject.name}</h4>
+                        <p class="text-gray-500">${subject.code}</p>
+                        <p class="text-gray-500">O'qituvchi: ${subject.teacher}</p>
+                        <span class="status-badge ${statusClass} mt-2">${statusText}</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-xl text-center">
+                        <p class="text-xs text-gray-500">Kreditlar</p>
+                        <p class="text-2xl font-bold text-blue-600">${subject.credits}</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl text-center">
+                        <p class="text-xs text-gray-500">Soatlar</p>
+                        <p class="text-2xl font-bold text-green-600">${subject.hours}</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl text-center">
+                        <p class="text-xs text-gray-500">Semestr</p>
+                        <p class="text-2xl font-bold text-purple-600">${subject.semester}</p>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-xl text-center">
+                        <p class="text-xs text-gray-500">Talabalar</p>
+                        <p class="text-2xl font-bold text-orange-600">${subject.students}</p>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4">
+                    <h5 class="font-bold mb-3">📋 Fan tafsilotlari</h5>
+                    <div class="space-y-2">
+                        <p><i class="fas fa-university w-6 text-gray-400"></i> Fakultet: ${subject.faculty}</p>
+                        <p><i class="fas fa-calendar w-6 text-gray-400"></i> Qo'shilgan: ${subject.createdAt || '2024-09-01'}</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button onclick="editSubject(${subject.id}); closeSubjectDetailsModal()" class="flex-1 bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                        <i class="fas fa-edit mr-2"></i> Tahrirlash
+                    </button>
+                    <button onclick="closeSubjectDetailsModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('detailsModalContent').innerHTML = modalContent;
+        document.getElementById('subjectDetailsModal').style.display = 'flex';
+    }
+
+    function closeSubjectDetailsModal() {
+        document.getElementById('subjectDetailsModal').style.display = 'none';
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=admin';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    window.onclick = function(event) {
+        const addModal = document.getElementById('addSubjectModal');
+        const editModal = document.getElementById('editSubjectModal');
+        const detailsModal = document.getElementById('subjectDetailsModal');
+        if (event.target === addModal) closeAddSubjectModal();
+        if (event.target === editModal) closeEditSubjectModal();
+        if (event.target === detailsModal) closeSubjectDetailsModal();
+    }
+</script>
+
+</body>
+</html>

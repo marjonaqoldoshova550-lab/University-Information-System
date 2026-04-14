@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirish - EduHemis</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-900 to-purple-900">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl animate-fadeIn">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">EduHemis</h1>
+                <p class="text-gray-500">Tizimga kirish</p>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium ml-2">Login</label>
+                    <input type="text" id="username" class="w-full p-3 border rounded-xl mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="text-sm font-medium ml-2">Parol</label>
+                    <input type="password" id="password" class="w-full p-3 border rounded-xl mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" class="rounded"> Eslab qol
+                    </label>
+                    <a href="forgot-password.html" class="text-blue-600 hover:underline">Parolni unutdingizmi?</a>
+                </div>
+                
+                <div id="errorMessage" class="text-red-500 text-sm hidden text-center"></div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700 transition-all">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Kirish
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-sm text-gray-500">
+                Hisobingiz yo'qmi? 
+                <a href="register.html" class="text-blue-600 font-bold hover:underline">Ro'yxatdan o'tish</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Login logikasi
+            if (username && password) {
+                window.location.href = '../student/dashboard.html';
+            } else {
+                document.getElementById('errorMessage').textContent = 'Login va parolni kiriting';
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

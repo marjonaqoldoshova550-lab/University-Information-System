@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vazifalar - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s;
+            border-left: 4px solid;
+        }
+
+        .task-overdue { border-left-color: #ef4444; background-color: #fef2f2; }
+        .task-warning { border-left-color: #f59e0b; background-color: #fffbeb; }
+        .task-upcoming { border-left-color: #3b82f6; background-color: #eff6ff; }
+        .task-completed { border-left-color: #10b981; background-color: #f0fdf4; }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-low {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.5s;
+            border-radius: 4px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #f3f4f6;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .attachment-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .attachment-item:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500">Vazifalar</p>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="flex items-center gap-6">
+                <!-- Notifications -->
+                <div class="relative">
+                    <i class="fas fa-bell text-2xl text-gray-600 cursor-pointer hover:text-blue-600 transition-colors" onclick="showNotifications()"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+
+                <!-- Back to Dashboard -->
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+
+                <!-- User Info -->
+                <div class="text-right hidden md:block">
+                    <p id="userName" class="font-bold text-gray-800">Azimjon Karimov</p>
+                    <p class="text-xs text-gray-500">Talaba • AT-101-20</p>
+                </div>
+
+                <img src="https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-blue-600 cursor-pointer" onclick="goToProfile()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📋 Mening vazifalarim</h1>
+        <div class="flex gap-2">
+            <select id="subjectFilter" class="px-4 py-2 border rounded-xl bg-white">
+                <option value="all">Barcha fanlar</option>
+                <option value="1">Veb dasturlash</option>
+                <option value="2">Ma'lumotlar bazasi</option>
+                <option value="3">Kiberxavfsizlik</option>
+            </select>
+            <button onclick="refreshTasks()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jami vazifalar</p>
+                    <h2 class="text-3xl font-bold mt-1" id="totalTasks">12</h2>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-tasks text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Bajarilgan</p>
+                    <h2 class="text-3xl font-bold mt-1 text-green-600" id="completedTasks">5</h2>
+                </div>
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-check-circle text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Jarayonda</p>
+                    <h2 class="text-3xl font-bold mt-1 text-orange-600" id="pendingTasks">4</h2>
+                </div>
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-clock text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-500 text-sm">Muddati o'tgan</p>
+                    <h2 class="text-3xl font-bold mt-1 text-red-600" id="overdueTasks">3</h2>
+                </div>
+                <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-exclamation-circle text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+        <div class="flex flex-wrap gap-2">
+            <button onclick="filterTasks('all')" class="filter-btn active" id="filterAll">Barchasi</button>
+            <button onclick="filterTasks('overdue')" class="filter-btn" id="filterOverdue">Muddati o'tgan</button>
+            <button onclick="filterTasks('warning')" class="filter-btn" id="filterWarning">Muddati yaqin</button>
+            <button onclick="filterTasks('upcoming')" class="filter-btn" id="filterUpcoming">Kutilayotgan</button>
+            <button onclick="filterTasks('completed')" class="filter-btn" id="filterCompleted">Bajarilgan</button>
+        </div>
+    </div>
+
+    <!-- Tasks by Category -->
+    <div class="space-y-8">
+
+        <!-- Overdue Tasks -->
+        <div id="overdueSection" class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4 text-red-600 flex items-center gap-2">
+                <i class="fas fa-exclamation-triangle"></i>
+                Muddati o'tgan vazifalar
+                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm" id="overdueCount">3</span>
+            </h3>
+            <div id="overdueTasksList" class="space-y-4">
+                <!-- Overdue tasks will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Warning Tasks (3 days left) -->
+        <div id="warningSection" class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4 text-orange-600 flex items-center gap-2">
+                <i class="fas fa-clock"></i>
+                Muddati yaqin (3 kun qoldi)
+                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm" id="warningCount">2</span>
+            </h3>
+            <div id="warningTasksList" class="space-y-4">
+                <!-- Warning tasks will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Upcoming Tasks -->
+        <div id="upcomingSection" class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4 text-blue-600 flex items-center gap-2">
+                <i class="fas fa-calendar-alt"></i>
+                Kutilayotgan vazifalar
+                <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm" id="upcomingCount">4</span>
+            </h3>
+            <div id="upcomingTasksList" class="space-y-4">
+                <!-- Upcoming tasks will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Completed Tasks -->
+        <div id="completedSection" class="bg-white rounded-3xl shadow-sm p-6">
+            <h3 class="text-xl font-bold mb-4 text-green-600 flex items-center gap-2">
+                <i class="fas fa-check-circle"></i>
+                Bajarilgan vazifalar
+                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm" id="completedCount">5</span>
+            </h3>
+            <div id="completedTasksList" class="space-y-4">
+                <!-- Completed tasks will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar View -->
+    <div class="bg-white rounded-3xl shadow-sm p-6 mt-8">
+        <h3 class="text-xl font-bold mb-4">📅 Vazifalar kalendari</h3>
+        <div id="calendar" class="grid grid-cols-7 gap-1">
+            <!-- Calendar will be generated by JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Task Details Modal -->
+<div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="modalTitle">Vazifa tafsilotlari</h3>
+            <button onclick="closeTaskModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- Submit Task Modal -->
+<div id="submitModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">📤 Vazifa topshirish</h3>
+            <button onclick="closeSubmitModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Izoh</label>
+                <textarea id="taskComment" rows="4" class="w-full p-3 border rounded-xl" placeholder="Vazifa haqida izoh..."></textarea>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Fayl biriktirish</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-sm text-gray-500 mb-2">Faylni tanlang yoki sudrab keltiring</p>
+                    <input type="file" id="taskFile" class="hidden" multiple>
+                    <button onclick="document.getElementById('taskFile').click()" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700">
+                        Fayl tanlash
+                    </button>
+                </div>
+                <div id="fileList" class="mt-2 space-y-2"></div>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="submitTask()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-paper-plane mr-2"></i> Topshirish
+                </button>
+                <button onclick="closeSubmitModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentFilter = 'all';
+    let selectedTaskId = null;
+
+    const tasksData = [
+        {
+            id: 1,
+            title: 'HTML portfolio',
+            subject: 'Veb dasturlash',
+            teacher: 'Said Alisherov',
+            description: 'Shaxsiy portfolio sayt yaratish. HTML va CSS dan foydalaning. Saytda siz haqingizda ma\'lumot, qobiliyatlar va aloqa bo\'limi bo\'lishi kerak.',
+            instructions: '1. HTML5 dan foydalaning\n2. Semantic teglardan foydalaning\n3. CSS flexbox dan foydalaning\n4. Responsive dizayn bo\'lsin',
+            deadline: '2025-03-25',
+            timeRemaining: '6 kun',
+            priority: 'high',
+            status: 'pending',
+            progress: 0,
+            attachments: [],
+            maxScore: 100
+        },
+        {
+            id: 2,
+            title: 'CSS animatsiyalar',
+            subject: 'Veb dasturlash',
+            teacher: 'Said Alisherov',
+            description: '3 xil CSS animatsiya yaratish. Animatsiyalar: yuklash spinneri, kartochka hover effekti va menyu animatsiyasi.',
+            instructions: '1. @keyframes dan foydalaning\n2. transform va transition xossalaridan foydalaning\n3. Animatsiyalar silliq bo\'lsin',
+            deadline: '2025-03-15',
+            timeRemaining: 'muddati o\'tgan',
+            priority: 'high',
+            status: 'overdue',
+            progress: 75,
+            attachments: [
+                { name: 'animations.css', size: '2.4 KB' }
+            ],
+            maxScore: 50,
+            submittedAt: '2025-03-14',
+            score: 45,
+            feedback: 'Yaxshi, lekin 3-animatsiya biroz sekin. 45 ball.'
+        },
+        {
+            id: 3,
+            title: 'ER diagramma',
+            subject: 'Ma\'lumotlar bazasi',
+            teacher: 'Nodira Karimova',
+            description: 'Universitet ma\'lumotlar bazasi uchun ER diagramma chizish. Kamida 5 ta jadval bo\'lsin.',
+            instructions: '1. Talabalar jadvali\n2. O\'qituvchilar jadvali\n3. Guruhlar jadvali\n4. Fanlar jadvali\n5. Baholar jadvali',
+            deadline: '2025-03-28',
+            timeRemaining: '9 kun',
+            priority: 'medium',
+            status: 'pending',
+            progress: 30,
+            attachments: [],
+            maxScore: 80
+        },
+        {
+            id: 4,
+            title: 'Xavfsizlik hisoboti',
+            subject: 'Kiberxavfsizlik',
+            teacher: 'Jasur Usmonov',
+            description: 'Zamonaviy kiber tahdidlar haqida hisobot tayyorlash. Kamida 3 xil tahdid va ularga qarshi himoya choralari.',
+            instructions: '1. Malware tahdidlari\n2. Fishing hujumlari\n3. DDoS hujumlari\n4. Himoya usullari',
+            deadline: '2025-03-30',
+            timeRemaining: '11 kun',
+            priority: 'medium',
+            status: 'pending',
+            progress: 0,
+            attachments: [],
+            maxScore: 100
+        },
+        {
+            id: 5,
+            title: 'Neyron tarmoq modeli',
+            subject: 'Sun\'iy intellekt',
+            teacher: 'Dildora Ahmetova',
+            description: 'Oddiy neyron tarmoq modelini yarating va uni biror masalani yechishda qo\'llang.',
+            instructions: '1. Python va TensorFlow dan foydalaning\n2. Ma\'lumotlar to\'plamini tanlang\n3. Modelni yarating va o\'qiting',
+            deadline: '2025-04-05',
+            timeRemaining: '17 kun',
+            priority: 'low',
+            status: 'pending',
+            progress: 10,
+            attachments: [],
+            maxScore: 120
+        },
+        {
+            id: 6,
+            title: 'Docker container',
+            subject: 'Tizimli boshqaruv',
+            teacher: 'Aziz Qosimov',
+            description: 'Docker container yaratish va uni ishga tushirish. Web server container i yarating.',
+            instructions: '1. Dockerfile yarating\n2. Nginx ni o\'rnating\n3. HTML sahifa qo\'shing\n4. Container ni build qiling',
+            deadline: '2025-04-02',
+            timeRemaining: '14 kun',
+            priority: 'low',
+            status: 'pending',
+            progress: 50,
+            attachments: [],
+            maxScore: 70
+        },
+        {
+            id: 7,
+            title: 'JavaScript masalalari',
+            subject: 'Veb dasturlash',
+            teacher: 'Said Alisherov',
+            description: '10 ta JavaScript masalasini yechish. Massivlar, obyektlar, funksiyalar bilan ishlash.',
+            instructions: '1. Masalalarni yeching\n2. Kodlarni tushuntiring\n3. Test qiling',
+            deadline: '2025-03-10',
+            timeRemaining: 'muddati o\'tgan',
+            priority: 'high',
+            status: 'overdue',
+            progress: 0,
+            attachments: [],
+            maxScore: 50
+        },
+        {
+            id: 8,
+            title: 'SQL so\'rovlari',
+            subject: 'Ma\'lumotlar bazasi',
+            teacher: 'Nodira Karimova',
+            description: '10 ta murakkab SQL so\'rovini yozish. JOIN, GROUP BY, HAVING dan foydalanish.',
+            instructions: '1. So\'rovlarni yozing\n2. Natijalarni tahlil qiling',
+            deadline: '2025-03-05',
+            timeRemaining: 'muddati o\'tgan',
+            priority: 'medium',
+            status: 'overdue',
+            progress: 0,
+            attachments: [],
+            maxScore: 40
+        },
+        {
+            id: 9,
+            title: 'Portfolio tugallandi',
+            subject: 'Veb dasturlash',
+            teacher: 'Said Alisherov',
+            description: 'HTML portfolio loyihasini yakunlash',
+            deadline: '2025-03-20',
+            timeRemaining: 'bajarilgan',
+            priority: 'high',
+            status: 'completed',
+            progress: 100,
+            attachments: [
+                { name: 'portfolio.zip', size: '2.1 MB' },
+                { name: 'screenshot.png', size: '1.2 MB' }
+            ],
+            maxScore: 100,
+            submittedAt: '2025-03-19',
+            score: 95,
+            feedback: 'Ajoyib ish! 95 ball.'
+        }
+    ];
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        loadTasks();
+        updateStatistics();
+        generateCalendar();
+    };
+
+    function loadTasks() {
+        // Overdue tasks
+        const overdueTasks = tasksData.filter(t => t.status === 'overdue');
+        displayTasks(overdueTasks, 'overdueTasksList');
+        document.getElementById('overdueCount').textContent = overdueTasks.length;
+
+        // Warning tasks (3 kun qolgan)
+        const today = new Date();
+        const warningTasks = tasksData.filter(t => {
+            if (t.status !== 'pending') return false;
+            const deadline = new Date(t.deadline);
+            const diffDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+            return diffDays <= 3 && diffDays > 0;
+        });
+        displayTasks(warningTasks, 'warningTasksList');
+        document.getElementById('warningCount').textContent = warningTasks.length;
+
+        // Upcoming tasks
+        const upcomingTasks = tasksData.filter(t => {
+            if (t.status !== 'pending') return false;
+            const deadline = new Date(t.deadline);
+            const diffDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+            return diffDays > 3;
+        });
+        displayTasks(upcomingTasks, 'upcomingTasksList');
+        document.getElementById('upcomingCount').textContent = upcomingTasks.length;
+
+        // Completed tasks
+        const completedTasks = tasksData.filter(t => t.status === 'completed');
+        displayTasks(completedTasks, 'completedTasksList', true);
+        document.getElementById('completedCount').textContent = completedTasks.length;
+    }
+
+    function displayTasks(tasks, containerId, isCompleted = false) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        tasks.forEach(task => {
+            const taskCard = createTaskCard(task, isCompleted);
+            container.innerHTML += taskCard;
+        });
+
+        if (tasks.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-check-circle text-4xl text-gray-300 mb-2"></i>
+                    <p>Vazifalar yo'q</p>
+                </div>
+            `;
+        }
+    }
+
+    function createTaskCard(task, isCompleted = false) {
+        const deadline = new Date(task.deadline);
+        const today = new Date();
+        const diffDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+        
+        let statusClass = '';
+        let statusText = '';
+
+        if (isCompleted) {
+            statusClass = 'task-completed';
+            statusText = '✅ Bajarilgan';
+        } else if (task.status === 'overdue') {
+            statusClass = 'task-overdue';
+            statusText = '❌ Muddati o\'tgan';
+        } else if (diffDays <= 3) {
+            statusClass = 'task-warning';
+            statusText = `⚠️ ${diffDays} kun qoldi`;
+        } else {
+            statusClass = 'task-upcoming';
+            statusText = `📅 ${diffDays} kun qoldi`;
+        }
+
+        const priorityClass = task.priority === 'high' ? 'priority-high' : 
+                             task.priority === 'medium' ? 'priority-medium' : 'priority-low';
+        const priorityText = task.priority === 'high' ? 'Yuqori' :
+                            task.priority === 'medium' ? 'O\'rtacha' : 'Past';
+
+        return `
+            <div class="task-card ${statusClass} card-hover" onclick="showTaskDetails(${task.id})">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h4 class="font-bold text-lg">${task.title}</h4>
+                        <p class="text-sm text-gray-600">${task.subject} • ${task.teacher}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="status-badge ${priorityClass}">${priorityText}</span>
+                        <span class="status-badge ${statusClass === 'task-completed' ? 'bg-green-100 text-green-600' : 
+                                                       statusClass === 'task-overdue' ? 'bg-red-100 text-red-600' : 
+                                                       statusClass === 'task-warning' ? 'bg-orange-100 text-orange-600' : 
+                                                       'bg-blue-100 text-blue-600'}">
+                            ${statusText}
+                        </span>
+                    </div>
+                </div>
+
+                <p class="text-gray-600 text-sm mb-3">${task.description.substring(0, 100)}...</p>
+
+                <div class="flex items-center gap-4 mb-3">
+                    <span class="text-sm text-gray-500">
+                        <i class="far fa-calendar mr-1"></i> Muddat: ${formatDate(task.deadline)}
+                    </span>
+                    ${task.maxScore ? `
+                        <span class="text-sm text-gray-500">
+                            <i class="fas fa-star mr-1"></i> Max ball: ${task.maxScore}
+                        </span>
+                    ` : ''}
+                </div>
+
+                ${!isCompleted && task.status !== 'overdue' ? `
+                    <div class="mb-2">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Bajarilish</span>
+                            <span>${task.progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${task.progress}%"></div>
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${task.score ? `
+                    <div class="mt-3 p-3 bg-green-50 rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Baho: ${task.score}/${task.maxScore}</span>
+                            <span class="text-sm text-gray-500">${task.feedback}</span>
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="flex justify-end mt-3">
+                    <button onclick="event.stopPropagation(); showSubmitModal(${task.id})" 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700">
+                        <i class="fas fa-upload mr-2"></i> Topshirish
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function showTaskDetails(taskId) {
+        const task = tasksData.find(t => t.id === taskId);
+        if (!task) return;
+
+        let attachmentsHtml = '';
+        if (task.attachments && task.attachments.length > 0) {
+            attachmentsHtml = `
+                <div>
+                    <h5 class="font-bold mb-2">📎 Biriktirilgan fayllar:</h5>
+                    <div class="space-y-2">
+                        ${task.attachments.map(f => `
+                            <div class="attachment-item">
+                                <i class="fas fa-file"></i>
+                                <span>${f.name}</span>
+                                <span class="text-gray-400 text-xs">${f.size}</span>
+                                <i class="fas fa-download text-blue-600 cursor-pointer ml-2"></i>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        let instructionsHtml = '';
+        if (task.instructions) {
+            instructionsHtml = `
+                <div>
+                    <h5 class="font-bold mb-2">📝 Ko'rsatmalar:</h5>
+                    <div class="bg-gray-50 p-3 rounded-xl text-sm whitespace-pre-line">
+                        ${task.instructions}
+                    </div>
+                </div>
+            `;
+        }
+
+        const modalContent = `
+            <div class="space-y-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="text-xl font-bold">${task.title}</h4>
+                        <p class="text-gray-500">${task.subject} • ${task.teacher}</p>
+                    </div>
+                    <span class="status-badge ${task.priority === 'high' ? 'priority-high' : 
+                                             task.priority === 'medium' ? 'priority-medium' : 'priority-low'}">
+                        ${task.priority === 'high' ? 'Yuqori' : task.priority === 'medium' ? 'O\'rtacha' : 'Past'} prioritет
+                    </span>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <p class="text-gray-700">${task.description}</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Muddat</p>
+                        <p class="font-bold">${formatDate(task.deadline)}</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Maksimal ball</p>
+                        <p class="font-bold">${task.maxScore}</p>
+                    </div>
+                </div>
+
+                ${instructionsHtml}
+
+                ${attachmentsHtml}
+
+                ${task.feedback ? `
+                    <div class="bg-green-50 p-4 rounded-xl">
+                        <h5 class="font-bold mb-2">📋 Baholash:</h5>
+                        <p class="text-sm">Baho: ${task.score}/${task.maxScore}</p>
+                        <p class="text-sm mt-1">Izoh: ${task.feedback}</p>
+                    </div>
+                ` : ''}
+
+                <div class="flex gap-3 mt-6">
+                    <button onclick="showSubmitModal(${task.id})" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                        <i class="fas fa-upload mr-2"></i> Topshirish
+                    </button>
+                    <button onclick="closeTaskModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('modalContent').innerHTML = modalContent;
+        document.getElementById('taskModal').style.display = 'flex';
+    }
+
+    function showSubmitModal(taskId) {
+        selectedTaskId = taskId;
+        document.getElementById('submitModal').style.display = 'flex';
+    }
+
+    function closeTaskModal() {
+        document.getElementById('taskModal').style.display = 'none';
+    }
+
+    function closeSubmitModal() {
+        document.getElementById('submitModal').style.display = 'none';
+        document.getElementById('taskComment').value = '';
+        document.getElementById('fileList').innerHTML = '';
+    }
+
+    function submitTask() {
+        const comment = document.getElementById('taskComment').value;
+        
+        showToast('Vazifa muvaffaqiyatli topshirildi!', 'success');
+        closeSubmitModal();
+        
+        setTimeout(() => {
+            closeTaskModal();
+        }, 500);
+    }
+
+    // File upload handling
+    document.getElementById('taskFile')?.addEventListener('change', function(e) {
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
+        
+        Array.from(e.target.files).forEach(file => {
+            fileList.innerHTML += `
+                <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                    <span><i class="fas fa-file mr-2"></i> ${file.name}</span>
+                    <span class="text-xs text-gray-500">${(file.size / 1024).toFixed(1)} KB</span>
+                </div>
+            `;
+        });
+    });
+
+    // ========== FILTER FUNKSIYALARI ==========
+    function filterTasks(filter) {
+        currentFilter = filter;
+        
+        // Update filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(`filter${filter.charAt(0).toUpperCase() + filter.slice(1)}`).classList.add('active');
+        
+        // Show/hide sections
+        const sections = ['overdue', 'warning', 'upcoming', 'completed'];
+        sections.forEach(s => {
+            const section = document.getElementById(s + 'Section');
+            if (filter === 'all' || filter === s) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    }
+
+    // ========== STATISTIKA ==========
+    function updateStatistics() {
+        const total = tasksData.length;
+        const completed = tasksData.filter(t => t.status === 'completed').length;
+        const pending = tasksData.filter(t => t.status === 'pending').length;
+        const overdue = tasksData.filter(t => t.status === 'overdue').length;
+
+        document.getElementById('totalTasks').textContent = total;
+        document.getElementById('completedTasks').textContent = completed;
+        document.getElementById('pendingTasks').textContent = pending;
+        document.getElementById('overdueTasks').textContent = overdue;
+    }
+
+    // ========== KALENDAR ==========
+    function generateCalendar() {
+        const calendar = document.getElementById('calendar');
+        const today = new Date();
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+        
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+        const days = ['Du', 'Se', 'Ch', 'Pa', 'Ju', 'Sh', 'Ya'];
+        
+        // Add day names
+        days.forEach(day => {
+            calendar.innerHTML += `
+                <div class="text-center font-bold text-gray-500 p-2">${day}</div>
+            `;
+        });
+        
+        // Add empty cells
+        for (let i = 1; i < firstDay; i++) {
+            calendar.innerHTML += '<div class="p-2"></div>';
+        }
+        
+        // Add days
+        for (let d = 1; d <= daysInMonth; d++) {
+            const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const tasksOnDay = tasksData.filter(t => t.deadline === date);
+            
+            let bgColor = 'bg-gray-50';
+            if (tasksOnDay.length > 0) {
+                if (tasksOnDay.some(t => t.status === 'overdue')) bgColor = 'bg-red-100';
+                else if (tasksOnDay.some(t => t.status === 'pending')) bgColor = 'bg-yellow-100';
+                else bgColor = 'bg-green-100';
+            }
+            
+            calendar.innerHTML += `
+                <div class="p-2 ${bgColor} rounded-lg text-center cursor-pointer hover:bg-blue-100 transition-all"
+                     onclick="showTasksForDate('${date}')">
+                    <span class="font-medium">${d}</span>
+                    ${tasksOnDay.length > 0 ? `
+                        <div class="text-xs text-gray-600">${tasksOnDay.length} ta</div>
+                    ` : ''}
+                </div>
+            `;
+        }
+    }
+
+    function showTasksForDate(date) {
+        const tasks = tasksData.filter(t => t.deadline === date);
+        
+        if (tasks.length === 0) {
+            showToast('Bu kunda vazifalar yo\'q', 'info');
+            return;
+        }
+        
+        let message = `${date} sanadagi vazifalar:\n`;
+        tasks.forEach(t => {
+            message += `\n• ${t.title} (${t.status === 'overdue' ? 'Muddati o\'tgan' : 
+                                       t.status === 'completed' ? 'Bajarilgan' : 'Kutilmoqda'})`;
+        });
+        
+        alert(message);
+    }
+
+    // ========== YORDAMCHI FUNKSIYALAR ==========
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('uz-UZ', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    }
+
+    function refreshTasks() {
+        showToast('Vazifalar yangilanmoqda...', 'info');
+        setTimeout(() => {
+            loadTasks();
+            updateStatistics();
+            showToast('Vazifalar yangilandi', 'success');
+        }, 1000);
+    }
+
+    function showNotifications() {
+        alert('Bildirishnomalar');
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = 'profile.html';
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        
+        if (type === 'success') toast.classList.add('bg-green-500');
+        else if (type === 'error') toast.classList.add('bg-red-500');
+        else if (type === 'warning') toast.classList.add('bg-orange-500');
+        else toast.classList.add('bg-blue-500');
+        
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+
+    // Modalni yopish (tashqariga bosilganda)
+    window.onclick = function(event) {
+        const taskModal = document.getElementById('taskModal');
+        const submitModal = document.getElementById('submitModal');
+        
+        if (event.target === taskModal) {
+            closeTaskModal();
+        }
+        if (event.target === submitModal) {
+            closeSubmitModal();
+        }
+    }
+</script>
+
+</body>
+</html>

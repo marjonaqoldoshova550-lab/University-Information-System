@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darslar - EduHemis</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- FullCalendar -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .lesson-card {
+            background: white;
+            border-left: 4px solid;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        
+        .lesson-lecture { border-left-color: #3b82f6; }
+        .lesson-practice { border-left-color: #10b981; }
+        .lesson-lab { border-left-color: #8b5cf6; }
+        
+        .today-lesson {
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #e5e7eb;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .fc-event {
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 4px 8px;
+        }
+        
+        .fc-event-lecture { background-color: #3b82f6; border-color: #3b82f6; }
+        .fc-event-practice { background-color: #10b981; border-color: #10b981; }
+        .fc-event-lab { background-color: #8b5cf6; border-color: #8b5cf6; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis</h1>
+                    <p class="text-xs text-gray-500">Darslar boshqaruvi</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Said Alisherov</p>
+                    <p class="text-xs text-gray-500">O'qituvchi • Veb dasturlash</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-blue-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">📚 Darslar</h1>
+        <button onclick="showAddLessonModal()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            <span>Yangi dars</span>
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <button onclick="switchView('list')" id="listTab" class="tab-btn tab-active">📋 Ro'yxat</button>
+        <button onclick="switchView('calendar')" id="calendarTab" class="tab-btn">📅 Kalendar</button>
+        <button onclick="switchView('schedule')" id="scheduleTab" class="tab-btn">⏰ Haftalik jadval</button>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Dars mavzusi bo'yicha qidirish..." onkeyup="filterLessons()">
+            </div>
+            <select id="groupFilter" class="p-3 border rounded-xl bg-white" onchange="filterLessons()">
+                <option value="all">Barcha guruhlar</option>
+                <option value="AT-101-20">AT-101-20</option>
+                <option value="AT-102-20">AT-102-20</option>
+                <option value="KI-201-21">KI-201-21</option>
+            </select>
+            <select id="typeFilter" class="p-3 border rounded-xl bg-white" onchange="filterLessons()">
+                <option value="all">Barcha turlar</option>
+                <option value="lecture">Ma'ruza</option>
+                <option value="practice">Amaliy</option>
+                <option value="lab">Laboratoriya</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- List View -->
+    <div id="listView" class="space-y-4">
+        <!-- Lessons will be loaded here -->
+    </div>
+
+    <!-- Calendar View -->
+    <div id="calendarView" class="bg-white rounded-3xl shadow-sm p-6 hidden">
+        <div id="calendar"></div>
+    </div>
+
+    <!-- Schedule View -->
+    <div id="scheduleView" class="bg-white rounded-3xl shadow-sm overflow-hidden hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 text-left">Vaqt</th>
+                        <th class="p-4 text-center">Dushanba</th>
+                        <th class="p-4 text-center">Seshanba</th>
+                        <th class="p-4 text-center">Chorshanba</th>
+                        <th class="p-4 text-center">Payshanba</th>
+                        <th class="p-4 text-center">Juma</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleTable">
+                    <!-- Schedule will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-blue-600" id="totalLessons">24</p>
+            <p class="text-sm text-gray-500">Jami darslar</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-green-600" id="todayLessons">2</p>
+            <p class="text-sm text-gray-500">Bugungi darslar</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-purple-600" id="lectureCount">12</p>
+            <p class="text-sm text-gray-500">Ma'ruzalar</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm text-center">
+            <p class="text-3xl font-bold text-orange-600" id="practiceCount">8</p>
+            <p class="text-sm text-gray-500">Amaliyotlar</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Lesson Details Modal -->
+<div id="lessonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" id="modalTitle">Dars tafsilotlari</h3>
+            <button onclick="closeLessonModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- Add Lesson Modal -->
+<div id="addLessonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold">➕ Yangi dars qo'shish</h3>
+            <button onclick="closeAddLessonModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Guruh</label>
+                <select id="lessonGroup" class="w-full p-3 border rounded-xl">
+                    <option value="AT-101-20">AT-101-20</option>
+                    <option value="AT-102-20">AT-102-20</option>
+                    <option value="KI-201-21">KI-201-21</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Mavzu</label>
+                <input type="text" id="lessonTopic" class="w-full p-3 border rounded-xl" placeholder="Dars mavzusi">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Sana</label>
+                <input type="date" id="lessonDate" class="w-full p-3 border rounded-xl" value="">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Vaqt</label>
+                    <input type="text" id="lessonTime" placeholder="09:00-10:20" class="w-full p-3 border rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Xona</label>
+                    <input type="text" id="lessonRoom" placeholder="402" class="w-full p-3 border rounded-xl">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Dars turi</label>
+                <select id="lessonType" class="w-full p-3 border rounded-xl">
+                    <option value="lecture">Ma'ruza</option>
+                    <option value="practice">Amaliy</option>
+                    <option value="lab">Laboratoriya</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">Materiallar</label>
+                <textarea id="lessonMaterials" rows="3" class="w-full p-3 border rounded-xl" placeholder="Dars materiallari havolalari..."></textarea>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="addLesson()" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i> Saqlash
+                </button>
+                <button onclick="closeAddLessonModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                    Bekor qilish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== MA'LUMOTLAR ==========
+    let currentView = 'list';
+    let lessonsData = [
+        { id: 1, group: 'AT-101-20', topic: 'HTML asoslari', date: '2025-04-01', time: '09:00-10:20', room: '402', type: 'lecture', materials: 'HTML darslik.pdf', status: 'completed' },
+        { id: 2, group: 'AT-101-20', topic: 'CSS stillar', date: '2025-04-03', time: '09:00-10:20', room: '402', type: 'lecture', materials: 'CSS guide.pdf', status: 'scheduled' },
+        { id: 3, group: 'AT-101-20', topic: 'JavaScript asoslari', date: '2025-04-05', time: '09:00-10:20', room: '402', type: 'lecture', materials: '', status: 'scheduled' },
+        { id: 4, group: 'AT-102-20', topic: 'SQL asoslari', date: '2025-04-02', time: '11:00-12:30', room: '312', type: 'lecture', materials: 'SQL tutorial.pdf', status: 'scheduled' },
+        { id: 5, group: 'KI-201-21', topic: 'Xavfsizlik asoslari', date: '2025-04-04', time: '14:00-15:30', room: '210', type: 'lecture', materials: '', status: 'scheduled' },
+        { id: 6, group: 'AT-101-20', topic: 'CSS amaliy', date: '2025-04-04', time: '10:30-11:50', room: '408', type: 'practice', materials: '', status: 'scheduled' },
+        { id: 7, group: 'AT-102-20', topic: 'SQL amaliy', date: '2025-04-05', time: '11:00-12:30', room: '315', type: 'practice', materials: '', status: 'scheduled' }
+    ];
+
+    const scheduleData = {
+        '09:00-10:20': {
+            monday: { subject: 'Veb dasturlash', group: 'AT-101-20', room: '402', type: 'lecture' },
+            tuesday: null,
+            wednesday: { subject: 'Veb dasturlash', group: 'AT-101-20', room: '402', type: 'lecture' },
+            thursday: null,
+            friday: { subject: 'JavaScript', group: 'AT-101-20', room: '402', type: 'practice' }
+        },
+        '10:30-11:50': {
+            monday: null,
+            tuesday: { subject: 'Ma\'lumotlar bazasi', group: 'AT-102-20', room: '312', type: 'lecture' },
+            wednesday: null,
+            thursday: { subject: 'CSS amaliy', group: 'AT-101-20', room: '408', type: 'practice' },
+            friday: null
+        },
+        '13:00-14:20': {
+            monday: null,
+            tuesday: null,
+            wednesday: { subject: 'Kiberxavfsizlik', group: 'KI-201-21', room: '210', type: 'lecture' },
+            thursday: null,
+            friday: null
+        }
+    };
+
+    let calendar = null;
+
+    // ========== SAHIFA YUKLANGANDA ==========
+    window.onload = function() {
+        document.getElementById('lessonDate').value = new Date().toISOString().split('T')[0];
+        loadLessons();
+        updateStatistics();
+        initCalendar();
+    };
+
+    function loadLessons() {
+        const container = document.getElementById('listView');
+        let filteredLessons = [...lessonsData];
+        
+        // Apply search
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        if (search) {
+            filteredLessons = filteredLessons.filter(l => l.topic.toLowerCase().includes(search));
+        }
+        
+        // Apply group filter
+        const groupFilter = document.getElementById('groupFilter').value;
+        if (groupFilter !== 'all') {
+            filteredLessons = filteredLessons.filter(l => l.group === groupFilter);
+        }
+        
+        // Apply type filter
+        const typeFilter = document.getElementById('typeFilter').value;
+        if (typeFilter !== 'all') {
+            filteredLessons = filteredLessons.filter(l => l.type === typeFilter);
+        }
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        container.innerHTML = '';
+        
+        if (filteredLessons.length === 0) {
+            container.innerHTML = `
+                <div class="bg-white p-12 rounded-2xl text-center">
+                    <i class="fas fa-calendar-times text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Darslar topilmadi</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Sort by date
+        filteredLessons.sort((a, b) => a.date.localeCompare(b.date));
+        
+        filteredLessons.forEach(lesson => {
+            const isToday = lesson.date === today;
+            const typeClass = lesson.type === 'lecture' ? 'lesson-lecture' : 
+                             lesson.type === 'practice' ? 'lesson-practice' : 'lesson-lab';
+            const typeText = lesson.type === 'lecture' ? 'Ma\'ruza' : 
+                            lesson.type === 'practice' ? 'Amaliy' : 'Laboratoriya';
+            
+            container.innerHTML += `
+                <div class="lesson-card ${typeClass} ${isToday ? 'today-lesson' : ''} cursor-pointer" onclick="showLessonDetails(${lesson.id})">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">${lesson.topic}</h3>
+                            <p class="text-sm text-gray-600">${lesson.group} • ${typeText}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${isToday ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'}">
+                            ${isToday ? 'Bugun' : lesson.date}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                        <span><i class="far fa-clock mr-1"></i> ${lesson.time}</span>
+                        <span><i class="fas fa-map-marker-alt mr-1"></i> ${lesson.room}-xona</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="event.stopPropagation(); takeAttendance(${lesson.id})" class="px-3 py-1 bg-green-100 text-green-600 rounded-lg text-xs hover:bg-green-200">
+                            <i class="fas fa-check-circle mr-1"></i> Davomat
+                        </button>
+                        <button onclick="event.stopPropagation(); editLesson(${lesson.id})" class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-xs hover:bg-blue-200">
+                            <i class="fas fa-edit mr-1"></i> Tahrirlash
+                        </button>
+                        <button onclick="event.stopPropagation(); deleteLesson(${lesson.id})" class="px-3 py-1 bg-red-100 text-red-600 rounded-lg text-xs hover:bg-red-200">
+                            <i class="fas fa-trash mr-1"></i> O'chirish
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function initCalendar() {
+        calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+            initialView: 'dayGridMonth',
+            locale: 'uz',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek'
+            },
+            events: lessonsData.map(lesson => ({
+                id: lesson.id,
+                title: `${lesson.topic} (${lesson.group})`,
+                start: lesson.date,
+                backgroundColor: lesson.type === 'lecture' ? '#3b82f6' : lesson.type === 'practice' ? '#10b981' : '#8b5cf6',
+                extendedProps: {
+                    time: lesson.time,
+                    room: lesson.room,
+                    type: lesson.type
+                }
+            })),
+            eventClick: function(info) {
+                showLessonDetails(parseInt(info.event.id));
+            }
+        });
+        calendar.render();
+    }
+
+    function showLessonDetails(lessonId) {
+        const lesson = lessonsData.find(l => l.id === lessonId);
+        if (!lesson) return;
+        
+        const typeText = lesson.type === 'lecture' ? 'Ma\'ruza' : 
+                        lesson.type === 'practice' ? 'Amaliy' : 'Laboratoriya';
+        
+        const modalContent = `
+            <div class="space-y-4">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-2xl">
+                    <h4 class="text-xl font-bold">${lesson.topic}</h4>
+                    <p class="text-blue-100 mt-1">${lesson.group}</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Sana</p>
+                        <p class="font-medium">${lesson.date}</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Vaqt</p>
+                        <p class="font-medium">${lesson.time}</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Xona</p>
+                        <p class="font-medium">${lesson.room}</p>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-xl">
+                        <p class="text-xs text-gray-500">Tur</p>
+                        <p class="font-medium">${typeText}</p>
+                    </div>
+                </div>
+                
+                ${lesson.materials ? `
+                    <div>
+                        <h5 class="font-bold mb-2">📚 Materiallar</h5>
+                        <div class="bg-gray-50 p-3 rounded-xl">
+                            <a href="#" class="text-blue-600 hover:underline">${lesson.materials}</a>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="flex gap-3 mt-6">
+                    <button onclick="takeAttendance(${lesson.id})" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                        <i class="fas fa-check-circle mr-2"></i> Davomat
+                    </button>
+                    <button onclick="editLesson(${lesson.id})" class="flex-1 bg-yellow-600 text-white p-3 rounded-xl font-bold hover:bg-yellow-700">
+                        <i class="fas fa-edit mr-2"></i> Tahrirlash
+                    </button>
+                    <button onclick="closeLessonModal()" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-xl font-bold hover:bg-gray-300">
+                        Yopish
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('modalContent').innerHTML = modalContent;
+        document.getElementById('lessonModal').style.display = 'flex';
+    }
+
+    function loadSchedule() {
+        const tbody = document.getElementById('scheduleTable');
+        const times = ['09:00-10:20', '10:30-11:50', '13:00-14:20', '14:30-15:50'];
+        const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+        const dayNames = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma'];
+        
+        tbody.innerHTML = '';
+        
+        times.forEach(time => {
+            let row = `<tr class="border-t"><td class="p-4 font-medium text-gray-600">${time}</td>`;
+            
+            days.forEach((day, index) => {
+                const lesson = scheduleData[time]?.[day];
+                if (lesson) {
+                    const typeColor = lesson.type === 'lecture' ? 'border-blue-500' : 
+                                    lesson.type === 'practice' ? 'border-green-500' : 'border-purple-500';
+                    row += `
+                        <td class="p-2">
+                            <div class="bg-gray-50 p-2 rounded-xl border-l-4 ${typeColor}">
+                                <p class="font-bold text-sm">${lesson.subject}</p>
+                                <p class="text-xs text-gray-500">${lesson.group}</p>
+                                <p class="text-xs text-gray-400">${lesson.room}</p>
+                            </div>
+                        </td>
+                    `;
+                } else {
+                    row += `<td class="p-2"><div class="h-16"></div></td>`;
+                }
+            });
+            
+            row += `</tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    function updateStatistics() {
+        const total = lessonsData.length;
+        const today = new Date().toISOString().split('T')[0];
+        const todayCount = lessonsData.filter(l => l.date === today).length;
+        const lectureCount = lessonsData.filter(l => l.type === 'lecture').length;
+        const practiceCount = lessonsData.filter(l => l.type === 'practice').length;
+        
+        document.getElementById('totalLessons').textContent = total;
+        document.getElementById('todayLessons').textContent = todayCount;
+        document.getElementById('lectureCount').textContent = lectureCount;
+        document.getElementById('practiceCount').textContent = practiceCount;
+    }
+
+    function filterLessons() {
+        loadLessons();
+        updateCalendarEvents();
+    }
+
+    function updateCalendarEvents() {
+        if (calendar) {
+            const groupFilter = document.getElementById('groupFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            
+            let filteredEvents = lessonsData;
+            if (groupFilter !== 'all') {
+                filteredEvents = filteredEvents.filter(l => l.group === groupFilter);
+            }
+            if (typeFilter !== 'all') {
+                filteredEvents = filteredEvents.filter(l => l.type === typeFilter);
+            }
+            
+            calendar.removeAllEvents();
+            calendar.addEventSource(filteredEvents.map(lesson => ({
+                id: lesson.id,
+                title: `${lesson.topic} (${lesson.group})`,
+                start: lesson.date,
+                backgroundColor: lesson.type === 'lecture' ? '#3b82f6' : lesson.type === 'practice' ? '#10b981' : '#8b5cf6',
+                extendedProps: { time: lesson.time, room: lesson.room, type: lesson.type }
+            })));
+        }
+    }
+
+    // ========== VIEW FUNKSIYALARI ==========
+    function switchView(view) {
+        currentView = view;
+        
+        document.getElementById('listView').classList.add('hidden');
+        document.getElementById('calendarView').classList.add('hidden');
+        document.getElementById('scheduleView').classList.add('hidden');
+        
+        document.getElementById('listTab').classList.remove('tab-active');
+        document.getElementById('calendarTab').classList.remove('tab-active');
+        document.getElementById('scheduleTab').classList.remove('tab-active');
+        
+        if (view === 'list') {
+            document.getElementById('listView').classList.remove('hidden');
+            document.getElementById('listTab').classList.add('tab-active');
+            loadLessons();
+        } else if (view === 'calendar') {
+            document.getElementById('calendarView').classList.remove('hidden');
+            document.getElementById('calendarTab').classList.add('tab-active');
+            if (calendar) calendar.render();
+        } else if (view === 'schedule') {
+            document.getElementById('scheduleView').classList.remove('hidden');
+            document.getElementById('scheduleTab').classList.add('tab-active');
+            loadSchedule();
+        }
+    }
+
+    // ========== CRUD FUNKSIYALARI ==========
+    function showAddLessonModal() {
+        document.getElementById('addLessonModal').style.display = 'flex';
+        document.getElementById('lessonDate').value = new Date().toISOString().split('T')[0];
+    }
+    
+    function closeAddLessonModal() {
+        document.getElementById('addLessonModal').style.display = 'none';
+    }
+    
+    function addLesson() {
+        const group = document.getElementById('lessonGroup').value;
+        const topic = document.getElementById('lessonTopic').value;
+        const date = document.getElementById('lessonDate').value;
+        const time = document.getElementById('lessonTime').value;
+        const room = document.getElementById('lessonRoom').value;
+        const type = document.getElementById('lessonType').value;
+        const materials = document.getElementById('lessonMaterials').value;
+        
+        if (!group || !topic || !date || !time || !room) {
+            showToast('Barcha maydonlarni to\'ldiring!', 'error');
+            return;
+        }
+        
+        const newLesson = {
+            id: lessonsData.length + 1,
+            group: group,
+            topic: topic,
+            date: date,
+            time: time,
+            room: room,
+            type: type,
+            materials: materials,
+            status: 'scheduled'
+        };
+        
+        lessonsData.push(newLesson);
+        loadLessons();
+        updateCalendarEvents();
+        updateStatistics();
+        closeAddLessonModal();
+        showToast('Dars muvaffaqiyatli qo\'shildi!', 'success');
+    }
+    
+    function editLesson(lessonId) {
+        const lesson = lessonsData.find(l => l.id === lessonId);
+        if (!lesson) return;
+        
+        document.getElementById('lessonGroup').value = lesson.group;
+        document.getElementById('lessonTopic').value = lesson.topic;
+        document.getElementById('lessonDate').value = lesson.date;
+        document.getElementById('lessonTime').value = lesson.time;
+        document.getElementById('lessonRoom').value = lesson.room;
+        document.getElementById('lessonType').value = lesson.type;
+        document.getElementById('lessonMaterials').value = lesson.materials || '';
+        
+        showAddLessonModal();
+        
+        const originalAdd = addLesson;
+        window.addLesson = function() {
+            lesson.group = document.getElementById('lessonGroup').value;
+            lesson.topic = document.getElementById('lessonTopic').value;
+            lesson.date = document.getElementById('lessonDate').value;
+            lesson.time = document.getElementById('lessonTime').value;
+            lesson.room = document.getElementById('lessonRoom').value;
+            lesson.type = document.getElementById('lessonType').value;
+            lesson.materials = document.getElementById('lessonMaterials').value;
+            
+            loadLessons();
+            updateCalendarEvents();
+            updateStatistics();
+            closeAddLessonModal();
+            showToast('Dars yangilandi!', 'success');
+            window.addLesson = originalAdd;
+        };
+    }
+    
+    function deleteLesson(lessonId) {
+        if (confirm('Haqiqatan ham bu darsni o\'chirmoqchimisiz?')) {
+            lessonsData = lessonsData.filter(l => l.id !== lessonId);
+            loadLessons();
+            updateCalendarEvents();
+            updateStatistics();
+            showToast('Dars o\'chirildi!', 'success');
+        }
+    }
+    
+    function takeAttendance(lessonId) {
+        showToast('Davomat olish', 'info');
+    }
+    
+    function closeLessonModal() {
+        document.getElementById('lessonModal').style.display = 'none';
+    }
+
+    // ========== NAVIGATSIYA ==========
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+    
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=teacher';
+    }
+    
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+    
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    window.onclick = function(event) {
+        const lessonModal = document.getElementById('lessonModal');
+        const addLessonModal = document.getElementById('addLessonModal');
+        if (event.target === lessonModal) closeLessonModal();
+        if (event.target === addLessonModal) closeAddLessonModal();
+    }
+</script>
+
+</body>
+</html>

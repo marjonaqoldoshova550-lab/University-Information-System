@@ -1,0 +1,742 @@
+/* ============================================
+   EduHemis - Animatsiyalar
+   Barcha animatsiyalar shu yerda
+   ============================================ */
+
+/* ========== 1. ASOSIY ANIMATSIYALAR ========== */
+
+/* Fade In (Xira ochilish) */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Fade In Up (Pastdan yuqoriga) */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade In Down (Yuqoridan pastga) */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade In Left (Chapdan o'ngga) */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Fade In Right (O'ngdan chapga) */
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ========== 2. SLIDE ANIMATSIYALARI ========== */
+
+/* Slide In Left */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Slide In Right */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Slide In Up */
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Slide In Down */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ========== 3. SCALE ANIMATSIYALARI ========== */
+
+/* Scale In */
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Scale Out */
+@keyframes scaleOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* Scale Up */
+@keyframes scaleUp {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Scale Down */
+@keyframes scaleDown {
+    from {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ========== 4. ROTATE ANIMATSIYALARI ========== */
+
+/* Rotate */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Rotate In */
+@keyframes rotateIn {
+    from {
+        transform: rotate(-180deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0);
+        opacity: 1;
+    }
+}
+
+/* Rotate Out */
+@keyframes rotateOut {
+    from {
+        transform: rotate(0);
+        opacity: 1;
+    }
+    to {
+        transform: rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* ========== 5. PULSE ANIMATSIYALARI ========== */
+
+/* Pulse (Yurak urishi) */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Pulse Ring */
+@keyframes pulseRing {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}
+
+/* Pulse Red (Qizil yurak urishi) */
+@keyframes pulseRed {
+    0%, 100% {
+        background-color: #fee2e2;
+        transform: scale(1);
+    }
+    50% {
+        background-color: #fecaca;
+        transform: scale(1.02);
+    }
+}
+
+/* Pulse Yellow (Sariq yurak urishi) */
+@keyframes pulseYellow {
+    0%, 100% {
+        background-color: #fef3c7;
+        transform: scale(1);
+    }
+    50% {
+        background-color: #fde68a;
+        transform: scale(1.02);
+    }
+}
+
+/* Pulse Green (Yashil yurak urishi) */
+@keyframes pulseGreen {
+    0%, 100% {
+        background-color: #dcfce7;
+        transform: scale(1);
+    }
+    50% {
+        background-color: #bbf7d0;
+        transform: scale(1.02);
+    }
+}
+
+/* ========== 6. BOUNCE ANIMATSIYALARI ========== */
+
+/* Bounce */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Bounce In */
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ========== 7. SHAKE ANIMATSIYALARI ========== */
+
+/* Shake (Silkinish) */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Shake Horizontal */
+@keyframes shakeHorizontal {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Shake Vertical */
+@keyframes shakeVertical {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-5px);
+    }
+    75% {
+        transform: translateY(5px);
+    }
+}
+
+/* ========== 8. FLIP ANIMATSIYALARI ========== */
+
+/* Flip */
+@keyframes flip {
+    from {
+        transform: perspective(400px) rotateY(90deg);
+        opacity: 0;
+    }
+    to {
+        transform: perspective(400px) rotateY(0);
+        opacity: 1;
+    }
+}
+
+/* Flip X */
+@keyframes flipX {
+    from {
+        transform: perspective(400px) rotateX(90deg);
+        opacity: 0;
+    }
+    to {
+        transform: perspective(400px) rotateX(0);
+        opacity: 1;
+    }
+}
+
+/* ========== 9. SPINNER ANIMATSIYALARI ========== */
+
+/* Spinner */
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Spinner Pulse */
+@keyframes spinnerPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.5);
+        opacity: 0.5;
+    }
+}
+
+/* ========== 10. LOADING ANIMATSIYALARI ========== */
+
+/* Loading Dots */
+@keyframes loadingDots {
+    0%, 20% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Loading Bars */
+@keyframes loadingBars {
+    0% {
+        transform: scaleY(0.5);
+    }
+    50% {
+        transform: scaleY(1);
+    }
+    100% {
+        transform: scaleY(0.5);
+    }
+}
+
+/* Loading Wave */
+@keyframes loadingWave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ========== 11. GLOW ANIMATSIYALARI ========== */
+
+/* Glow */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+    }
+}
+
+/* Text Glow */
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+    }
+}
+
+/* ========== 12. BLINK ANIMATSIYALARI ========== */
+
+/* Blink (Miltillash) */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Blink Soft */
+@keyframes blinkSoft {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ========== 13. PROGRESS ANIMATSIYALARI ========== */
+
+/* Progress Bar */
+@keyframes progressBar {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* Shimmer (Yaltiroq) */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* ========== 14. HOVER ANIMATSIYALARI ========== */
+
+/* Hover Lift */
+@keyframes hoverLift {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-5px);
+    }
+}
+
+/* Hover Pulse */
+@keyframes hoverPulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
+/* ========== 15. SPECIAL ANIMATSIYALAR ========== */
+
+/* Float (Suzish) */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Swing (Tebranish) */
+@keyframes swing {
+    20% {
+        transform: rotate(15deg);
+    }
+    40% {
+        transform: rotate(-10deg);
+    }
+    60% {
+        transform: rotate(5deg);
+    }
+    80% {
+        transform: rotate(-5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Tada (Qarsak) */
+@keyframes tada {
+    0% {
+        transform: scale(1);
+    }
+    10%, 20% {
+        transform: scale(0.9) rotate(-3deg);
+    }
+    30%, 50%, 70%, 90% {
+        transform: scale(1.1) rotate(3deg);
+    }
+    40%, 60%, 80% {
+        transform: scale(1.1) rotate(-3deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* Wobble */
+@keyframes wobble {
+    0% {
+        transform: translateX(0%);
+    }
+    15% {
+        transform: translateX(-25%) rotate(-5deg);
+    }
+    30% {
+        transform: translateX(20%) rotate(3deg);
+    }
+    45% {
+        transform: translateX(-15%) rotate(-3deg);
+    }
+    60% {
+        transform: translateX(10%) rotate(2deg);
+    }
+    75% {
+        transform: translateX(-5%) rotate(-1deg);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+/* Jello */
+@keyframes jello {
+    0%, 100% {
+        transform: scale3d(1, 1, 1);
+    }
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+    }
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+    }
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+    }
+    65% {
+        transform: scale3d(0.95, 1.05, 1);
+    }
+    75% {
+        transform: scale3d(1.05, 0.95, 1);
+    }
+}
+
+/* ========== ANIMATSIYA KLASSLARI ========== */
+
+/* Fade */
+.fade-in { animation: fadeIn 0.5s ease; }
+.fade-in-up { animation: fadeInUp 0.5s ease; }
+.fade-in-down { animation: fadeInDown 0.5s ease; }
+.fade-in-left { animation: fadeInLeft 0.5s ease; }
+.fade-in-right { animation: fadeInRight 0.5s ease; }
+
+/* Slide */
+.slide-in-left { animation: slideInLeft 0.5s ease; }
+.slide-in-right { animation: slideInRight 0.5s ease; }
+.slide-in-up { animation: slideInUp 0.5s ease; }
+.slide-in-down { animation: slideInDown 0.5s ease; }
+
+/* Scale */
+.scale-in { animation: scaleIn 0.3s ease; }
+.scale-out { animation: scaleOut 0.3s ease; }
+.scale-up { animation: scaleUp 0.3s ease; }
+.scale-down { animation: scaleDown 0.3s ease; }
+
+/* Rotate */
+.rotate { animation: rotate 1s linear infinite; }
+.rotate-in { animation: rotateIn 0.5s ease; }
+.rotate-out { animation: rotateOut 0.5s ease; }
+
+/* Pulse */
+.pulse { animation: pulse 2s infinite; }
+.pulse-ring { animation: pulseRing 1.5s infinite; }
+.pulse-red { animation: pulseRed 2s infinite; }
+.pulse-yellow { animation: pulseYellow 2s infinite; }
+.pulse-green { animation: pulseGreen 2s infinite; }
+
+/* Bounce */
+.bounce { animation: bounce 1s ease infinite; }
+.bounce-in { animation: bounceIn 0.6s ease; }
+
+/* Shake */
+.shake { animation: shake 0.5s ease; }
+.shake-horizontal { animation: shakeHorizontal 0.5s ease; }
+.shake-vertical { animation: shakeVertical 0.5s ease; }
+
+/* Flip */
+.flip { animation: flip 0.5s ease; }
+.flip-x { animation: flipX 0.5s ease; }
+
+/* Loading */
+.spinner { animation: spinner 1s linear infinite; }
+.spinner-pulse { animation: spinnerPulse 1s ease infinite; }
+
+.loading-dots { animation: loadingDots 1.4s ease infinite; }
+.loading-bars { animation: loadingBars 1.2s ease infinite; }
+.loading-wave { animation: loadingWave 1.2s ease infinite; }
+
+/* Glow */
+.glow { animation: glow 2s ease infinite; }
+.text-glow { animation: textGlow 2s ease infinite; }
+
+/* Blink */
+.blink { animation: blink 1s step-end infinite; }
+.blink-soft { animation: blinkSoft 1s step-end infinite; }
+
+/* Progress */
+.progress-bar { animation: progressBar 0.5s ease; }
+.shimmer { animation: shimmer 2s linear infinite; background-size: 1000px 100%; }
+
+/* Hover */
+.hover-lift { transition: transform 0.3s ease; }
+.hover-lift:hover { transform: translateY(-5px); }
+
+.hover-pulse { transition: transform 0.3s ease; }
+.hover-pulse:hover { transform: scale(1.05); }
+
+/* Special */
+.float { animation: float 3s ease-in-out infinite; }
+.swing { transform-origin: top center; animation: swing 1s ease; }
+.tada { animation: tada 1s ease; }
+.wobble { animation: wobble 1s ease; }
+.jello { animation: jello 1s ease; }
+
+/* ========== ANIMATSIYA KECHIKISHLARI ========== */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+.delay-900 { animation-delay: 900ms; }
+.delay-1000 { animation-delay: 1000ms; }
+
+/* ========== ANIMATSIYA DAVOMIYLIGI ========== */
+.duration-100 { animation-duration: 100ms; }
+.duration-200 { animation-duration: 200ms; }
+.duration-300 { animation-duration: 300ms; }
+.duration-400 { animation-duration: 400ms; }
+.duration-500 { animation-duration: 500ms; }
+.duration-600 { animation-duration: 600ms; }
+.duration-700 { animation-duration: 700ms; }
+.duration-800 { animation-duration: 800ms; }
+.duration-900 { animation-duration: 900ms; }
+.duration-1000 { animation-duration: 1000ms; }
+
+/* ========== ANIMATSIYA TAKRORLARI ========== */
+.infinite { animation-iteration-count: infinite; }
+.once { animation-iteration-count: 1; }
+.twice { animation-iteration-count: 2; }
+.three { animation-iteration-count: 3; }
+
+/* ========== ANIMATSIYA YO'NALISHLARI ========== */
+.normal { animation-direction: normal; }
+.reverse { animation-direction: reverse; }
+.alternate { animation-direction: alternate; }
+.alternate-reverse { animation-direction: alternate-reverse; }
+
+/* ========== ANIMATSIYA HOLATLARI ========== */
+.fill-both { animation-fill-mode: both; }
+.fill-forwards { animation-fill-mode: forwards; }
+.fill-backwards { animation-fill-mode: backwards; }
+.fill-none { animation-fill-mode: none; }
+
+/* ========== RESPONSIVE ANIMATSIYALAR ========== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ========== PRINT ANIMATSIYALAR ========== */
+@media print {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

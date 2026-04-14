@@ -1,0 +1,227 @@
+<!-- ========== DEADLINE INDICATOR COMPONENTS ========== -->
+
+<!-- ===== 1. BASIC DEADLINE INDICATOR ===== -->
+<div class="deadline-indicator">
+    <div class="deadline-status deadline-overdue">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Muddati o'tgan</span>
+        <span class="deadline-days">5 kun o'tgan</span>
+    </div>
+    
+    <div class="deadline-status deadline-warning">
+        <i class="fas fa-clock"></i>
+        <span>Muddati yaqin</span>
+        <span class="deadline-days">2 kun qoldi</span>
+    </div>
+    
+    <div class="deadline-status deadline-upcoming">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Muddati bor</span>
+        <span class="deadline-days">10 kun qoldi</span>
+    </div>
+    
+    <div class="deadline-status deadline-completed">
+        <i class="fas fa-check-circle"></i>
+        <span>Bajarilgan</span>
+        <span class="deadline-days">3 kun oldin</span>
+    </div>
+</div>
+
+<style>
+    .deadline-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 4px;
+    }
+    
+    .deadline-overdue {
+        background: #fee2e2;
+        color: #dc2626;
+        border-left: 4px solid #dc2626;
+    }
+    
+    .deadline-warning {
+        background: #fef3c7;
+        color: #d97706;
+        border-left: 4px solid #d97706;
+    }
+    
+    .deadline-upcoming {
+        background: #dbeafe;
+        color: #2563eb;
+        border-left: 4px solid #2563eb;
+    }
+    
+    .deadline-completed {
+        background: #dcfce7;
+        color: #16a34a;
+        border-left: 4px solid #16a34a;
+    }
+    
+    .deadline-days {
+        font-size: 12px;
+        font-weight: normal;
+        opacity: 0.8;
+    }
+</style>
+
+<!-- ===== 2. DEADLINE CARD ===== -->
+<div class="deadline-card deadline-card-overdue">
+    <div class="flex justify-between items-start">
+        <div>
+            <h4 class="font-bold text-lg">HTML portfolio</h4>
+            <p class="text-sm text-gray-600 mt-1">AT-101-20 • Veb dasturlash</p>
+            <div class="flex items-center gap-2 mt-2">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="text-sm">Muddat: 2025-03-15</span>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="deadline-badge deadline-badge-overdue">Muddati o'tgan</div>
+            <div class="text-sm text-red-600 mt-1">5 kun o'tgan</div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 75%"></div>
+        </div>
+        <div class="flex justify-between text-sm mt-1">
+            <span>Bajarilish: 75%</span>
+            <span>15/20 topshirgan</span>
+        </div>
+    </div>
+</div>
+
+<div class="deadline-card deadline-card-warning mt-4">
+    <div class="flex justify-between items-start">
+        <div>
+            <h4 class="font-bold text-lg">CSS animatsiyalar</h4>
+            <p class="text-sm text-gray-600 mt-1">AT-101-20 • Veb dasturlash</p>
+            <div class="flex items-center gap-2 mt-2">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="text-sm">Muddat: 2025-03-22</span>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="deadline-badge deadline-badge-warning">2 kun qoldi</div>
+            <div class="text-sm text-orange-600 mt-1">Tez orada tugaydi</div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 40%"></div>
+        </div>
+        <div class="flex justify-between text-sm mt-1">
+            <span>Bajarilish: 40%</span>
+            <span>8/20 topshirgan</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .deadline-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        border-left: 4px solid;
+    }
+    
+    .deadline-card-overdue {
+        border-left-color: #dc2626;
+        background: #fef2f2;
+    }
+    
+    .deadline-card-warning {
+        border-left-color: #f59e0b;
+        background: #fffbeb;
+    }
+    
+    .deadline-card-upcoming {
+        border-left-color: #3b82f6;
+        background: #eff6ff;
+    }
+    
+    .deadline-card-completed {
+        border-left-color: #10b981;
+        background: #f0fdf4;
+    }
+    
+    .deadline-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .deadline-badge-overdue {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .deadline-badge-warning {
+        background: #fef3c7;
+        color: #d97706;
+    }
+    
+    .deadline-badge-upcoming {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+    
+    .deadline-badge-completed {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .progress-bar {
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        transition: width 0.5s;
+    }
+</style>
+
+<!-- ===== 3. DEADLINE TIMELINE ===== -->
+<div class="deadline-timeline">
+    <div class="timeline-item deadline-item-overdue">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h4 class="font-bold">HTML portfolio</h4>
+                    <p class="text-sm text-gray-500">Veb dasturlash • AT-101-20</p>
+                </div>
+                <span class="text-sm text-red-600">Muddati o'tgan (5 kun)</span>
+            </div>
+            <div class="mt-2 flex gap-4 text-sm text-gray-500">
+                <span><i class="far fa-calendar mr-1"></i> 2025-03-15</span>
+                <span><i class="fas fa-users mr-1"></i> 15/20 topshirgan</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline-item deadline-item-warning">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h4 class="font-bold">CSS animatsiyalar</h4>
+                    <p class="text-sm text-gray-500">Veb dasturlash • AT-101-20</p>
+                </div>
+                <span class="text-sm text-orange-600">2 kun qoldi</span>
+            </div>
+            <div class="mt-2 flex gap-4 text-sm text-gray-500">
+                <span><i class="far

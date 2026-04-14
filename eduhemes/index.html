@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduHemis - Universitet portali</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome ikonkalar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Qo'shimcha stillar -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animatsiyalar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        .animate-pulse { animation: pulse 2s infinite; }
+
+        /* Kartalar uchun hover effekt */
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal oyna */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        /* Toast xabarlar */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast-error {
+            background: #ef4444;
+        }
+
+        /* Tablar */
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Eslatma ranglari */
+        .deadline-red {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+        }
+
+        .deadline-yellow {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .deadline-green {
+            background-color: #dcfce7;
+            border-left: 4px solid #22c55e;
+        }
+
+        /* Bildirishnoma belgisi */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== LOGIN SAHIFASI ========== -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-purple-900">
+    <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl animate-fadeIn">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">EduHemis</h1>
+            <p class="text-gray-500">Universitet axborot tizimi</p>
+        </div>
+
+        <!-- Tablar -->
+        <div class="flex gap-2 mb-6">
+            <button id="loginTabBtn" onclick="showLoginTab()" class="tab-btn tab-active flex-1">Kirish</button>
+            <button id="registerTabBtn" onclick="showRegisterTab()" class="tab-btn bg-gray-200 flex-1">Ro'yxatdan o'tish</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div id="loginForm" class="space-y-4">
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">Login</label>
+                <input type="text" id="loginUsername" value="admin" 
+                       class="w-full p-3 border border-gray-300 rounded-xl mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">Parol</label>
+                <input type="password" id="loginPassword" value="123" 
+                       class="w-full p-3 border border-gray-300 rounded-xl mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            
+            <div id="loginError" class="text-red-500 text-sm hidden text-center bg-red-50 p-3 rounded-xl">
+                Login yoki parol noto'g'ri!
+            </div>
+
+            <button onclick="handleLogin()" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700 transition-all">
+                <i class="fas fa-sign-in-alt mr-2"></i> Kirish
+            </button>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div id="registerForm" class="hidden space-y-4">
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">To'liq ism</label>
+                <input type="text" id="regFullName" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">Email</label>
+                <input type="email" id="regEmail" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">Rol</label>
+                <select id="regRole" onchange="toggleRoleFields()" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+                    <option value="student">Talaba</option>
+                    <option value="teacher">O'qituvchi</option>
+                </select>
+            </div>
+            <div id="studentField">
+                <label class="text-sm font-medium text-gray-700 ml-2">Guruh</label>
+                <input type="text" id="regGroup" placeholder="Masalan: AT-101-20" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+            </div>
+            <div id="teacherField" class="hidden">
+                <label class="text-sm font-medium text-gray-700 ml-2">Fan</label>
+                <input type="text" id="regSubject" placeholder="Masalan: Veb dasturlash" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">Login</label>
+                <input type="text" id="regUsername" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-700 ml-2">Parol</label>
+                <input type="password" id="regPassword" class="w-full p-3 border border-gray-300 rounded-xl mt-1">
+            </div>
+            
+            <div id="registerError" class="text-red-500 text-sm hidden text-center bg-red-50 p-3 rounded-xl"></div>
+
+            <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700 transition-all">
+                <i class="fas fa-user-plus mr-2"></i> Ro'yxatdan o'tish
+            </button>
+        </div>
+
+        <div class="mt-6 text-center text-sm text-gray-500">
+            <p>Admin: <span class="font-mono bg-gray-100 px-2 py-1 rounded">admin / 123</span></p>
+        </div>
+    </div>
+</div>
+
+<!-- ========== ASOSIY ILOVA ========== -->
+<div id="mainApp" class="hidden min-h-screen bg-gray-100">
+
+    <!-- Header -->
+    <div class="bg-white shadow-sm p-4 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1 class="font-bold text-xl text-gray-800">EduHemis</h1>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Bildirishnoma (faqat o'qituvchi uchun) -->
+                <div id="notificationBell" class="relative hidden">
+                    <i class="fas fa-bell text-2xl text-gray-600"></i>
+                    <span id="notificationCount" class="notification-badge">0</span>
+                </div>
+
+                <div class="text-right">
+                    <p id="userName" class="font-bold text-gray-800">Ism familya</p>
+                    <p id="userRole" class="text-xs text-gray-500">Rol</p>
+                </div>
+
+                <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" 
+                     class="w-10 h-10 rounded-xl border-2 border-blue-600">
+
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto p-6">
+        <div id="content" class="space-y-6 animate-fadeIn">
+            <!-- Dinamik kontent JS orqali to'ldiriladi -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL OYNA ===== -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<!-- ===== TOAST XABAR ===== -->
+<div id="toast" class="toast"></div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // =============================================
+    // 1. MA'LUMOTLAR BAZASI (LocalStorage)
+    // =============================================
+    let USERS = [];
+    let STUDENTS = [];
+    let TEACHERS = [];
+    let LESSONS = [];
+    let TASKS = [];
+    let GRADES = [];
+
+    let currentUser = null;
+
+    // Sahifa yuklanganda
+    window.onload = function() {
+        // LocalStorage dan ma'lumotlarni o'qish
+        loadData();
+        
+        // Agar bo'sh bo'lsa, test ma'lumotlar qo'shish
+        if (USERS.length === 0) {
+            addTestData();
+        }
+        
+        // Login maydoniga fokus
+        document.getElementById('loginUsername').focus();
+    };
+
+    // Ma'lumotlarni yuklash
+    function loadData() {
+        USERS = JSON.parse(localStorage.getItem('users')) || [];
+        STUDENTS = JSON.parse(localStorage.getItem('students')) || [];
+        TEACHERS = JSON.parse(localStorage.getItem('teachers')) || [];
+        LESSONS = JSON.parse(localStorage.getItem('lessons')) || [];
+        TASKS = JSON.parse(localStorage.getItem('tasks')) || [];
+        GRADES = JSON.parse(localStorage.getItem('grades')) || [];
+    }
+
+    // Ma'lumotlarni saqlash
+    function saveData() {
+        localStorage.setItem('users', JSON.stringify(USERS));
+        localStorage.setItem('students', JSON.stringify(STUDENTS));
+        localStorage.setItem('teachers', JSON.stringify(TEACHERS));
+        localStorage.setItem('lessons', JSON.stringify(LESSONS));
+        localStorage.setItem('tasks', JSON.stringify(TASKS));
+        localStorage.setItem('grades', JSON.stringify(GRADES));
+    }
+
+    // Test ma'lumotlar
+    function addTestData() {
+        // Admin
+        USERS.push({
+            id: 1,
+            username: 'admin',
+            password: '123',
+            role: 'admin',
+            name: 'Admin User',
+            email: 'admin@edu.uz'
+        });
+
+        // O'qituvchilar
+        USERS.push({
+            id: 2,
+            username: 'teacher',
+            password: '123',
+            role: 'teacher',
+            name: 'Said Alisherov',
+            subject: 'Veb dasturlash',
+            email: 's.alisherov@edu.uz'
+        });
+
+        TEACHERS.push({
+            id: 2,
+            name: 'Said Alisherov',
+            subject: 'Veb dasturlash',
+            email: 's.alisherov@edu.uz'
+        });
+
+        // Talabalar
+        USERS.push({
+            id: 3,
+            username: 'student',
+            password: '123',
+            role: 'student',
+            name: 'Azimjon Karimov',
+            group: 'AT-101-20',
+            email: 'a.karimov@student.uz'
+        });
+
+        STUDENTS.push({
+            id: 3,
+            name: 'Azimjon Karimov',
+            group: 'AT-101-20',
+            email: 'a.karimov@student.uz'
+        });
+
+        // Dars rejalari
+        LESSONS.push({
+            id: 1,
+            teacherId: 2,
+            group: 'AT-101-20',
+            subject: 'Veb dasturlash',
+            topic: 'HTML asoslari',
+            date: '2025-03-20',
+            room: '402',
+            time: '09:00-10:20'
+        });
+
+        // Vazifalar
+        TASKS.push({
+            id: 1,
+            teacherId: 2,
+            group: 'AT-101-20',
+            title: 'HTML portfolio',
+            description: 'Shaxsiy portfolio yaratish',
+            deadline: '2025-03-25',
+            students: [
+                { studentId: 3, status: 'pending' }
+            ]
+        });
+
+        // Baholar
+        GRADES.push({
+            id: 1,
+            studentId: 3,
+            subject: 'Veb dasturlash',
+            grade: 5,
+            date: '2025-03-10'
+        });
+
+        saveData();
+    }
+
+    // =============================================
+    // 2. TABLAR
+    // =============================================
+    function showLoginTab() {
+        document.getElementById('loginTabBtn').classList.add('tab-active', 'bg-blue-600', 'text-white');
+        document.getElementById('loginTabBtn').classList.remove('bg-gray-200');
+        document.getElementById('registerTabBtn').classList.remove('tab-active', 'bg-blue-600', 'text-white');
+        document.getElementById('registerTabBtn').classList.add('bg-gray-200');
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('registerForm').classList.add('hidden');
+    }
+
+    function showRegisterTab() {
+        document.getElementById('registerTabBtn').classList.add('tab-active', 'bg-blue-600', 'text-white');
+        document.getElementById('registerTabBtn').classList.remove('bg-gray-200');
+        document.getElementById('loginTabBtn').classList.remove('tab-active', 'bg-blue-600', 'text-white');
+        document.getElementById('loginTabBtn').classList.add('bg-gray-200');
+        document.getElementById('registerForm').classList.remove('hidden');
+        document.getElementById('loginForm').classList.add('hidden');
+    }
+
+    function toggleRoleFields() {
+        const role = document.getElementById('regRole').value;
+        if (role === 'student') {
+            document.getElementById('studentField').classList.remove('hidden');
+            document.getElementById('teacherField').classList.add('hidden');
+        } else {
+            document.getElementById('studentField').classList.add('hidden');
+            document.getElementById('teacherField').classList.remove('hidden');
+        }
+    }
+
+    // =============================================
+    // 3. RO'YXATDAN O'TISH
+    // =============================================
+    function handleRegister() {
+        const name = document.getElementById('regFullName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const role = document.getElementById('regRole').value;
+        const group = document.getElementById('regGroup').value.trim();
+        const subject = document.getElementById('regSubject').value.trim();
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value;
+
+        // Tekshirish
+        if (!name || !email || !username || !password) {
+            showError('registerError', 'Barcha maydonlarni to\'ldiring!');
+            return;
+        }
+
+        // Login mavjudligini tekshirish
+        if (USERS.find(u => u.username === username)) {
+            showError('registerError', 'Bu login allaqachon mavjud!');
+            return;
+        }
+
+        // Yangi foydalanuvchi yaratish
+        const newUser = {
+            id: USERS.length + 1,
+            username: username,
+            password: password,
+            role: role,
+            name: name,
+            email: email
+        };
+
+        if (role === 'student') {
+            if (!group) {
+                showError('registerError', 'Guruhni kiriting!');
+                return;
+            }
+            newUser.group = group;
+            
+            STUDENTS.push({
+                id: newUser.id,
+                name: name,
+                group: group,
+                email: email
+            });
+        } else {
+            if (!subject) {
+                showError('registerError', 'Fanni kiriting!');
+                return;
+            }
+            newUser.subject = subject;
+            
+            TEACHERS.push({
+                id: newUser.id,
+                name: name,
+                subject: subject,
+                email: email
+            });
+        }
+
+        USERS.push(newUser);
+        saveData();
+
+        showToast('Muvaffaqiyatli ro\'yxatdan o\'tdingiz! Endi kiring.', 'success');
+        showLoginTab();
+
+        // Formani tozalash
+        document.getElementById('regFullName').value = '';
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regUsername').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('regGroup').value = '';
+        document.getElementById('regSubject').value = '';
+    }
+
+    // =============================================
+    // 4. KIRISH
+    // =============================================
+    function handleLogin() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        const user = USERS.find(u => u.username === username && u.password === password);
+
+        if (!user) {
+            document.getElementById('loginError').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('loginError').style.display = 'none';
+        currentUser = user;
+
+        // Login sahifasini yashirish
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+
+        // User ma'lumotlarini yangilash
+        document.getElementById('userName').textContent = user.name;
+        let roleText = '';
+        if (user.role === 'student') roleText = 'Talaba';
+        else if (user.role === 'teacher') roleText = "O'qituvchi";
+        else roleText = 'Admin';
+        document.getElementById('userRole').textContent = roleText;
+
+        // Avatar
+        const colors = {
+            student: '0284c7',
+            teacher: '4f46e5',
+            admin: 'dc2626'
+        };
+        document.getElementById('userAvatar').src = 
+            `https://ui-avatars.com/api/?name=${user.name.split(' ').join('+')}&background=${colors[user.role]}&color=fff`;
+
+        // Bildirishnoma belgisi (faqat o'qituvchi)
+        if (user.role === 'teacher') {
+            document.getElementById('notificationBell').classList.remove('hidden');
+            updateNotifications();
+        } else {
+            document.getElementById('notificationBell').classList.add('hidden');
+        }
+
+        // Dashboardni ko'rsatish
+        showDashboard();
+
+        showToast(`Xush kelibsiz, ${user.name}!`, 'success');
+    }
+
+    // =============================================
+    // 5. DASHBOARD (Rolga qarab)
+    // =============================================
+    function showDashboard() {
+        if (currentUser.role === 'student') {
+            showStudentDashboard();
+        } else if (currentUser.role === 'teacher') {
+            showTeacherDashboard();
+        } else {
+            showAdminDashboard();
+        }
+    }
+
+    // ===== TALABA DASHBOARD =====
+    function showStudentDashboard() {
+        const teachers = TEACHERS;
+        const studentTasks = TASKS.filter(t => 
+            t.students.some(s => s.studentId === currentUser.id)
+        );
+        const studentGrades = GRADES.filter(g => g.studentId === currentUser.id);
+
+        let html = `
+            <!-- Welcome Card -->
+            <div class="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-[40px] p-8 text-white mb-6">
+                <h2 class="text-3xl font-bold">Salom, ${currentUser.name}!</h2>
+                <p class="text-blue-100 mt-2">Guruh: ${currentUser.group || 'Aniqlanmagan'}</p>
+            </div>
+
+            <!-- Statistika -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm card-hover" onclick="showStudentDashboard()">
+                    <i class="fas fa-book-open text-2xl text-blue-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${teachers.length}</h3>
+                    <p class="text-xs text-gray-500">O'qituvchilar</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm card-hover" onclick="showMyTasks()">
+                    <i class="fas fa-tasks text-2xl text-orange-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${studentTasks.length}</h3>
+                    <p class="text-xs text-gray-500">Vazifalar</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm card-hover" onclick="showMyGrades()">
+                    <i class="fas fa-star text-2xl text-yellow-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${studentGrades.length}</h3>
+                    <p class="text-xs text-gray-500">Baholar</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm card-hover" onclick="showSchedule()">
+                    <i class="fas fa-calendar text-2xl text-green-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">5</h3>
+                    <p class="text-xs text-gray-500">Darslar</p>
+                </div>
+            </div>
+
+            <!-- O'qituvchilar -->
+            <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                <i class="fas fa-chalkboard-teacher text-purple-600"></i> Mening o'qituvchilarim
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        `;
+
+        teachers.forEach(t => {
+            html += `
+                <div onclick="showTeacherInfo(${t.id})" class="bg-white p-4 rounded-2xl shadow-sm card-hover">
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=${t.name.split(' ').join('+')}&background=4f46e5&color=fff" 
+                             class="w-12 h-12 rounded-full">
+                        <div>
+                            <h4 class="font-bold">${t.name}</h4>
+                            <p class="text-sm text-gray-500">${t.subject || 'Fan'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+
+        // Vazifalar
+        if (studentTasks.length > 0) {
+            html += `
+                <h3 class="font-bold text-xl mb-4">📋 Mening vazifalarim</h3>
+                <div class="space-y-3 mb-6">
+            `;
+
+            studentTasks.forEach(t => {
+                const studentTask = t.students.find(s => s.studentId === currentUser.id);
+                const deadlineDate = new Date(t.deadline);
+                const todayDate = new Date();
+                const diffDays = Math.ceil((deadlineDate - todayDate) / (1000 * 60 * 60 * 24));
+
+                let statusClass = '';
+                let statusText = '';
+
+                if (studentTask.status === 'submitted') {
+                    statusClass = 'deadline-green';
+                    statusText = 'Bajarilgan';
+                } else if (diffDays < 0) {
+                    statusClass = 'deadline-red';
+                    statusText = 'Muddati o\'tgan';
+                } else if (diffDays <= 3) {
+                    statusClass = 'deadline-yellow';
+                    statusText = `${diffDays} kun qoldi`;
+                }
+
+                html += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm ${statusClass}">
+                        <div class="flex justify-between">
+                            <h4 class="font-bold">${t.title}</h4>
+                            <span class="text-sm font-bold ${diffDays < 0 ? 'text-red-600' : diffDays <= 3 ? 'text-orange-600' : 'text-green-600'}">
+                                ${statusText}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">${t.description}</p>
+                        <p class="text-xs text-gray-400 mt-2">Muddat: ${t.deadline}</p>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+        }
+
+        document.getElementById('content').innerHTML = html;
+    }
+
+    // ===== O'QITUVCHI DASHBOARD =====
+    function showTeacherDashboard() {
+        const today = new Date().toISOString().split('T')[0];
+        const teacherLessons = LESSONS.filter(l => l.teacherId === currentUser.id);
+        const teacherTasks = TASKS.filter(t => t.teacherId === currentUser.id);
+        const todayLessons = teacherLessons.filter(l => l.date === today);
+
+        // Muddati o'tgan vazifalar
+        const overdueTasks = teacherTasks.filter(t => t.deadline < today);
+
+        let html = `
+            <!-- Welcome Card -->
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-[40px] p-8 text-white mb-6">
+                <h2 class="text-3xl font-bold">Salom, ${currentUser.name}!</h2>
+                <p class="text-purple-100 mt-2">Fan: ${currentUser.subject || 'Aniqlanmagan'}</p>
+            </div>
+
+            <!-- Statistika -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-2xl shadow-sm">
+                    <i class="fas fa-users text-2xl text-blue-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${teacherLessons.length}</h3>
+                    <p class="text-xs text-gray-500">Dars rejalari</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm ${todayLessons.length > 0 ? 'deadline-yellow' : ''}">
+                    <i class="fas fa-calendar-day text-2xl text-green-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${todayLessons.length}</h3>
+                    <p class="text-xs text-gray-500">Bugungi darslar</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm">
+                    <i class="fas fa-tasks text-2xl text-orange-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${teacherTasks.length}</h3>
+                    <p class="text-xs text-gray-500">Jami vazifalar</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm ${overdueTasks.length > 0 ? 'deadline-red' : ''}">
+                    <i class="fas fa-exclamation-triangle text-2xl text-red-600 mb-2"></i>
+                    <h3 class="text-xl font-bold">${overdueTasks.length}</h3>
+                    <p class="text-xs text-gray-500">Muddati o'tgan</p>
+                </div>
+            </div>
+
+            <!-- Tezkor tugmalar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <button onclick="showAddLessonForm()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-plus-circle text-green-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Dars rejasi</p>
+                </button>
+                <button onclick="showAddTaskForm()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-tasks text-orange-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Yangi vazifa</p>
+                </button>
+                <button onclick="showAttendance()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-check-circle text-blue-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Davomat</p>
+                </button>
+                <button onclick="showGrades()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-star text-yellow-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Baholar</p>
+                </button>
+            </div>
+
+            <!-- Bugungi darslar -->
+            <h3 class="font-bold text-xl mb-4">Bugungi darslar</h3>
+        `;
+
+        if (todayLessons.length > 0) {
+            html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">`;
+            todayLessons.forEach(l => {
+                html += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-blue-500">
+                        <h4 class="font-bold">${l.group}</h4>
+                        <p class="text-sm">${l.topic}</p>
+                        <div class="flex gap-4 mt-2 text-sm text-gray-500">
+                            <span><i class="fas fa-clock mr-1"></i> ${l.time}</span>
+                            <span><i class="fas fa-map-marker-alt mr-1"></i> ${l.room}-xona</span>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        } else {
+            html += `<p class="text-center py-8 bg-white rounded-2xl text-gray-500 mb-6">Bugun darslar yo'q</p>`;
+        }
+
+        // Vazifalar
+        html += `<h3 class="font-bold text-xl mb-4">Vazifalar</h3>`;
+        
+        if (teacherTasks.length > 0) {
+            html += `<div class="space-y-3 mb-6">`;
+            
+            teacherTasks.forEach(t => {
+                const deadlineDate = new Date(t.deadline);
+                const todayDate = new Date();
+                const diffDays = Math.ceil((deadlineDate - todayDate) / (1000 * 60 * 60 * 24));
+
+                let statusClass = '';
+                let statusText = '';
+
+                if (diffDays < 0) {
+                    statusClass = 'deadline-red';
+                    statusText = 'Muddati o\'tgan';
+                } else if (diffDays <= 3) {
+                    statusClass = 'deadline-yellow';
+                    statusText = `${diffDays} kun qoldi`;
+                } else {
+                    statusClass = 'deadline-green';
+                    statusText = `${diffDays} kun qoldi`;
+                }
+
+                const submitted = t.students.filter(s => s.status === 'submitted').length;
+                const total = t.students.length;
+
+                html += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm ${statusClass}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold">${t.title}</h4>
+                                <p class="text-sm text-gray-600">${t.group}</p>
+                            </div>
+                            <span class="text-sm font-bold ${diffDays < 0 ? 'text-red-600' : diffDays <= 3 ? 'text-orange-600' : 'text-green-600'}">
+                                ${statusText}
+                            </span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between text-sm">
+                                <span>Topshirganlar: ${submitted}/${total}</span>
+                                <span>${Math.round(submitted/total*100)}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${submitted/total*100}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <button onclick="showTaskDetails(${t.id})" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm">
+                                Ko'rish
+                            </button>
+                            <button onclick="showTaskStudents(${t.id})" class="flex-1 py-2 bg-green-50 text-green-600 rounded-xl text-sm">
+                                Talabalar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+        } else {
+            html += `<p class="text-center py-8 bg-white rounded-2xl text-gray-500 mb-6">Vazifalar yo'q</p>`;
+        }
+
+        // Dars rejalari
+        html += `
+            <h3 class="font-bold text-xl mb-4">Dars rejalari</h3>
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-3 text-left">Sana</th>
+                            <th class="p-3 text-left">Guruh</th>
+                            <th class="p-3 text-left">Mavzu</th>
+                            <th class="p-3 text-left">Xona</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        teacherLessons.sort((a, b) => a.date.localeCompare(b.date)).forEach(l => {
+            const isToday = l.date === today;
+            html += `
+                <tr class="border-t hover:bg-gray-50 ${isToday ? 'bg-blue-50' : ''}">
+                    <td class="p-3">${l.date} ${isToday ? '⭐' : ''}</td>
+                    <td class="p-3 font-medium">${l.group}</td>
+                    <td class="p-3">${l.topic}</td>
+                    <td class="p-3">${l.room}</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        document.getElementById('content').innerHTML = html;
+    }
+
+    // ===== ADMIN DASHBOARD =====
+    function showAdminDashboard() {
+        const students = USERS.filter(u => u.role === 'student').length;
+        const teachers = USERS.filter(u => u.role === 'teacher').length;
+
+        let html = `
+            <!-- Welcome Card -->
+            <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-[40px] p-8 text-white mb-6">
+                <h2 class="text-3xl font-bold">Admin paneli</h2>
+                <p class="text-red-100 mt-2">Jami: ${students} talaba, ${teachers} o'qituvchi</p>
+            </div>
+
+            <!-- Statistika -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <i class="fas fa-users text-3xl text-blue-600 mb-2"></i>
+                    <h3 class="text-2xl font-bold">${USERS.length}</h3>
+                    <p class="text-gray-500">Foydalanuvchilar</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <i class="fas fa-user-graduate text-3xl text-green-600 mb-2"></i>
+                    <h3 class="text-2xl font-bold">${students}</h3>
+                    <p class="text-gray-500">Talabalar</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <i class="fas fa-chalkboard-teacher text-3xl text-purple-600 mb-2"></i>
+                    <h3 class="text-2xl font-bold">${teachers}</h3>
+                    <p class="text-gray-500">O'qituvchilar</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <i class="fas fa-book-open text-3xl text-orange-600 mb-2"></i>
+                    <h3 class="text-2xl font-bold">${LESSONS.length}</h3>
+                    <p class="text-gray-500">Darslar</p>
+                </div>
+            </div>
+
+            <!-- Tezkor tugmalar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <button onclick="showAddStudentForm()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-user-plus text-green-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Talaba qo'shish</p>
+                </button>
+                <button onclick="showAddTeacherForm()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-chalkboard-teacher text-blue-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">O'qituvchi qo'shish</p>
+                </button>
+                <button onclick="showAllUsers()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-users-cog text-purple-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Foydalanuvchilar</p>
+                </button>
+                <button onclick="showStatistics()" class="bg-white p-4 rounded-xl shadow-sm card-hover">
+                    <i class="fas fa-chart-bar text-orange-600 text-xl mb-1"></i>
+                    <p class="font-bold text-sm">Statistika</p>
+                </button>
+            </div>
+
+            <!-- So'nggi foydalanuvchilar -->
+            <h3 class="font-bold text-xl mb-4">So'nggi foydalanuvchilar</h3>
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-3 text-left">ID</th>
+                            <th class="p-3 text-left">Ism</th>
+                            <th class="p-3 text-left">Rol</th>
+                            <th class="p-3 text-left">Login</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        USERS.slice(-5).reverse().forEach(u => {
+            html += `
+                <tr class="border-t hover:bg-gray-50">
+                    <td class="p-3">${u.id}</td>
+                    <td class="p-3 font-medium">${u.name}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-1 ${u.role === 'admin' ? 'bg-red-100 text-red-600' : u.role === 'teacher' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'} rounded-full text-xs">
+                            ${u.role}
+                        </span>
+                    </td>
+                    <td class="p-3">${u.username}</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        document.getElementById('content').innerHTML = html;
+    }
+
+    // =============================================
+    // 6. BILDIRISHNOMALAR
+    // =============================================
+    function updateNotifications() {
+        const today = new Date().toISOString().split('T')[0];
+        const teacherTasks = TASKS.filter(t => t.teacherId === currentUser.id);
+        
+        // Muddati o'tgan vazifalar
+        const overdueTasks = teacherTasks.filter(t => t.deadline < today);
+        
+        // Bugungi darslar
+        const todayLessons = LESSONS.filter(l => l.teacherId === currentUser.id && l.date === today);
+        
+        const count = overdueTasks.length + todayLessons.length;
+        document.getElementById('notificationCount').textContent = count;
+    }
+
+    // =============================================
+    // 7. VAZIFA FUNKSIYALARI
+    // =============================================
+    function showTaskDetails(taskId) {
+        const task = TASKS.find(t => t.id === taskId);
+        if (!task) return;
+
+        const submitted = task.students.filter(s => s.status === 'submitted').length;
+        const pending = task.students.filter(s => s.status === 'pending').length;
+
+        let html = `
+            <h3 class="text-xl font-bold mb-4">${task.title}</h3>
+            <p class="text-gray-600 mb-4">${task.description}</p>
+            <div class="bg-gray-50 p-4 rounded-xl mb-4">
+                <p><strong>Guruh:</strong> ${task.group}</p>
+                <p><strong>Muddat:</strong> ${task.deadline}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-green-100 p-3 rounded-xl text-center">
+                    <p class="text-2xl font-bold text-green-600">${submitted}</p>
+                    <p class="text-sm">Topshirgan</p>
+                </div>
+                <div class="bg-yellow-100 p-3 rounded-xl text-center">
+                    <p class="text-2xl font-bold text-yellow-600">${pending}</p>
+                    <p class="text-sm">Kutilmoqda</p>
+                </div>
+            </div>
+        `;
+
+        showModal(html);
+    }
+
+    function showTaskStudents(taskId) {
+        const task = TASKS.find(t => t.id === taskId);
+        if (!task) return;
+
+        let html = `
+            <h3 class="text-xl font-bold mb-4">${task.title} - Talabalar</h3>
+            <div class="space-y-3">
+        `;
+
+        task.students.forEach(s => {
+            const student = STUDENTS.find(st => st.id === s.studentId);
+            const statusColor = s.status === 'submitted' ? 'text-green-600' : 'text-yellow-600';
+            const statusText = s.status === 'submitted' ? '✅ Topshirilgan' : '⏳ Kutilmoqda';
+
+            html += `
+                <div class="border rounded-xl p-3">
+                    <div class="flex justify-between">
+                        <span class="font-medium">${student ? student.name : 'Noma\'lum'}</span>
+                        <span class="${statusColor}">${statusText}</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+        showModal(html);
+    }
+
+    // =============================================
+    // 8. DARS REJASI QO'SHISH
+    // =============================================
+    function showAddLessonForm() {
+        showModal(`
+            <h3 class="text-xl font-bold mb-4">➕ Yangi dars rejasi</h3>
+            <div class="space-y-3">
+                <input type="text" id="lessonGroup" placeholder="Guruh" class="w-full p-3 border rounded-xl">
+                <input type="text" id="lessonTopic" placeholder="Mavzu" class="w-full p-3 border rounded-xl">
+                <input type="date" id="lessonDate" class="w-full p-3 border rounded-xl">
+                <input type="text" id="lessonRoom" placeholder="Xona" class="w-full p-3 border rounded-xl">
+                <input type="text" id="lessonTime" placeholder="Vaqt (09:00-10:20)" class="w-full p-3 border rounded-xl">
+                <button onclick="addLesson()" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function addLesson() {
+        const group = document.getElementById('lessonGroup').value.trim();
+        const topic = document.getElementById('lessonTopic').value.trim();
+        const date = document.getElementById('lessonDate').value;
+        const room = document.getElementById('lessonRoom').value.trim();
+        const time = document.getElementById('lessonTime').value.trim();
+
+        if (!group || !topic || !date || !room || !time) {
+            alert('Barcha maydonlarni to\'ldiring!');
+            return;
+        }
+
+        const newLesson = {
+            id: LESSONS.length + 1,
+            teacherId: currentUser.id,
+            group: group,
+            subject: currentUser.subject,
+            topic: topic,
+            date: date,
+            room: room,
+            time: time
+        };
+
+        LESSONS.push(newLesson);
+        saveData();
+
+        closeModal();
+        showToast('Dars rejasi qo\'shildi!');
+        showTeacherDashboard();
+        updateNotifications();
+    }
+
+    // =============================================
+    // 9. VAZIFA QO'SHISH
+    // =============================================
+    function showAddTaskForm() {
+        // Guruhlar ro'yxati
+        const groups = [...new Set(LESSONS.filter(l => l.teacherId === currentUser.id).map(l => l.group))];
+
+        let groupOptions = '';
+        groups.forEach(g => {
+            groupOptions += `<option value="${g}">${g}</option>`;
+        });
+
+        showModal(`
+            <h3 class="text-xl font-bold mb-4">➕ Yangi vazifa</h3>
+            <div class="space-y-3">
+                <select id="taskGroup" class="w-full p-3 border rounded-xl">
+                    ${groupOptions}
+                </select>
+                <input type="text" id="taskTitle" placeholder="Vazifa nomi" class="w-full p-3 border rounded-xl">
+                <textarea id="taskDesc" placeholder="Tavsif" rows="3" class="w-full p-3 border rounded-xl"></textarea>
+                <input type="date" id="taskDeadline" class="w-full p-3 border rounded-xl">
+                <button onclick="addTask()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function addTask() {
+        const group = document.getElementById('taskGroup').value;
+        const title = document.getElementById('taskTitle').value.trim();
+        const desc = document.getElementById('taskDesc').value.trim();
+        const deadline = document.getElementById('taskDeadline').value;
+
+        if (!group || !title || !desc || !deadline) {
+            alert('Barcha maydonlarni to\'ldiring!');
+            return;
+        }
+
+        // Guruhdagi talabalar
+        const groupStudents = STUDENTS.filter(s => s.group === group).map(s => ({
+            studentId: s.id,
+            status: 'pending'
+        }));
+
+        const newTask = {
+            id: TASKS.length + 1,
+            teacherId: currentUser.id,
+            group: group,
+            title: title,
+            description: desc,
+            deadline: deadline,
+            students: groupStudents
+        };
+
+        TASKS.push(newTask);
+        saveData();
+
+        closeModal();
+        showToast('Vazifa qo\'shildi!');
+        showTeacherDashboard();
+        updateNotifications();
+    }
+
+    // =============================================
+    // 10. ADMIN FUNKSIYALARI
+    // =============================================
+    function showAddStudentForm() {
+        showModal(`
+            <h3 class="text-xl font-bold mb-4">➕ Yangi talaba qo'shish</h3>
+            <div class="space-y-3">
+                <input type="text" id="studentName" placeholder="To'liq ism" class="w-full p-3 border rounded-xl">
+                <input type="email" id="studentEmail" placeholder="Email" class="w-full p-3 border rounded-xl">
+                <input type="text" id="studentGroup" placeholder="Guruh" class="w-full p-3 border rounded-xl">
+                <input type="text" id="studentLogin" placeholder="Login" class="w-full p-3 border rounded-xl">
+                <input type="password" id="studentPassword" placeholder="Parol" class="w-full p-3 border rounded-xl">
+                <button onclick="addStudent()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function addStudent() {
+        const name = document.getElementById('studentName').value.trim();
+        const email = document.getElementById('studentEmail').value.trim();
+        const group = document.getElementById('studentGroup').value.trim();
+        const username = document.getElementById('studentLogin').value.trim();
+        const password = document.getElementById('studentPassword').value;
+
+        if (!name || !email || !group || !username || !password) {
+            alert('Barcha maydonlarni to\'ldiring!');
+            return;
+        }
+
+        if (USERS.find(u => u.username === username)) {
+            alert('Bu login mavjud!');
+            return;
+        }
+
+        const newUser = {
+            id: USERS.length + 1,
+            username: username,
+            password: password,
+            role: 'student',
+            name: name,
+            email: email,
+            group: group
+        };
+
+        USERS.push(newUser);
+        STUDENTS.push({
+            id: newUser.id,
+            name: name,
+            group: group,
+            email: email
+        });
+
+        saveData();
+        closeModal();
+        showToast('Talaba qo\'shildi!');
+        showAdminDashboard();
+    }
+
+    function showAddTeacherForm() {
+        showModal(`
+            <h3 class="text-xl font-bold mb-4">➕ Yangi o'qituvchi qo'shish</h3>
+            <div class="space-y-3">
+                <input type="text" id="teacherName" placeholder="To'liq ism" class="w-full p-3 border rounded-xl">
+                <input type="email" id="teacherEmail" placeholder="Email" class="w-full p-3 border rounded-xl">
+                <input type="text" id="teacherSubject" placeholder="Fan" class="w-full p-3 border rounded-xl">
+                <input type="text" id="teacherLogin" placeholder="Login" class="w-full p-3 border rounded-xl">
+                <input type="password" id="teacherPassword" placeholder="Parol" class="w-full p-3 border rounded-xl">
+                <button onclick="addTeacher()" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700">
+                    Saqlash
+                </button>
+            </div>
+        `);
+    }
+
+    function addTeacher() {
+        const name = document.getElementById('teacherName').value.trim();
+        const email = document.getElementById('teacherEmail').value.trim();
+        const subject = document.getElementById('teacherSubject').value.trim();
+        const username = document.getElementById('teacherLogin').value.trim();
+        const password = document.getElementById('teacherPassword').value;
+
+        if (!name || !email || !subject || !username || !password) {
+            alert('Barcha maydonlarni to\'ldiring!');
+            return;
+        }
+
+        if (USERS.find(u => u.username === username)) {
+            alert('Bu login mavjud!');
+            return;
+        }
+
+        const newUser = {
+            id: USERS.length + 1,
+            username: username,
+            password: password,
+            role: 'teacher',
+            name: name,
+            email: email,
+            subject: subject
+        };
+
+        USERS.push(newUser);
+        TEACHERS.push({
+            id: newUser.id,
+            name: name,
+            subject: subject,
+            email: email
+        });
+
+        saveData();
+        closeModal();
+        showToast('O\'qituvchi qo\'shildi!');
+        showAdminDashboard();
+    }
+
+    function showAllUsers() {
+        let html = '<h3 class="text-xl font-bold mb-4">Barcha foydalanuvchilar</h3>';
+        
+        USERS.forEach(u => {
+            html += `
+                <div class="border-b p-3 hover:bg-gray-50 cursor-pointer" onclick="showUserInfo(${u.id})">
+                    <p class="font-bold">${u.name}</p>
+                    <p class="text-sm text-gray-500">${u.role} - ${u.email}</p>
+                </div>
+            `;
+        });
+
+        showModal(html);
+    }
+
+    function showUserInfo(id) {
+        const user = USERS.find(u => u.id === id);
+        if (!user) return;
+
+        let extra = '';
+        if (user.role === 'student') extra = `<p><strong>Guruh:</strong> ${user.group || '-'}</p>`;
+        if (user.role === 'teacher') extra = `<p><strong>Fan:</strong> ${user.subject || '-'}</p>`;
+
+        showModal(`
+            <h3 class="text-xl font-bold mb-4">${user.name}</h3>
+            <div class="space-y-2">
+                <p><strong>ID:</strong> ${user.id}</p>
+                <p><strong>Rol:</strong> ${user.role}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                ${extra}
+                <p><strong>Login:</strong> ${user.username}</p>
+            </div>
+        `);
+    }
+
+    function showTeacherInfo(id) {
+        const teacher = TEACHERS.find(t => t.id === id);
+        if (!teacher) return;
+
+        showModal(`
+            <div class="text-center">
+                <img src="https://ui-avatars.com/api/?name=${teacher.name.split(' ').join('+')}&background=4f46e5&color=fff" 
+                     class="w-20 h-20 rounded-full mx-auto mb-3">
+                <h3 class="text-xl font-bold">${teacher.name}</h3>
+                <p class="text-gray-500">${teacher.subject || 'Fan'}</p>
+                <div class="text-left mt-4">
+                    <p><i class="fas fa-envelope mr-2"></i> ${teacher.email}</p>
+                </div>
+            </div>
+        `);
+    }
+
+    function showMyTasks() {
+        const studentTasks = TASKS.filter(t => 
+            t.students.some(s => s.studentId === currentUser.id)
+        );
+
+        let html = '<h3 class="text-xl font-bold mb-4">Mening vazifalarim</h3>';
+        
+        studentTasks.forEach(t => {
+            const studentTask = t.students.find(s => s.studentId === currentUser.id);
+            html += `
+                <div class="border rounded-xl p-3 mb-2">
+                    <p class="font-bold">${t.title}</p>
+                    <p class="text-sm">Muddat: ${t.deadline}</p>
+                    <p class="text-xs ${studentTask.status === 'submitted' ? 'text-green-600' : 'text-orange-600'}">
+                        ${studentTask.status === 'submitted' ? '✅ Bajarilgan' : '⏳ Kutilmoqda'}
+                    </p>
+                </div>
+            `;
+        });
+
+        showModal(html);
+    }
+
+    function showMyGrades() {
+        const studentGrades = GRADES.filter(g => g.studentId === currentUser.id);
+
+        let html = '<h3 class="text-xl font-bold mb-4">Mening baholarim</h3>';
+        
+        if (studentGrades.length > 0) {
+            studentGrades.forEach(g => {
+                html += `
+                    <div class="flex justify-between border-b p-2">
+                        <span>${g.subject}</span>
+                        <span class="font-bold">${g.grade}</span>
+                    </div>
+                `;
+            });
+        } else {
+            html += '<p class="text-center py-4">Hozircha baholar yo\'q</p>';
+        }
+
+        showModal(html);
+    }
+
+    function showSchedule() {
+        const studentLessons = LESSONS.filter(l => l.group === currentUser.group);
+
+        let html = '<h3 class="text-xl font-bold mb-4">Dars jadvali</h3>';
+        
+        if (studentLessons.length > 0) {
+            studentLessons.forEach(l => {
+                html += `
+                    <div class="border rounded-xl p-3 mb-2">
+                        <p class="font-bold">${l.subject}</p>
+                        <p class="text-sm">${l.topic}</p>
+                        <p class="text-xs text-gray-500">${l.date} ${l.time} • ${l.room}-xona</p>
+                    </div>
+                `;
+            });
+        } else {
+            html += '<p class="text-center py-4">Darslar yo\'q</p>';
+        }
+
+        showModal(html);
+    }
+
+    function showAttendance() {
+        showModal('<p class="text-center py-4">Davomat bo\'limi</p>');
+    }
+
+    function showGrades() {
+        showModal('<p class="text-center py-4">Baholar bo\'limi</p>');
+    }
+
+    function showStatistics() {
+        showModal('<p class="text-center py-4">Statistika bo\'limi</p>');
+    }
+
+    // =============================================
+    // 11. YORDAMCHI FUNKSIYALAR
+    // =============================================
+    function showError(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.style.display = 'block';
+        setTimeout(() => {
+            el.style.display = 'none';
+        }, 3000);
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast';
+        if (type === 'error') {
+            toast.classList.add('toast-error');
+        }
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+
+    function showModal(content) {
+        document.getElementById('modalContent').innerHTML = content;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    // =============================================
+    // 12. CHIQISH
+    // =============================================
+    function logout() {
+        currentUser = null;
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginPage').classList.remove('hidden');
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
+        showLoginTab();
+        showToast('Xayr!', 'success');
+    }
+
+    // =============================================
+    // 13. ENTER TUGMASI BILAN KIRISH
+    // =============================================
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            if (!document.getElementById('mainApp').classList.contains('hidden')) {
+                // Main app ichida
+            } else if (!document.getElementById('registerForm').classList.contains('hidden')) {
+                handleRegister();
+            } else {
+                handleLogin();
+            }
+        }
+    });
+
+    // =============================================
+    // 14. MODAL YOPISH
+    // =============================================
+    window.onclick = function(event) {
+        const modal = document.getElementById('modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>

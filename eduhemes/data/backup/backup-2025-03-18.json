@@ -1,0 +1,1106 @@
+{
+  "backupInfo": {
+    "version": "1.0.0",
+    "createdAt": "2025-03-18T23:59:59.000Z",
+    "createdBy": "admin",
+    "system": "EduHemis",
+    "description": "To'liq tizim zaxira nusxasi",
+    "totalRecords": 128,
+    "fileSize": "1.2 MB"
+  },
+
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123",
+      "role": "admin",
+      "name": "Admin User",
+      "email": "admin@edu.uz",
+      "phone": "+998901234567",
+      "avatar": "https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff",
+      "createdAt": "2020-01-01T09:00:00.000Z",
+      "lastLogin": "2025-03-18T08:30:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "username": "teacher",
+      "password": "123",
+      "role": "teacher",
+      "name": "Said Alisherov",
+      "email": "s.alisherov@edu.uz",
+      "phone": "+998901234567",
+      "subject": "Veb dasturlash",
+      "department": "Dasturlash",
+      "degree": "PhD",
+      "experience": 12,
+      "room": "402",
+      "avatar": "https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff",
+      "createdAt": "2014-09-01T09:00:00.000Z",
+      "lastLogin": "2025-03-18T08:45:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "username": "nodira",
+      "password": "123",
+      "role": "teacher",
+      "name": "Nodira Karimova",
+      "email": "n.karimova@edu.uz",
+      "phone": "+998909876543",
+      "subject": "Ma'lumotlar bazasi",
+      "department": "Dasturlash",
+      "degree": "PhD",
+      "experience": 10,
+      "room": "312",
+      "avatar": "https://ui-avatars.com/api/?name=Nodira+Karimova&background=4f46e5&color=fff",
+      "createdAt": "2016-09-01T10:00:00.000Z",
+      "lastLogin": "2025-03-17T14:20:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 4,
+      "username": "jasur",
+      "password": "123",
+      "role": "teacher",
+      "name": "Jasur Usmonov",
+      "email": "j.usmonov@edu.uz",
+      "phone": "+998934560011",
+      "subject": "Kiberxavfsizlik",
+      "department": "Axborot xavfsizligi",
+      "degree": "Professor",
+      "experience": 15,
+      "room": "210",
+      "avatar": "https://ui-avatars.com/api/?name=Jasur+Usmonov&background=4f46e5&color=fff",
+      "createdAt": "2010-09-01T11:30:00.000Z",
+      "lastLogin": "2025-03-16T10:10:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 5,
+      "username": "dildora",
+      "password": "123",
+      "role": "teacher",
+      "name": "Dildora Ahmetova",
+      "email": "d.ahmetova@edu.uz",
+      "phone": "+998991112233",
+      "subject": "Sun'iy intellekt",
+      "department": "Dasturlash",
+      "degree": "DSc",
+      "experience": 20,
+      "room": "105",
+      "avatar": "https://ui-avatars.com/api/?name=Dildora+Ahmetova&background=4f46e5&color=fff",
+      "createdAt": "2005-09-01T08:45:00.000Z",
+      "lastLogin": "2025-03-18T09:00:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 6,
+      "username": "aziz",
+      "password": "123",
+      "role": "teacher",
+      "name": "Aziz Qosimov",
+      "email": "a.qosimov@edu.uz",
+      "phone": "+998977778899",
+      "subject": "Tizimli boshqaruv",
+      "department": "Tizimlar",
+      "degree": "PhD",
+      "experience": 8,
+      "room": "308",
+      "avatar": "https://ui-avatars.com/api/?name=Aziz+Qosimov&background=4f46e5&color=fff",
+      "createdAt": "2018-09-01T13:20:00.000Z",
+      "lastLogin": "2025-03-15T11:45:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 7,
+      "username": "student",
+      "password": "123",
+      "role": "student",
+      "name": "Azimjon Karimov",
+      "email": "a.karimov@student.uz",
+      "phone": "+998901234501",
+      "group": "AT-101-20",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff",
+      "createdAt": "2020-09-01T09:00:00.000Z",
+      "lastLogin": "2025-03-18T08:15:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 8,
+      "username": "ali",
+      "password": "123",
+      "role": "student",
+      "name": "Ali Valiyev",
+      "email": "a.valiyev@student.uz",
+      "phone": "+998901234502",
+      "group": "AT-101-20",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Ali+Valiyev&background=0284c7&color=fff",
+      "createdAt": "2020-09-01T10:30:00.000Z",
+      "lastLogin": "2025-03-17T16:30:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 9,
+      "username": "dilya",
+      "password": "123",
+      "role": "student",
+      "name": "Dilya Akramova",
+      "email": "d.akramova@student.uz",
+      "phone": "+998901234503",
+      "group": "AT-101-20",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Dilya+Akramova&background=0284c7&color=fff",
+      "createdAt": "2020-09-02T11:45:00.000Z",
+      "lastLogin": "2025-03-18T07:50:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 10,
+      "username": "jasur_student",
+      "password": "123",
+      "role": "student",
+      "name": "Jasur Karimov",
+      "email": "j.karimov@student.uz",
+      "phone": "+998901234504",
+      "group": "AT-102-20",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Jasur+Karimov&background=0284c7&color=fff",
+      "createdAt": "2020-09-03T09:15:00.000Z",
+      "lastLogin": "2025-03-16T13:20:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 11,
+      "username": "malika",
+      "password": "123",
+      "role": "student",
+      "name": "Malika Ismoilova",
+      "email": "m.ismoilova@student.uz",
+      "phone": "+998901234505",
+      "group": "KI-201-21",
+      "course": 3,
+      "avatar": "https://ui-avatars.com/api/?name=Malika+Ismoilova&background=0284c7&color=fff",
+      "createdAt": "2021-09-01T12:30:00.000Z",
+      "lastLogin": "2025-03-17T09:30:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 12,
+      "username": "sardor",
+      "password": "123",
+      "role": "student",
+      "name": "Sardor Abdurahmonov",
+      "email": "s.abdurahmonov@student.uz",
+      "phone": "+998901234506",
+      "group": "KI-201-21",
+      "course": 3,
+      "avatar": "https://ui-avatars.com/api/?name=Sardor+Abdurahmonov&background=0284c7&color=fff",
+      "createdAt": "2021-09-02T14:45:00.000Z",
+      "lastLogin": "2025-03-15T10:45:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 13,
+      "username": "zarina",
+      "password": "123",
+      "role": "student",
+      "name": "Zarina Azizova",
+      "email": "z.azizova@student.uz",
+      "phone": "+998901234507",
+      "group": "DI-301-22",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Zarina+Azizova&background=0284c7&color=fff",
+      "createdAt": "2022-09-01T10:00:00.000Z",
+      "lastLogin": "2025-03-18T08:00:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 14,
+      "username": "rustam",
+      "password": "123",
+      "role": "student",
+      "name": "Rustam Xolmatov",
+      "email": "r.xolmatov@student.uz",
+      "phone": "+998901234508",
+      "group": "DI-301-22",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Rustam+Xolmatov&background=0284c7&color=fff",
+      "createdAt": "2022-09-02T11:30:00.000Z",
+      "lastLogin": "2025-03-16T12:15:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 15,
+      "username": "shoxrux",
+      "password": "123",
+      "role": "student",
+      "name": "Shoxrux Aliyev",
+      "email": "sh.aliyev@student.uz",
+      "phone": "+998901234509",
+      "group": "AT-102-20",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Shoxrux+Aliyev&background=0284c7&color=fff",
+      "createdAt": "2020-09-04T13:15:00.000Z",
+      "lastLogin": "2025-03-17T14:10:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 16,
+      "username": "nilufar",
+      "password": "123",
+      "role": "student",
+      "name": "Nilufar Rahimova",
+      "email": "n.rahimova@student.uz",
+      "phone": "+998901234510",
+      "group": "AT-102-20",
+      "course": 2,
+      "avatar": "https://ui-avatars.com/api/?name=Nilufar+Rahimova&background=0284c7&color=fff",
+      "createdAt": "2020-09-05T14:30:00.000Z",
+      "lastLogin": "2025-03-18T07:30:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 17,
+      "username": "madina",
+      "password": "123",
+      "role": "student",
+      "name": "Madina Xasanova",
+      "email": "m.xasanova@student.uz",
+      "phone": "+998901234511",
+      "group": "AT-201-21",
+      "course": 3,
+      "avatar": "https://ui-avatars.com/api/?name=Madina+Xasanova&background=0284c7&color=fff",
+      "createdAt": "2021-09-03T09:45:00.000Z",
+      "lastLogin": "2025-03-17T11:20:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 18,
+      "username": "jamshid",
+      "password": "123",
+      "role": "student",
+      "name": "Jamshid Turgunov",
+      "email": "j.turgunov@student.uz",
+      "phone": "+998901234512",
+      "group": "AT-201-21",
+      "course": 3,
+      "avatar": "https://ui-avatars.com/api/?name=Jamshid+Turgunov&background=0284c7&color=fff",
+      "createdAt": "2021-09-04T15:30:00.000Z",
+      "lastLogin": "2025-03-16T15:30:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 19,
+      "username": "gulnora",
+      "password": "123",
+      "role": "student",
+      "name": "Gulnora Karimova",
+      "email": "g.karimova@student.uz",
+      "phone": "+998901234513",
+      "group": "KI-202-21",
+      "course": 3,
+      "avatar": "https://ui-avatars.com/api/?name=Gulnora+Karimova&background=0284c7&color=fff",
+      "createdAt": "2021-09-05T10:15:00.000Z",
+      "lastLogin": "2025-03-15T13:40:00.000Z",
+      "isActive": true
+    },
+    {
+      "id": 20,
+      "username": "bobur",
+      "password": "123",
+      "role": "student",
+      "name": "Bobur Mirzo",
+      "email": "b.mirzo@student.uz",
+      "phone": "+998901234514",
+      "group": "KI-202-21",
+      "course": 3,
+      "avatar": "https://ui-avatars.com/api/?name=Bobur+Mirzo&background=0284c7&color=fff",
+      "createdAt": "2021-09-06T12:45:00.000Z",
+      "lastLogin": "2025-03-18T09:15:00.000Z",
+      "isActive": true
+    }
+  ],
+
+  "students": [
+    {
+      "id": 7,
+      "name": "Azimjon Karimov",
+      "group": "AT-101-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "a.karimov@student.uz",
+      "phone": "+998901234501",
+      "address": "Toshkent sh., Chilonzor tumani",
+      "birthDate": "2003-05-15",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "avatar": "https://ui-avatars.com/api/?name=Azimjon+Karimov&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-01T09:00:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Karimov Rustam",
+          "phone": "+998901234567",
+          "work": "Xususiy tadbirkor"
+        },
+        "mother": {
+          "name": "Karimova Dilbar",
+          "phone": "+998901234568",
+          "work": "O'qituvchi"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Ali Valiyev",
+      "group": "AT-101-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "a.valiyev@student.uz",
+      "phone": "+998901234502",
+      "address": "Toshkent vil., Chirchiq shahri",
+      "birthDate": "2003-08-20",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "avatar": "https://ui-avatars.com/api/?name=Ali+Valiyev&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-01T10:30:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Valiyev Akram",
+          "phone": "+998901234569",
+          "work": "Muhandis"
+        },
+        "mother": {
+          "name": "Valiyeva Malika",
+          "phone": "+998901234570",
+          "work": "Uy bekasi"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Dilya Akramova",
+      "group": "AT-101-20",
+      "course": 2,
+      "faculty": "Axborot texnologiyalari",
+      "email": "d.akramova@student.uz",
+      "phone": "+998901234503",
+      "address": "Toshkent sh., Yunusobod tumani",
+      "birthDate": "2004-02-10",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "avatar": "https://ui-avatars.com/api/?name=Dilya+Akramova&background=0284c7&color=fff",
+      "enrollmentYear": 2020,
+      "status": "active",
+      "createdAt": "2020-09-02T11:45:00.000Z",
+      "parents": {
+        "father": {
+          "name": "Akramov Shavkat",
+          "phone": "+998901234571",
+          "work": "Tadbirkor"
+        },
+        "mother": {
+          "name": "Akramova Nilufar",
+          "phone": "+998901234572",
+          "work": "Shifokor"
+        }
+      }
+    }
+  ],
+
+  "teachers": [
+    {
+      "id": 2,
+      "name": "Said Alisherov",
+      "subject": "Veb dasturlash",
+      "subjects": ["Veb dasturlash", "JavaScript", "React", "Node.js"],
+      "department": "Dasturlash",
+      "faculty": "Axborot texnologiyalari",
+      "degree": "PhD",
+      "title": "Dotsent",
+      "experience": 12,
+      "room": "402",
+      "building": "A",
+      "email": "s.alisherov@edu.uz",
+      "phone": "+998901234567",
+      "telegram": "@said_alisherov",
+      "address": "Toshkent sh., Yakkasaroy tumani",
+      "birthDate": "1985-03-15",
+      "gender": "male",
+      "nationality": "O'zbek",
+      "avatar": "https://ui-avatars.com/api/?name=Said+Alisherov&background=4f46e5&color=fff",
+      "workStart": "2014-09-01",
+      "workHours": 24,
+      "groups": [1, 6],
+      "education": [
+        {
+          "degree": "Bakalavr",
+          "university": "TATU",
+          "year": 2007,
+          "specialty": "Dasturlash"
+        },
+        {
+          "degree": "Magistr",
+          "university": "TATU",
+          "year": 2009,
+          "specialty": "Dasturiy injiniring"
+        },
+        {
+          "degree": "PhD",
+          "university": "MDU",
+          "year": 2014,
+          "specialty": "Kompyuter fanlari"
+        }
+      ],
+      "publications": 45,
+      "languages": ["O'zbek", "Rus", "Ingliz"],
+      "status": "active",
+      "createdAt": "2014-09-01T09:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Nodira Karimova",
+      "subject": "Ma'lumotlar bazasi",
+      "subjects": ["Ma'lumotlar bazasi", "SQL", "NoSQL"],
+      "department": "Dasturlash",
+      "faculty": "Axborot texnologiyalari",
+      "degree": "PhD",
+      "title": "Katta o'qituvchi",
+      "experience": 10,
+      "room": "312",
+      "building": "B",
+      "email": "n.karimova@edu.uz",
+      "phone": "+998909876543",
+      "telegram": "@nodira_k",
+      "address": "Toshkent sh., Mirzo Ulug'bek tumani",
+      "birthDate": "1988-07-22",
+      "gender": "female",
+      "nationality": "O'zbek",
+      "avatar": "https://ui-avatars.com/api/?name=Nodira+Karimova&background=4f46e5&color=fff",
+      "workStart": "2016-09-01",
+      "workHours": 20,
+      "groups": [2],
+      "education": [
+        {
+          "degree": "Bakalavr",
+          "university": "TDIU",
+          "year": 2010,
+          "specialty": "Iqtisodiy informatika"
+        },
+        {
+          "degree": "Magistr",
+          "university": "TATU",
+          "year": 2012,
+          "specialty": "Ma'lumotlar bazasi"
+        },
+        {
+          "degree": "PhD",
+          "university": "KAIST",
+          "year": 2016,
+          "specialty": "Ma'lumotlar bazasi"
+        }
+      ],
+      "publications": 28,
+      "languages": ["O'zbek", "Rus", "Ingliz", "Koreys"],
+      "status": "active",
+      "createdAt": "2016-09-01T10:00:00.000Z"
+    }
+  ],
+
+  "groups": [
+    {
+      "id": 1,
+      "name": "AT-101-20",
+      "faculty": "Axborot texnologiyalari",
+      "course": 2,
+      "students": 24,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "year": 2020,
+      "createdAt": "2020-09-01T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "AT-102-20",
+      "faculty": "Axborot texnologiyalari",
+      "course": 2,
+      "students": 26,
+      "teacherId": 3,
+      "teacherName": "Nodira Karimova",
+      "year": 2020,
+      "createdAt": "2020-09-01T09:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "KI-201-21",
+      "faculty": "Kompyuter injiniringi",
+      "course": 3,
+      "students": 22,
+      "teacherId": 4,
+      "teacherName": "Jasur Usmonov",
+      "year": 2021,
+      "createdAt": "2021-09-01T09:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "KI-202-21",
+      "faculty": "Kompyuter injiniringi",
+      "course": 3,
+      "students": 24,
+      "teacherId": 5,
+      "teacherName": "Dildora Ahmetova",
+      "year": 2021,
+      "createdAt": "2021-09-01T09:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "DI-301-22",
+      "faculty": "Dasturlash injiniringi",
+      "course": 2,
+      "students": 28,
+      "teacherId": 6,
+      "teacherName": "Aziz Qosimov",
+      "year": 2022,
+      "createdAt": "2022-09-01T09:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "AT-201-21",
+      "faculty": "Axborot texnologiyalari",
+      "course": 3,
+      "students": 30,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "year": 2021,
+      "createdAt": "2021-09-01T09:00:00.000Z"
+    }
+  ],
+
+  "subjects": [
+    {
+      "id": 1,
+      "name": "Veb dasturlash",
+      "code": "CS-2024",
+      "credits": 5,
+      "hours": 120,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "semester": 4,
+      "icon": "laptop-code",
+      "color": "blue",
+      "createdAt": "2020-01-01T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Ma'lumotlar bazasi",
+      "code": "DB-4001",
+      "credits": 4,
+      "hours": 96,
+      "teacherId": 3,
+      "teacherName": "Nodira Karimova",
+      "semester": 3,
+      "icon": "database",
+      "color": "green",
+      "createdAt": "2020-01-01T09:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Kiberxavfsizlik",
+      "code": "SEC-102",
+      "credits": 4,
+      "hours": 96,
+      "teacherId": 4,
+      "teacherName": "Jasur Usmonov",
+      "semester": 5,
+      "icon": "shield-alt",
+      "color": "orange",
+      "createdAt": "2020-01-01T09:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Sun'iy intellekt",
+      "code": "AI-500",
+      "credits": 5,
+      "hours": 120,
+      "teacherId": 5,
+      "teacherName": "Dildora Ahmetova",
+      "semester": 6,
+      "icon": "brain",
+      "color": "purple",
+      "createdAt": "2020-01-01T09:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Tizimli boshqaruv",
+      "code": "SYS-301",
+      "credits": 3,
+      "hours": 72,
+      "teacherId": 6,
+      "teacherName": "Aziz Qosimov",
+      "semester": 4,
+      "icon": "network-wired",
+      "color": "red",
+      "createdAt": "2020-01-01T09:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Algoritmlar",
+      "code": "CS-203",
+      "credits": 5,
+      "hours": 120,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "semester": 3,
+      "icon": "code-branch",
+      "color": "indigo",
+      "createdAt": "2020-01-01T09:00:00.000Z"
+    }
+  ],
+
+  "lessons": [
+    {
+      "id": 1,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "topic": "HTML asoslari",
+      "description": "HTML teglari, atributlari va asosiy tuzilma",
+      "date": "2025-03-20",
+      "dayOfWeek": "Dushanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "402",
+      "building": "A",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "HTML darslik",
+          "type": "pdf",
+          "url": "/resources/html-basics.pdf"
+        }
+      ],
+      "homework": "Oddiy HTML sahifa yarating",
+      "attendance": 24,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2025-03-01T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "topic": "CSS stillar",
+      "description": "CSS selektorlari, ranglar, shriftlar",
+      "date": "2025-03-22",
+      "dayOfWeek": "Chorshanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "402",
+      "building": "A",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "CSS darslik",
+          "type": "pdf",
+          "url": "/resources/css-basics.pdf"
+        }
+      ],
+      "homework": "HTML sahifaga stillar qo'shing",
+      "attendance": 0,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2025-03-01T10:00:00.000Z"
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": 1,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "title": "HTML portfolio",
+      "description": "Shaxsiy portfolio sayt yaratish",
+      "instructions": "1. HTML5 dan foydalaning\n2. Semantic teglardan foydalaning\n3. CSS flexbox dan foydalaning",
+      "requirements": [
+        "HTML5 semantic teglar",
+        "CSS flexbox/grid",
+        "Responsive dizayn"
+      ],
+      "deadline": "2025-03-25",
+      "timeRemaining": "7 kun",
+      "maxScore": 100,
+      "minScore": 60,
+      "weight": 30,
+      "type": "project",
+      "status": "active",
+      "priority": "high",
+      "createdAt": "2025-03-10T09:00:00.000Z",
+      "updatedAt": "2025-03-10T09:00:00.000Z",
+      "students": [
+        {
+          "studentId": 7,
+          "studentName": "Azimjon Karimov",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null
+        },
+        {
+          "studentId": 8,
+          "studentName": "Ali Valiyev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null
+        },
+        {
+          "studentId": 9,
+          "studentName": "Dilya Akramova",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null
+        }
+      ],
+      "submittedCount": 0,
+      "totalStudents": 3,
+      "completionRate": 0
+    },
+    {
+      "id": 2,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "title": "CSS animatsiyalar",
+      "description": "3 xil CSS animatsiya yaratish",
+      "instructions": "1. @keyframes dan foydalaning\n2. transform dan foydalaning",
+      "requirements": [
+        "Yuklash spinneri",
+        "Kartochka hover effekti",
+        "Menyu animatsiyasi"
+      ],
+      "deadline": "2025-03-15",
+      "timeRemaining": "muddati o'tgan",
+      "maxScore": 50,
+      "minScore": 30,
+      "weight": 15,
+      "type": "homework",
+      "status": "overdue",
+      "priority": "high",
+      "createdAt": "2025-03-05T10:30:00.000Z",
+      "updatedAt": "2025-03-05T10:30:00.000Z",
+      "students": [
+        {
+          "studentId": 7,
+          "studentName": "Azimjon Karimov",
+          "status": "submitted",
+          "submittedAt": "2025-03-14T15:20:00.000Z",
+          "score": 45,
+          "feedback": "Yaxshi, 45 ball"
+        },
+        {
+          "studentId": 8,
+          "studentName": "Ali Valiyev",
+          "status": "pending",
+          "submittedAt": null,
+          "score": null,
+          "feedback": null
+        },
+        {
+          "studentId": 9,
+          "studentName": "Dilya Akramova",
+          "status": "late",
+          "submittedAt": "2025-03-16T09:10:00.000Z",
+          "score": 40,
+          "feedback": "Kech topshirilgan, 40 ball"
+        }
+      ],
+      "submittedCount": 2,
+      "totalStudents": 3,
+      "completionRate": 67
+    }
+  ],
+
+  "grades": [
+    {
+      "id": 1,
+      "studentId": 7,
+      "studentName": "Azimjon Karimov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "grade": 5,
+      "score": 95,
+      "maxScore": 100,
+      "percentage": 95,
+      "letterGrade": "A",
+      "type": "exam",
+      "name": "Oraliq imtihon",
+      "description": "HTML, CSS, JavaScript asoslari",
+      "date": "2025-03-10",
+      "semester": 4,
+      "year": 2025,
+      "weight": 30,
+      "comments": "Ajoyib natija!",
+      "createdAt": "2025-03-10T14:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "studentId": 7,
+      "studentName": "Azimjon Karimov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "grade": 4,
+      "score": 85,
+      "maxScore": 100,
+      "percentage": 85,
+      "letterGrade": "B",
+      "type": "exam",
+      "name": "Yakuniy imtihon",
+      "description": "JavaScript, DOM",
+      "date": "2025-03-17",
+      "semester": 4,
+      "year": 2025,
+      "weight": 40,
+      "comments": "Yaxshi",
+      "createdAt": "2025-03-17T15:45:00.000Z"
+    }
+  ],
+
+  "attendance": [
+    {
+      "id": 1,
+      "studentId": 7,
+      "studentName": "Azimjon Karimov",
+      "lessonId": 1,
+      "lessonTopic": "HTML asoslari",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "date": "2025-03-20",
+      "status": "present",
+      "timeIn": "09:00",
+      "notes": "",
+      "createdAt": "2025-03-20T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "studentId": 8,
+      "studentName": "Ali Valiyev",
+      "lessonId": 1,
+      "lessonTopic": "HTML asoslari",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "date": "2025-03-20",
+      "status": "present",
+      "timeIn": "09:05",
+      "notes": "5 daqiqa kechikdi",
+      "createdAt": "2025-03-20T09:05:00.000Z"
+    },
+    {
+      "id": 3,
+      "studentId": 9,
+      "studentName": "Dilya Akramova",
+      "lessonId": 1,
+      "lessonTopic": "HTML asoslari",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "date": "2025-03-20",
+      "status": "absent",
+      "timeIn": null,
+      "notes": "Sababsiz",
+      "createdAt": "2025-03-20T10:30:00.000Z"
+    }
+  ],
+
+  "materials": [
+    {
+      "id": 1,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "title": "HTML darslik",
+      "description": "HTML asoslari bo'yicha to'liq qo'llanma",
+      "type": "pdf",
+      "size": "2.4 MB",
+      "pages": 120,
+      "url": "/materials/html-guide.pdf",
+      "tags": ["html", "web", "beginner"],
+      "downloads": 45,
+      "date": "2025-03-01",
+      "createdAt": "2025-03-01T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "title": "CSS prezentatsiya",
+      "description": "CSS stillar bo'yicha taqdimot",
+      "type": "ppt",
+      "size": "5.1 MB",
+      "slides": 45,
+      "url": "/materials/css-presentation.ppt",
+      "tags": ["css", "web", "design"],
+      "downloads": 32,
+      "date": "2025-03-05",
+      "createdAt": "2025-03-05T11:30:00.000Z"
+    }
+  ],
+
+  "announcements": [
+    {
+      "id": 1,
+      "title": "Semestr boshlanishi",
+      "content": "Yangi semestr 1-sentabrdan boshlanadi",
+      "date": "2025-02-25",
+      "authorId": 1,
+      "authorName": "Admin User",
+      "priority": "high",
+      "target": "all",
+      "createdAt": "2025-02-25T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "Imtihon jadvali",
+      "content": "Imtihon jadvali e'lon qilindi",
+      "date": "2025-03-01",
+      "authorId": 1,
+      "authorName": "Admin User",
+      "priority": "high",
+      "target": "all",
+      "createdAt": "2025-03-01T10:30:00.000Z"
+    }
+  ],
+
+  "messages": [
+    {
+      "id": 1,
+      "fromId": 2,
+      "fromName": "Said Alisherov",
+      "toId": 7,
+      "toName": "Azimjon Karimov",
+      "subject": "Dars haqida",
+      "content": "Ertaga dars 402-xonada bo'ladi",
+      "date": "2025-03-18T10:30:00.000Z",
+      "read": false,
+      "important": false
+    },
+    {
+      "id": 2,
+      "fromId": 3,
+      "fromName": "Nodira Karimova",
+      "toId": 7,
+      "toName": "Azimjon Karimov",
+      "subject": "Laboratoriya ishi",
+      "content": "Laboratoriya ishi topshiriladi",
+      "date": "2025-03-17T09:15:00.000Z",
+      "read": true,
+      "important": false
+    }
+  ],
+
+  "notifications": [
+    {
+      "id": 1,
+      "userId": 7,
+      "type": "task",
+      "title": "Yangi vazifa",
+      "message": "HTML portfolio vazifasi qo'shildi",
+      "link": "/tasks/1",
+      "read": false,
+      "date": "2025-03-10T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "userId": 7,
+      "type": "grade",
+      "title": "Baho qo'yildi",
+      "message": "Veb dasturlash fanidan baho qo'yildi",
+      "link": "/grades/1",
+      "read": true,
+      "date": "2025-03-10T14:30:00.000Z"
+    }
+  ],
+
+  "logs": [
+    {
+      "id": 1,
+      "timestamp": "2025-03-18T08:30:00.000Z",
+      "userId": 1,
+      "username": "admin",
+      "action": "login",
+      "details": "Admin tizimga kirdi",
+      "ip": "192.168.1.1"
+    },
+    {
+      "id": 2,
+      "timestamp": "2025-03-18T08:45:00.000Z",
+      "userId": 2,
+      "username": "teacher",
+      "action": "login",
+      "details": "O'qituvchi tizimga kirdi",
+      "ip": "192.168.1.2"
+    },
+    {
+      "id": 3,
+      "timestamp": "2025-03-18T09:00:00.000Z",
+      "userId": 5,
+      "username": "dildora",
+      "action": "login",
+      "details": "O'qituvchi tizimga kirdi",
+      "ip": "192.168.1.3"
+    }
+  ],
+
+  "statistics": {
+    "totalUsers": 20,
+    "totalStudents": 14,
+    "totalTeachers": 5,
+    "totalAdmins": 1,
+    "totalGroups": 6,
+    "totalSubjects": 6,
+    "totalLessons": 2,
+    "totalTasks": 2,
+    "totalGrades": 2,
+    "totalAttendance": 3,
+    "totalMaterials": 2,
+    "totalAnnouncements": 2,
+    "totalMessages": 2,
+    "totalNotifications": 2,
+    "totalLogs": 3,
+    "activeToday": 5,
+    "lastUpdated": "2025-03-18T23:59:59.000Z"
+  }
+}

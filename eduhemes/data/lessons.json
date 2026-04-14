@@ -1,0 +1,608 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "topic": "HTML asoslari",
+      "description": "HTML teglari, atributlari va asosiy tuzilma. Blok va inlayn elementlar.",
+      "date": "2026-03-20",
+      "dayOfWeek": "Dushanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "402",
+      "building": "A",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "HTML darslik",
+          "type": "pdf",
+          "url": "/resources/html-basics.pdf"
+        },
+        {
+          "name": "Taqdimot",
+          "type": "ppt",
+          "url": "/resources/html-presentation.ppt"
+        }
+      ],
+      "homework": "Oddiy HTML sahifa yarating (ism, familya, yosh)",
+      "attendance": 24,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2026-03-01T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "topic": "CSS stillar",
+      "description": "CSS selektorlari, ranglar, shriftlar, bloklar bilan ishlash.",
+      "date": "2026-03-22",
+      "dayOfWeek": "Chorshanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "402",
+      "building": "A",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "CSS darslik",
+          "type": "pdf",
+          "url": "/resources/css-basics.pdf"
+        }
+      ],
+      "homework": "HTML sahifaga stillar qo'shing",
+      "attendance": 0,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2026-03-01T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 1,
+      "groupName": "AT-101-20",
+      "subjectId": 1,
+      "subjectName": "Veb dasturlash",
+      "topic": "JavaScript asoslari",
+      "description": "O'zgaruvchilar, ma'lumot turlari, operatorlar, funksiyalar.",
+      "date": "2026-03-24",
+      "dayOfWeek": "Juma",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "402",
+      "building": "A",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "JavaScript darslik",
+          "type": "pdf",
+          "url": "/resources/js-basics.pdf"
+        }
+      ],
+      "homework": "Oddiy kalkulyator yarating",
+      "attendance": 0,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2026-03-01T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "teacherId": 2,
+      "teacherName": "Said Alisherov",
+      "groupId": 6,
+      "groupName": "AT-201-21",
+      "subjectId": 6,
+      "subjectName": "Algoritmlar",
+      "topic": "Sorting algoritmlari",
+      "description": "Bubble sort, selection sort, insertion sort algoritmlari va ularning murakkabligi.",
+      "date": "2026-03-27",
+      "dayOfWeek": "Juma",
+      "time": "11:00-12:30",
+      "duration": 90,
+      "room": "402",
+      "building": "A",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Algoritmlar darslik",
+          "type": "pdf",
+          "url": "/resources/algorithms.pdf"
+        },
+        {
+          "name": "Sorting vizualizatsiya",
+          "type": "video",
+          "url": "/resources/sorting.mp4"
+        }
+      ],
+      "homework": "Bubble sort ni implementatsiya qiling",
+      "attendance": 0,
+      "totalStudents": 30,
+      "status": "scheduled",
+      "createdAt": "2026-03-05T09:15:00.000Z"
+    },
+    {
+      "id": 5,
+      "teacherId": 3,
+      "teacherName": "Nodira Karimova",
+      "groupId": 2,
+      "groupName": "AT-102-20",
+      "subjectId": 2,
+      "subjectName": "Ma'lumotlar bazasi",
+      "topic": "SQL asoslari",
+      "description": "SELECT, INSERT, UPDATE, DELETE so'rovlari. WHERE, ORDER BY, GROUP BY.",
+      "date": "2026-03-21",
+      "dayOfWeek": "Seshanba",
+      "time": "11:00-12:30",
+      "duration": 90,
+      "room": "312",
+      "building": "B",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "SQL darslik",
+          "type": "pdf",
+          "url": "/resources/sql-basics.pdf"
+        }
+      ],
+      "homework": "Talabalar jadvali yarating va so'rovlar yozing",
+      "attendance": 0,
+      "totalStudents": 26,
+      "status": "scheduled",
+      "createdAt": "2026-03-02T11:30:00.000Z"
+    },
+    {
+      "id": 6,
+      "teacherId": 3,
+      "teacherName": "Nodira Karimova",
+      "groupId": 2,
+      "groupName": "AT-102-20",
+      "subjectId": 2,
+      "subjectName": "Ma'lumotlar bazasi",
+      "topic": "JOIN operatsiyalari",
+      "description": "INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN. Ma'lumotlar bazasini normalizatsiya qilish.",
+      "date": "2026-03-28",
+      "dayOfWeek": "Seshanba",
+      "time": "11:00-12:30",
+      "duration": 90,
+      "room": "312",
+      "building": "B",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "SQL JOIN darslik",
+          "type": "pdf",
+          "url": "/resources/sql-joins.pdf"
+        }
+      ],
+      "homework": "Murakkab JOIN so'rovlar yozing",
+      "attendance": 0,
+      "totalStudents": 26,
+      "status": "scheduled",
+      "createdAt": "2026-03-02T11:30:00.000Z"
+    },
+    {
+      "id": 7,
+      "teacherId": 4,
+      "teacherName": "Jasur Usmonov",
+      "groupId": 3,
+      "groupName": "KI-201-21",
+      "subjectId": 3,
+      "subjectName": "Kiberxavfsizlik",
+      "topic": "Xavfsizlik asoslari",
+      "description": "Kiberxavfsizlikka kirish. Tahdidlar, zaifliklar va himoya usullari.",
+      "date": "2026-03-23",
+      "dayOfWeek": "Payshanba",
+      "time": "14:00-15:30",
+      "duration": 90,
+      "room": "210",
+      "building": "B",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Xavfsizlik asoslari",
+          "type": "pdf",
+          "url": "/resources/security-basics.pdf"
+        }
+      ],
+      "homework": "Kibertahdidlar haqida hisobot tayyorlang",
+      "attendance": 0,
+      "totalStudents": 22,
+      "status": "scheduled",
+      "createdAt": "2026-03-03T13:45:00.000Z"
+    },
+    {
+      "id": 8,
+      "teacherId": 4,
+      "teacherName": "Jasur Usmonov",
+      "groupId": 3,
+      "groupName": "KI-201-21",
+      "subjectId": 3,
+      "subjectName": "Kiberxavfsizlik",
+      "topic": "Kriptografiya",
+      "description": "Simmetrik va asimmetrik shifrlash. Hash funksiyalari, raqamli imzolar.",
+      "date": "2026-03-30",
+      "dayOfWeek": "Payshanba",
+      "time": "14:00-15:30",
+      "duration": 90,
+      "room": "210",
+      "building": "B",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Kriptografiya darslik",
+          "type": "pdf",
+          "url": "/resources/cryptography.pdf"
+        }
+      ],
+      "homework": "Oddiy shifrlash algoritmini yarating",
+      "attendance": 0,
+      "totalStudents": 22,
+      "status": "scheduled",
+      "createdAt": "2026-03-03T13:45:00.000Z"
+    },
+    {
+      "id": 9,
+      "teacherId": 5,
+      "teacherName": "Dildora Ahmetova",
+      "groupId": 4,
+      "groupName": "KI-202-21",
+      "subjectId": 4,
+      "subjectName": "Sun'iy intellekt",
+      "topic": "Neyron tarmoqlar",
+      "description": "Neyron tarmoqlarning tuzilishi, aktivatsiya funksiyalari, orqaga tarqalish algoritmi.",
+      "date": "2026-03-25",
+      "dayOfWeek": "Chorshanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "105",
+      "building": "C",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Neyron tarmoqlar",
+          "type": "pdf",
+          "url": "/resources/neural-networks.pdf"
+        },
+        {
+          "name": "TensorFlow darslik",
+          "type": "pdf",
+          "url": "/resources/tensorflow.pdf"
+        }
+      ],
+      "homework": "Oddiy neyron tarmoq yarating",
+      "attendance": 0,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2026-03-04T08:30:00.000Z"
+    },
+    {
+      "id": 10,
+      "teacherId": 5,
+      "teacherName": "Dildora Ahmetova",
+      "groupId": 4,
+      "groupName": "KI-202-21",
+      "subjectId": 4,
+      "subjectName": "Sun'iy intellekt",
+      "topic": "Machine Learning",
+      "description": "Supervised va unsupervised learning. Regression, klassifikatsiya, klasterlash.",
+      "date": "2026-03-27",
+      "dayOfWeek": "Juma",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "105",
+      "building": "C",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Machine Learning",
+          "type": "pdf",
+          "url": "/resources/ml.pdf"
+        }
+      ],
+      "homework": "Linear regression model yarating",
+      "attendance": 0,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2026-03-04T08:30:00.000Z"
+    },
+    {
+      "id": 11,
+      "teacherId": 6,
+      "teacherName": "Aziz Qosimov",
+      "groupId": 5,
+      "groupName": "DI-301-22",
+      "subjectId": 5,
+      "subjectName": "Tizimli boshqaruv",
+      "topic": "Linux asoslari",
+      "description": "Linux terminal komandalari, fayl tizimi, ruxsatlar, jarayonlar.",
+      "date": "2026-03-26",
+      "dayOfWeek": "Payshanba",
+      "time": "15:00-16:20",
+      "duration": 80,
+      "room": "308",
+      "building": "C",
+      "type": "practice",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Linux komandalari",
+          "type": "pdf",
+          "url": "/resources/linux-commands.pdf"
+        }
+      ],
+      "homework": "Linux terminalida 20 ta komandani bajarish",
+      "attendance": 0,
+      "totalStudents": 28,
+      "status": "scheduled",
+      "createdAt": "2026-03-06T14:20:00.000Z"
+    },
+    {
+      "id": 12,
+      "teacherId": 6,
+      "teacherName": "Aziz Qosimov",
+      "groupId": 5,
+      "groupName": "DI-301-22",
+      "subjectId": 5,
+      "subjectName": "Tizimli boshqaruv",
+      "topic": "Docker asoslari",
+      "description": "Docker container, image, Dockerfile, docker-compose.",
+      "date": "2026-04-02",
+      "dayOfWeek": "Payshanba",
+      "time": "15:00-16:20",
+      "duration": 80,
+      "room": "308",
+      "building": "C",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Docker darslik",
+          "type": "pdf",
+          "url": "/resources/docker.pdf"
+        }
+      ],
+      "homework": "Docker container yaratish",
+      "attendance": 0,
+      "totalStudents": 28,
+      "status": "scheduled",
+      "createdAt": "2026-03-06T14:20:00.000Z"
+    },
+    {
+      "id": 13,
+      "teacherId": 35,
+      "teacherName": "Bahodir Tursunov",
+      "groupId": 2,
+      "groupName": "AT-102-20",
+      "subjectId": 2,
+      "subjectName": "Ma'lumotlar bazasi",
+      "topic": "Ma'lumotlar bazasini loyihalash",
+      "description": "ER diagramma, normalizatsiya, 1NF, 2NF, 3NF, BCNF.",
+      "date": "2026-04-04",
+      "dayOfWeek": "Dushanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "501",
+      "building": "E",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Database Design",
+          "type": "pdf",
+          "url": "/resources/db-design.pdf"
+        }
+      ],
+      "homework": "Universitet ma'lumotlar bazasi loyihasi",
+      "attendance": 0,
+      "totalStudents": 26,
+      "status": "scheduled",
+      "createdAt": "2026-03-07T10:00:00.000Z"
+    },
+    {
+      "id": 14,
+      "teacherId": 36,
+      "teacherName": "Gulnora Akramova",
+      "groupId": 6,
+      "groupName": "AT-201-21",
+      "subjectId": 6,
+      "subjectName": "Algoritmlar",
+      "topic": "Ma'lumotlar tuzilmalari",
+      "description": "Stack, queue, linked list, tree, graph ma'lumotlar tuzilmalari.",
+      "date": "2026-04-05",
+      "dayOfWeek": "Seshanba",
+      "time": "14:00-15:30",
+      "duration": 90,
+      "room": "502",
+      "building": "E",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Data Structures",
+          "type": "pdf",
+          "url": "/resources/data-structures.pdf"
+        }
+      ],
+      "homework": "Stack va queue implementatsiyasi",
+      "attendance": 0,
+      "totalStudents": 30,
+      "status": "scheduled",
+      "createdAt": "2026-03-08T09:30:00.000Z"
+    },
+    {
+      "id": 15,
+      "teacherId": 37,
+      "teacherName": "Farrux Karimov",
+      "groupId": 4,
+      "groupName": "KI-202-21",
+      "subjectId": 4,
+      "subjectName": "Sun'iy intellekt",
+      "topic": "Deep Learning",
+      "description": "Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN), LSTM.",
+      "date": "2026-04-06",
+      "dayOfWeek": "Chorshanba",
+      "time": "11:00-12:30",
+      "duration": 90,
+      "room": "601",
+      "building": "F",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Deep Learning",
+          "type": "pdf",
+          "url": "/resources/deep-learning.pdf"
+        }
+      ],
+      "homework": "CNN model yarating",
+      "attendance": 0,
+      "totalStudents": 24,
+      "status": "scheduled",
+      "createdAt": "2026-03-09T11:15:00.000Z"
+    },
+    {
+      "id": 16,
+      "teacherId": 31,
+      "teacherName": "Akmal Hakimov",
+      "groupId": 7,
+      "groupName": "IQ-101-20",
+      "subjectId": 7,
+      "subjectName": "Mikroiqtisodiyot",
+      "topic": "Talab va taklif",
+      "description": "Talab qonuni, taklif qonuni, bozor muvozanati, elastiklik.",
+      "date": "2026-04-07",
+      "dayOfWeek": "Payshanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "415",
+      "building": "D",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Mikroiqtisodiyot darslik",
+          "type": "pdf",
+          "url": "/resources/microeconomics.pdf"
+        }
+      ],
+      "homework": "Talab va taklif grafiklari",
+      "attendance": 0,
+      "totalStudents": 25,
+      "status": "scheduled",
+      "createdAt": "2026-03-10T08:45:00.000Z"
+    },
+    {
+      "id": 17,
+      "teacherId": 32,
+      "teacherName": "Dilbar Xolmatova",
+      "groupId": 7,
+      "groupName": "IQ-101-20",
+      "subjectId": 8,
+      "subjectName": "Makroiqtisodiyot",
+      "topic": "YaIM va iqtisodiy o'sish",
+      "description": "YaIM tushunchasi, hisoblash usullari, nominal va real YaIM, iqtisodiy o'sish.",
+      "date": "2026-04-08",
+      "dayOfWeek": "Juma",
+      "time": "11:00-12:30",
+      "duration": 90,
+      "room": "416",
+      "building": "D",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Makroiqtisodiyot",
+          "type": "pdf",
+          "url": "/resources/macroeconomics.pdf"
+        }
+      ],
+      "homework": "O'zbekiston YaIM dinamikasi tahlili",
+      "attendance": 0,
+      "totalStudents": 25,
+      "status": "scheduled",
+      "createdAt": "2026-03-11T09:20:00.000Z"
+    },
+    {
+      "id": 18,
+      "teacherId": 33,
+      "teacherName": "Rustam Aliyev",
+      "groupId": 8,
+      "groupName": "IQ-102-20",
+      "subjectId": 9,
+      "subjectName": "Ekonometrika",
+      "topic": "Regressiya tahlili",
+      "description": "Oddiy va ko'p o'lchovli regressiya, eng kichik kvadratlar usuli.",
+      "date": "2026-04-09",
+      "dayOfWeek": "Dushanba",
+      "time": "14:00-15:30",
+      "duration": 90,
+      "room": "417",
+      "building": "D",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Ekonometrika",
+          "type": "pdf",
+          "url": "/resources/econometrics.pdf"
+        }
+      ],
+      "homework": "Regressiya modelini qurish",
+      "attendance": 0,
+      "totalStudents": 23,
+      "status": "scheduled",
+      "createdAt": "2026-03-12T13:30:00.000Z"
+    },
+    {
+      "id": 19,
+      "teacherId": 34,
+      "teacherName": "Malika Rahimova",
+      "groupId": 8,
+      "groupName": "IQ-102-20",
+      "subjectId": 10,
+      "subjectName": "Biznes statistika",
+      "topic": "Statistik ma'lumotlarni yig'ish va tahlil qilish",
+      "description": "Tanlanma, o'rtacha qiymatlar, dispersiya, standart og'ish, korrelyatsiya.",
+      "date": "2026-04-10",
+      "dayOfWeek": "Seshanba",
+      "time": "09:00-10:20",
+      "duration": 80,
+      "room": "418",
+      "building": "D",
+      "type": "lecture",
+      "format": "offline",
+      "resources": [
+        {
+          "name": "Biznes statistika",
+          "type": "pdf",
+          "url": "/resources/business-stats.pdf"
+        }
+      ],
+      "homework": "Statistik ma'lumotlar tahlili",
+      "attendance": 0,
+      "totalStudents": 23,
+      "status": "scheduled",
+      "createdAt": "2026-03-13T10:15:00.000Z"
+    }
+  ]
+}

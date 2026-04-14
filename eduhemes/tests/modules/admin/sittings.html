@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sozlamalar - EduHemis Admin</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.5s ease; }
+        .animate-slideIn { animation: slideIn 0.3s ease; }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .setting-label {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .setting-description {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .color-preview {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .color-preview:hover {
+            transform: scale(1.1);
+        }
+        
+        .backup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .backup-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .danger-zone {
+            border: 1px solid #fee2e2;
+            background: #fef2f2;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .danger-btn {
+            background: #ef4444;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .danger-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- ========== HEADER ========== -->
+<div class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-red-600 to-pink-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl text-gray-800">EduHemis Admin</h1>
+                    <p class="text-xs text-gray-500">Tizim sozlamalari</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button onclick="goToDashboard()" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="hidden md:inline">Bosh sahifa</span>
+                </button>
+                <div class="text-right hidden md:block">
+                    <p class="font-bold text-gray-800">Admin User</p>
+                    <p class="text-xs text-gray-500">Administrator</p>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff" 
+                     class="w-10 h-10 rounded-full border-2 border-red-600 cursor-pointer" onclick="goToProfile()">
+                <button onclick="logout()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Page Title -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">⚙️ Sozlamalar</h1>
+        <button onclick="saveAllSettings()" class="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all flex items-center gap-2">
+            <i class="fas fa-save"></i>
+            <span>Barcha o'zgarishlarni saqlash</span>
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <button onclick="switchTab('general')" id="tabGeneral" class="tab-btn tab-active">🏠 Umumiy</button>
+        <button onclick="switchTab('security')" id="tabSecurity" class="tab-btn">🔒 Xavfsizlik</button>
+        <button onclick="switchTab('appearance')" id="tabAppearance" class="tab-btn">🎨 Ko'rinish</button>
+        <button onclick="switchTab('notifications')" id="tabNotifications" class="tab-btn">🔔 Bildirishnomalar</button>
+        <button onclick="switchTab('backup')" id="tabBackup" class="tab-btn">💾 Zaxiralash</button>
+        <button onclick="switchTab('advanced')" id="tabAdvanced" class="tab-btn">🚀 Qo'shimcha</button>
+    </div>
+
+    <!-- General Tab -->
+    <div id="generalTab" class="tab-content">
+        <div class="bg-white rounded-3xl shadow-sm p-8">
+            <h3 class="text-xl font-bold mb-6">🏠 Umumiy sozlamalar</h3>
+            
+            <div class="space-y-6">
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Tizim nomi</p>
+                        <p class="setting-description">Portal nomi va logotipda ko'rsatiladi</p>
+                    </div>
+                    <input type="text" id="systemName" value="EduHemis" class="px-4 py-2 border rounded-xl w-64">
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Tizim versiyasi</p>
+                        <p class="setting-description">Joriy versiya raqami</p>
+                    </div>
+                    <input type="text" id="systemVersion" value="v1.0.0" class="px-4 py-2 border rounded-xl w-48">
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">O'quv yili</p>
+                        <p class="setting-description">Joriy o'quv yili</p>
+                    </div>
+                    <select id="academicYear" class="px-4 py-2 border rounded-xl">
+                        <option>2024-2025</option>
+                        <option selected>2025-2026</option>
+                        <option>2026-2027</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Semestr</p>
+                        <p class="setting-description">Joriy semestr</p>
+                    </div>
+                    <select id="semester" class="px-4 py-2 border rounded-xl">
+                        <option>1-semestr</option>
+                        <option selected>2-semestr</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Vaqt mintaqasi</p>
+                        <p class="setting-description">Tizim vaqti</p>
+                    </div>
+                    <select id="timezone" class="px-4 py-2 border rounded-xl">
+                        <option selected>Asia/Tashkent (UTC+5)</option>
+                        <option>Asia/Samarkand (UTC+5)</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Sana formati</p>
+                        <p class="setting-description">Sanalarni ko'rsatish formati</p>
+                    </div>
+                    <select id="dateFormat" class="px-4 py-2 border rounded-xl">
+                        <option selected>DD.MM.YYYY</option>
+                        <option>YYYY-MM-DD</option>
+                        <option>MM/DD/YYYY</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Tab -->
+    <div id="securityTab" class="tab-content hidden">
+        <div class="bg-white rounded-3xl shadow-sm p-8">
+            <h3 class="text-xl font-bold mb-6">🔒 Xavfsizlik sozlamalari</h3>
+            
+            <div class="space-y-6">
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Ikki bosqichli autentifikatsiya</p>
+                        <p class="setting-description">Foydalanuvchilar uchun qo'shimcha xavfsizlik qatlami</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="twoFactorAuth" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Sessiya vaqti</p>
+                        <p class="setting-description">Avtomatik chiqish vaqti (daqiqa)</p>
+                    </div>
+                    <select id="sessionTimeout" class="px-4 py-2 border rounded-xl">
+                        <option>15 daqiqa</option>
+                        <option selected>30 daqiqa</option>
+                        <option>60 daqiqa</option>
+                        <option>120 daqiqa</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Login urinishlar</p>
+                        <p class="setting-description">Bloklanguncha ruxsat etilgan urinishlar soni</p>
+                    </div>
+                    <select id="loginAttempts" class="px-4 py-2 border rounded-xl">
+                        <option>3 marta</option>
+                        <option selected>5 marta</option>
+                        <option>10 marta</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Parol murakkabligi</p>
+                        <p class="setting-description">Parolga qo'yiladigan talablar</p>
+                    </div>
+                    <select id="passwordComplexity" class="px-4 py-2 border rounded-xl">
+                        <option>Oddiy</option>
+                        <option selected>O'rtacha</option>
+                        <option>Yuqori</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">IP filtrlash</p>
+                        <p class="setting-description">Faqat belgilangan IP manzillardan kirish</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="ipFilter">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">SSL/HTTPS</p>
+                        <p class="setting-description">Xavfsiz ulanishni majburlash</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sslEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appearance Tab -->
+    <div id="appearanceTab" class="tab-content hidden">
+        <div class="bg-white rounded-3xl shadow-sm p-8">
+            <h3 class="text-xl font-bold mb-6">🎨 Ko'rinish sozlamalari</h3>
+            
+            <div class="space-y-6">
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Mavzu</p>
+                        <p class="setting-description">Tizim rang sxemasi</p>
+                    </div>
+                    <select id="theme" class="px-4 py-2 border rounded-xl" onchange="changeTheme()">
+                        <option selected>Yorug'</option>
+                        <option>Qorong'i</option>
+                        <option>Tizim bo'yicha</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Asosiy rang</p>
+                        <p class="setting-description">Tizimning asosiy rangi</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="color-preview bg-blue-600" onclick="selectPrimaryColor('blue')"></div>
+                        <div class="color-preview bg-purple-600" onclick="selectPrimaryColor('purple')"></div>
+                        <div class="color-preview bg-green-600" onclick="selectPrimaryColor('green')"></div>
+                        <div class="color-preview bg-red-600" onclick="selectPrimaryColor('red')"></div>
+                        <div class="color-preview bg-orange-600" onclick="selectPrimaryColor('orange')"></div>
+                        <div class="color-preview bg-teal-600" onclick="selectPrimaryColor('teal')"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Til</p>
+                        <p class="setting-description">Tizim interfeysi tili</p>
+                    </div>
+                    <select id="language" class="px-4 py-2 border rounded-xl" onchange="changeLanguage()">
+                        <option selected>O'zbek</option>
+                        <option>Русский</option>
+                        <option>English</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Animatsiyalar</p>
+                        <p class="setting-description">Interfeys animatsiyalarini yoqish/o'chirish</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="animations" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Kompakt ko'rinish</p>
+                        <p class="setting-description">Ekran zichligini oshirish</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="compactView">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Tab -->
+    <div id="notificationsTab" class="tab-content hidden">
+        <div class="bg-white rounded-3xl shadow-sm p-8">
+            <h3 class="text-xl font-bold mb-6">🔔 Bildirishnoma sozlamalari</h3>
+            
+            <div class="space-y-6">
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Email bildirishnomalar</p>
+                        <p class="setting-description">Muhim hodisalar haqida email xabarlar</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Telegram bildirishnomalar</p>
+                        <p class="setting-description">Telegram orqali xabarlar</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="telegramNotifications">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">SMS bildirishnomalar</p>
+                        <p class="setting-description">Muhim xabarlar SMS orqali</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="smsNotifications">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Tovush</p>
+                        <p class="setting-description">Bildirishnoma tovushi</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="soundNotifications" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div>
+                        <p class="setting-label">Kunlik hisobot</p>
+                        <p class="setting-description">Kunlik faoliyat hisoboti</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dailyReport" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Tab -->
+    <div id="backupTab" class="tab-content hidden">
+        <div class="bg-white rounded-3xl shadow-sm p-8">
+            <h3 class="text-xl font-bold mb-6">💾 Zaxiralash va tiklash</h3>
+            
+            <div class="space-y-6">
+                <div class="bg-blue-50 p-6 rounded-2xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-bold">Avtomatik zaxiralash</p>
+                            <p class="text-sm text-gray-600 mt-1">Har kuni avtomatik ravishda zaxira nusxa yaratish</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoBackup" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="mt-4">
+                        <select id="backupTime" class="px-4 py-2 border rounded-xl bg-white">
+                            <option>00:00</option>
+                            <option selected>02:00</option>
+                            <option>04:00</option>
+                            <option>06:00</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button onclick="createBackup()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">
+                        <i class="fas fa-database mr-2"></i> Zaxira nusxa yaratish
+                    </button>
+                    <button onclick="restoreBackup()" class="flex-1 bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition-all">
+                        <i class="fas fa-upload mr-2"></i> Zaxira nusxani tiklash
+                    </button>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="font-bold mb-3">So'nggi zaxira nusxalar</h4>
+                    <div id="backupList" class="space-y-2">
+                        <div class="backup-item">
+                            <div>
+                                <p class="font-medium">eduhemis_backup_2025_03_19.zip</p>
+                                <p class="text-xs text-gray-500">19.03.2025 02:15 • 2.4 MB</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="downloadBackup()" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button onclick="deleteBackup()" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="backup-item">
+                            <div>
+                                <p class="font-medium">eduhemis_backup_2025_03_18.zip</p>
+                                <p class="text-xs text-gray-500">18.03.2025 02:15 • 2.3 MB</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="downloadBackup()" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button onclick="deleteBackup()" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Tab -->
+    <div id="advancedTab" class="tab-content hidden">
+        <div class="space-y-6">
+            <div class="bg-white rounded-3xl shadow-sm p-8">
+                <h3 class="text-xl font-bold mb-6">🚀 Qo'shimcha sozlamalar</h3>
+                
+                <div class="space-y-6">
+                    <div class="setting-item">
+                        <div>
+                            <p class="setting-label">Keshni tozalash</p>
+                            <p class="setting-description">Tizim keshini tozalash</p>
+                        </div>
+                        <button onclick="clearCache()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">
+                            <i class="fas fa-trash-alt mr-1"></i> Tozalash
+                        </button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <p class="setting-label">Ma'lumotlar bazasini optimallashtirish</p>
+                            <p class="setting-description">Ma'lumotlar bazasini optimallashtirish</p>
+                        </div>
+                        <button onclick="optimizeDatabase()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">
+                            <i class="fas fa-rocket mr-1"></i> Optimallashtirish
+                        </button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <p class="setting-label">Tizim loglari</p>
+                            <p class="setting-description">Tizim loglarini ko'rish</p>
+                        </div>
+                        <button onclick="viewLogs()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">
+                            <i class="fas fa-list mr-1"></i> Ko'rish
+                        </button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <p class="setting-label">API kalitlari</p>
+                            <p class="setting-description">Tashqi integratsiyalar uchun API kalitlar</p>
+                        </div>
+                        <button onclick="manageApiKeys()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200">
+                            <i class="fas fa-key mr-1"></i> Boshqarish
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+                <h3 class="text-xl font-bold text-red-600 mb-4">⚠️ Xavfli zona</h3>
+                <p class="text-sm text-gray-600 mb-4">Bu amallar ortga qaytarilmaydi!</p>
+                <div class="flex gap-4">
+                    <button onclick="clearAllData()" class="danger-btn px-6 py-3 rounded-xl font-bold">
+                        <i class="fas fa-trash-alt mr-2"></i> Barcha ma'lumotlarni tozalash
+                    </button>
+                    <button onclick="resetSystem()" class="danger-btn px-6 py-3 rounded-xl font-bold">
+                        <i class="fas fa-sync-alt mr-2"></i> Tizimni qayta o'rnatish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-xl text-white font-medium shadow-2xl hidden animate-slideIn z-50"></div>
+
+<script>
+    // ========== TAB FUNKSIYALARI ==========
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('tab-active');
+        
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+        document.getElementById(`${tab}Tab`).classList.remove('hidden');
+    }
+
+    // ========== SOZLAMALARNI SAQLASH ==========
+    function saveAllSettings() {
+        const settings = {
+            general: {
+                systemName: document.getElementById('systemName').value,
+                systemVersion: document.getElementById('systemVersion').value,
+                academicYear: document.getElementById('academicYear').value,
+                semester: document.getElementById('semester').value,
+                timezone: document.getElementById('timezone').value,
+                dateFormat: document.getElementById('dateFormat').value
+            },
+            security: {
+                twoFactorAuth: document.getElementById('twoFactorAuth').checked,
+                sessionTimeout: document.getElementById('sessionTimeout').value,
+                loginAttempts: document.getElementById('loginAttempts').value,
+                passwordComplexity: document.getElementById('passwordComplexity').value,
+                ipFilter: document.getElementById('ipFilter').checked,
+                sslEnabled: document.getElementById('sslEnabled').checked
+            },
+            appearance: {
+                theme: document.getElementById('theme').value,
+                language: document.getElementById('language').value,
+                animations: document.getElementById('animations').checked,
+                compactView: document.getElementById('compactView').checked
+            },
+            notifications: {
+                email: document.getElementById('emailNotifications').checked,
+                telegram: document.getElementById('telegramNotifications').checked,
+                sms: document.getElementById('smsNotifications').checked,
+                sound: document.getElementById('soundNotifications').checked,
+                dailyReport: document.getElementById('dailyReport').checked
+            },
+            backup: {
+                autoBackup: document.getElementById('autoBackup').checked,
+                backupTime: document.getElementById('backupTime').value
+            }
+        };
+        
+        localStorage.setItem('eduhemis_settings', JSON.stringify(settings));
+        showToast('Barcha sozlamalar saqlandi!', 'success');
+    }
+
+    function loadSettings() {
+        const saved = localStorage.getItem('eduhemis_settings');
+        if (saved) {
+            const settings = JSON.parse(saved);
+            // General
+            document.getElementById('systemName').value = settings.general?.systemName || 'EduHemis';
+            document.getElementById('systemVersion').value = settings.general?.systemVersion || 'v1.0.0';
+            document.getElementById('academicYear').value = settings.general?.academicYear || '2025-2026';
+            document.getElementById('semester').value = settings.general?.semester || '2-semestr';
+            document.getElementById('timezone').value = settings.general?.timezone || 'Asia/Tashkent (UTC+5)';
+            document.getElementById('dateFormat').value = settings.general?.dateFormat || 'DD.MM.YYYY';
+            
+            // Security
+            document.getElementById('twoFactorAuth').checked = settings.security?.twoFactorAuth || false;
+            document.getElementById('sessionTimeout').value = settings.security?.sessionTimeout || '30 daqiqa';
+            document.getElementById('loginAttempts').value = settings.security?.loginAttempts || '5 marta';
+            document.getElementById('passwordComplexity').value = settings.security?.passwordComplexity || 'O\'rtacha';
+            document.getElementById('ipFilter').checked = settings.security?.ipFilter || false;
+            document.getElementById('sslEnabled').checked = settings.security?.sslEnabled !== undefined ? settings.security.sslEnabled : true;
+            
+            // Appearance
+            document.getElementById('theme').value = settings.appearance?.theme || 'Yorug\'';
+            document.getElementById('language').value = settings.appearance?.language || 'O\'zbek';
+            document.getElementById('animations').checked = settings.appearance?.animations !== undefined ? settings.appearance.animations : true;
+            document.getElementById('compactView').checked = settings.appearance?.compactView || false;
+            
+            // Notifications
+            document.getElementById('emailNotifications').checked = settings.notifications?.email !== undefined ? settings.notifications.email : true;
+            document.getElementById('telegramNotifications').checked = settings.notifications?.telegram || false;
+            document.getElementById('smsNotifications').checked = settings.notifications?.sms || false;
+            document.getElementById('soundNotifications').checked = settings.notifications?.sound !== undefined ? settings.notifications.sound : true;
+            document.getElementById('dailyReport').checked = settings.notifications?.dailyReport !== undefined ? settings.notifications.dailyReport : true;
+            
+            // Backup
+            document.getElementById('autoBackup').checked = settings.backup?.autoBackup !== undefined ? settings.backup.autoBackup : true;
+            document.getElementById('backupTime').value = settings.backup?.backupTime || '02:00';
+        }
+    }
+
+    // ========== KO'RINISH FUNKSIYALARI ==========
+    function changeTheme() {
+        const theme = document.getElementById('theme').value;
+        if (theme === 'Qorong\'i') {
+            document.body.classList.add('dark');
+            showToast('Qorong\'i rejim yoqildi', 'info');
+        } else {
+            document.body.classList.remove('dark');
+        }
+    }
+
+    function changeLanguage() {
+        const lang = document.getElementById('language').value;
+        showToast(`Til o'zgartirildi: ${lang}`, 'success');
+    }
+
+    function selectPrimaryColor(color) {
+        const root = document.documentElement;
+        const colors = {
+            blue: '#3b82f6',
+            purple: '#8b5cf6',
+            green: '#10b981',
+            red: '#ef4444',
+            orange: '#f59e0b',
+            teal: '#14b8a6'
+        };
+        root.style.setProperty('--primary-color', colors[color]);
+        showToast(`Asosiy rang o'zgartirildi`, 'success');
+    }
+
+    // ========== ZAXIRALASH FUNKSIYALARI ==========
+    function createBackup() {
+        showToast('Zaxira nusxa yaratilmoqda...', 'info');
+        setTimeout(() => {
+            showToast('Zaxira nusxa muvaffaqiyatli yaratildi!', 'success');
+        }, 2000);
+    }
+
+    function restoreBackup() {
+        showToast('Zaxira nusxa tiklanmoqda...', 'info');
+        setTimeout(() => {
+            showToast('Zaxira nusxa tiklandi!', 'success');
+        }, 2000);
+    }
+
+    function downloadBackup() {
+        showToast('Zaxira nusxa yuklab olindi!', 'success');
+    }
+
+    function deleteBackup() {
+        if (confirm('Haqiqatan ham bu zaxira nusxani o\'chirmoqchimisiz?')) {
+            showToast('Zaxira nusxa o\'chirildi!', 'success');
+        }
+    }
+
+    // ========== QO'SHIMCHA FUNKSIYALAR ==========
+    function clearCache() {
+        if (confirm('Keshni tozalashni xohlaysizmi?')) {
+            localStorage.removeItem('eduhemis_cache');
+            showToast('Kesh muvaffaqiyatli tozalandi!', 'success');
+        }
+    }
+
+    function optimizeDatabase() {
+        showToast('Ma\'lumotlar bazasi optimallashtirilmoqda...', 'info');
+        setTimeout(() => {
+            showToast('Ma\'lumotlar bazasi optimallashtirildi!', 'success');
+        }, 2000);
+    }
+
+    function viewLogs() {
+        showToast('Tizim loglari ko\'rilmoqda', 'info');
+    }
+
+    function manageApiKeys() {
+        showToast('API kalitlarni boshqarish', 'info');
+    }
+
+    function clearAllData() {
+        if (confirm('Barcha ma\'lumotlarni o\'chirmoqchimisiz? Bu amal ortga qaytarilmaydi!')) {
+            localStorage.clear();
+            showToast('Barcha ma\'lumotlar tozalandi!', 'warning');
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
+    }
+
+    function resetSystem() {
+        if (confirm('Tizimni qayta o\'rnatmoqchimisiz? Barcha sozlamalar va ma\'lumotlar o\'chadi!')) {
+            localStorage.clear();
+            showToast('Tizim qayta o\'rnatildi!', 'warning');
+            setTimeout(() => {
+                window.location.href = '../../index.html';
+            }, 2000);
+        }
+    }
+
+    // ========== NAVIGATSIYA ==========
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function goToProfile() {
+        window.location.href = '../shared/profile.html?role=admin';
+    }
+
+    function logout() {
+        if (confirm('Tizimdan chiqmoqchimisiz?')) {
+            window.location.href = '../../index.html';
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add(type === 'success' ? 'bg-green-500' : 
+                          type === 'error' ? 'bg-red-500' : 
+                          type === 'warning' ? 'bg-orange-500' : 'bg-blue-500');
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+            toast.classList.remove('bg-green-500', 'bg-red-500', 'bg-orange-500', 'bg-blue-500');
+        }, 3000);
+    }
+    
+    // Sahifa yuklanganda sozlamalarni yuklash
+    window.onload = function() {
+        loadSettings();
+    };
+</script>
+
+</body>
+</html>
